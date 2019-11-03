@@ -122,9 +122,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         if (id == R.id.group2) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "We've only built one group so far", Toast.LENGTH_SHORT);
-            toast.show();
+//            Toast toast = Toast.makeText(getApplicationContext(),
+//                    "We've only built one group so far", Toast.LENGTH_SHORT);
+//            toast.show();
+            Intent intent = new Intent(MainActivity.this, TestActivity.class);
+            startActivity(intent);
         }
 
         if (id == R.id.nav_add_group) {

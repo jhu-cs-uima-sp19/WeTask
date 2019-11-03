@@ -9,6 +9,8 @@
     tools:openDrawer="start">
 
 
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,10 +25,34 @@
 <!--        app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
 
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/tab_a_label"/>
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/tab_b_label"/>
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/tab_c_label"/>
+
+        </com.google.android.material.tabs.TabLayout>
+
         <include layout="@layout/content_main" />
 
 
     </com.google.android.material.appbar.AppBarLayout>
+
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
