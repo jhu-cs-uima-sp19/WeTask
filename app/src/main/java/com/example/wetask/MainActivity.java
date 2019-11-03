@@ -15,14 +15,28 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListView taskList;
+    private TaskItemAdapter aa;
+
+    // this is temporarily set up with package and static access so
+    // that job detail can get access items --
+    // would be changed to private instance if supported by
+    // permanent back-end database
+    private ArrayList<TaskItem> taskItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +53,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        taskList = (ListView) findViewById(R.id.taskItems);
+        // create ArrayList of courses from database
+        taskItems = new ArrayList<TaskItem>();
+        // make array adapter to bind arraylist to listview with new custom item layout
+        aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems);
+        taskList.setAdapter(aa);
+
+        TaskItem item = new TaskItem();
+        taskItems.add(0, item);
+
+        taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
