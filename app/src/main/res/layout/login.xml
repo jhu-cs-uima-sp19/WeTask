@@ -12,8 +12,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="#26E8A7"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
         tools:layout_editor_absoluteX="0dp" />
+<!--        app:popupTheme="@style/AppTheme.PopupOverlay"-->
 
     <EditText
         android:id="@+id/emailUsername"
@@ -85,4 +85,4 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
 
-</>
+</androidx.constraintlayout.widget.ConstraintLayout>

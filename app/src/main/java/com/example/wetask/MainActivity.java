@@ -49,15 +49,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        //inflater.inflate(R.menu.action_buttons, menu);
+        inflater.inflate(R.menu.action_buttons, menu);
         return true;
     }
 
-   /* @Override
+   @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.settings:
-                Intent intent = new Intent(MainActivity.this, Settings.class);
+            case R.id.group_settings:
+                Intent intent = new Intent(MainActivity.this, GroupSettings.class);
+                //put extra with current group name (editing not creating)
                 startActivity(intent);
                 return true;
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 return super.onOptionsItemSelected(item);
 
         }
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -84,14 +85,31 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.main) {
+        if (id == R.id.group1) {
             Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
         }
 
-        if (id == R.id.hist) {
+        if (id == R.id.group2) {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Button :)", Toast.LENGTH_SHORT);
+                    "We've only built one group so far", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+        if (id == R.id.nav_add_group) {
+            Intent intent = new Intent(MainActivity.this, GroupSettings.class);
+            //put extra with group name empty (populating new group)
+            startActivity(intent);
+        }
+
+        if (id == R.id.settings) {
+            Intent intent = new Intent(MainActivity.this, AppSettings.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.logout) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Can't log you out right now", Toast.LENGTH_SHORT);
             toast.show();
         }
 

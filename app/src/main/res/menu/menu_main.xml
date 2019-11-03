@@ -4,12 +4,32 @@ xmlns:tools="http://schemas.android.com/tools"
 tools:showIn="navigation_view"
     tools:context="com.example.PiggyBankApp.MainActivity" >
 
+    <item android:title="Groups">
+        <menu>
+            <item
+                android:id="@+id/group1"
+                android:title="Group 1"/>
+            <item
+                android:id="@+id/group2"
+                android:title="Group 2"/>
+            <item
+                android:id="@+id/nav_add_group"
+                android:title="Add Group"/>
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/main"
-        android:title="Main Activity"/>
-    <item
-        android:id="@+id/hist"
-        android:title="History Transaction"/>
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:title="Settings"/>
+            <item
+                android:id="@+id/logout"
+                android:title="Logout"/>
+        </menu>
+    </item>
+
+
+
 
 </menu>

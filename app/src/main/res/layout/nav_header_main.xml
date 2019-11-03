@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="29dp"
         android:layout_marginTop="4dp"
-        android:text="This is the Nav Bat (spooky)"
+        android:text="Profile Pic Stuff Up Here"
         android:textColor="@android:color/black"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
