@@ -4,6 +4,7 @@ package com.example.wetask;
  * Holds data for one Task
  */
 public class TaskItem {
+    //Temp Variables
     private String where;
     private String when;
     private String who;
@@ -11,7 +12,7 @@ public class TaskItem {
     private float cost;
     private short paid;
 
-    TaskItem() {
+    TaskItem() { //Constructor currently empty, do stuff bout this
     }
 
     public String getWhere() { return where; }
@@ -21,12 +22,7 @@ public class TaskItem {
     public float getCost() { return cost; }
     public short getPaid() { return paid; }
 
-    public void setAll(String where, String when, String who, String notes, float cost, short paid) {
-        this.where = where;
-        this.when = when;
-        this.who = who;
-        this.notes = notes;
-        this.cost = cost;
-        this.paid = paid;
+    public void setAll() {//Add stuff to set in the parameters
+
     }
 }
