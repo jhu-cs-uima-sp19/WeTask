@@ -12,6 +12,5 @@ public class UserObject {
         this.groupList = groups;
         this.password = password;
     }
-
     public String getUserID() {return userID;}
 }
