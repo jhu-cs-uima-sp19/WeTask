@@ -11,6 +11,7 @@ public class TaskItem {
     private String notes;
     private float cost;
     private short paid;
+    private int taskId;
 
     TaskItem() { //Constructor currently empty, do stuff bout this
     }

@@ -31,13 +31,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private ListView taskList;
     private TaskItemAdapter aa;
+    private TaskItemAdapter bb;
 
     // this is temporarily set up with package and static access so
     // that job detail can get access items --
     // would be changed to private instance if supported by
     // permanent back-end database
-    private ArrayList<TaskItem> taskItems;
-
+    private ArrayList<TaskItem> taskItems1;
+    private ArrayList<TaskItem> taskItems2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +57,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         taskList = (ListView) findViewById(R.id.taskItems);
         // create ArrayList of courses from database
-        taskItems = new ArrayList<TaskItem>();
+        taskItems1 = new ArrayList<TaskItem>();
+        taskItems2 = new ArrayList<TaskItem>();
         // make array adapter to bind arraylist to listview with new custom item layout
-        aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems);
+        aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems1);
+        bb = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems2);
         taskList.setAdapter(aa);
 
         TaskItem item = new TaskItem();
-        taskItems.add(0, item);
+        taskItems1.add(0, item);
+        taskItems2.add(0, item);
+        taskItems2.add(1, item);
+        taskItems2.add(2, item);
 
         taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,10 +129,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         if (id == R.id.group2) {
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "The Anh will overwrite this with what he put in video", Toast.LENGTH_SHORT);
+                    "We've only built one group so far", Toast.LENGTH_SHORT);
+            taskList.setAdapter(bb);
             toast.show();
-            //Intent intent = new Intent(MainActivity.this, TestActivity.class);
-            //startActivity(intent);
         }
 
         if (id == R.id.nav_add_group) {
