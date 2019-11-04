@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:showIn="navigation_view"
+    tools:context="com.example.PiggyBankApp.MainActivity" >
+
+    <item android:title="Groups">
+        <menu>
+            <item
+                android:id="@+id/group1"
+                android:title="Group 1"/>
+            <item
+                android:id="@+id/group2"
+                android:title="Group 2"/>
+            <item
+                android:id="@+id/nav_add_group"
+                android:title="Add Group"/>
+        </menu>
+    </item>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:title="Settings"/>
+            <item
+                android:id="@+id/logout"
+                android:title="Logout"/>
+        </menu>
+    </item>
+
+
+
+
+</menu>
