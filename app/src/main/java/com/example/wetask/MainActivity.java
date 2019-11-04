@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private TaskItemAdapter aa;
     private TaskItemAdapter bb;
 
+
     // this is temporarily set up with package and static access so
     // that job detail can get access items --
     // would be changed to private instance if supported by
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,7 +65,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // make array adapter to bind arraylist to listview with new custom item layout
         aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems1);
         bb = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems2);
-        taskList.setAdapter(aa);
+        int currGroup = sharedPref.getInt("group", 1);
+
+        switch (currGroup) {
+            case 2:
+                taskList.setAdapter(bb);
+                break;
+            default:
+                taskList.setAdapter(aa);
+        }
+
 
         TaskItem item = new TaskItem();
         taskItems1.add(0, item);
@@ -118,19 +130,29 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     //@Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {//Could make a list of lists of 3 lists of taskItems(3 for personal, all, and archive).
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.group1) {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//            startActivity(intent);
+            taskList.setAdapter(aa);
+            SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+            SharedPreferences.Editor edit = sharedPref.edit();
+            edit.putInt("group", 1);
+            edit.commit();
+
         }
 
         if (id == R.id.group2) {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "We've only built one group so far", Toast.LENGTH_SHORT);
             taskList.setAdapter(bb);
+            SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+            SharedPreferences.Editor edit = sharedPref.edit();
+            edit.putInt("group", 2);
+            edit.commit();
             toast.show();
         }
 
