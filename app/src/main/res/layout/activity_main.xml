@@ -64,5 +64,4 @@
         app:menu="@menu/menu_main" />
 
 
-
 </androidx.drawerlayout.widget.DrawerLayout>
