@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "592956492980",
+    "firebase_url": "https://wetask-85970.firebaseio.com",
+    "project_id": "wetask-85970",
+    "storage_bucket": "wetask-85970.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592956492980:android:2c35f2ebeb20071f101be1",
+        "android_client_info": {
+          "package_name": "com.example.wetask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592956492980-k852s4gp7pvf9p0g4s2ejavf6k04v69e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDALFvVR5_VIhEGR_UTxVO7uDaA6ZI3_Jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592956492980-k852s4gp7pvf9p0g4s2ejavf6k04v69e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
