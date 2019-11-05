@@ -8,6 +8,10 @@
     <string name="tab_b_label">All Tasks</string>
     <string name="tab_c_label">Archive</string>
 
+    <string name="tab_text_1">My Tasks</string>
+    <string name="tab_text_2">All Tasks</string>
+    <string name="tab_text_3">Archive</string>
+
     <string name="login">LOGIN</string>
     <string name="sign_up">SIGN UP</string>
     <string name="submit">SUBMIT</string>

@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +24,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wetask.main.SectionsPagerAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,6 +47,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     // permanent back-end database
     private ArrayList<TaskItem> taskItems1;
     private ArrayList<TaskItem> taskItems2;
+
+    private ArrayList<TaskItem> myTasks;
+    private ArrayList<TaskItem> allTasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //CoordinatorLayout drawer = (CoordinatorLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -66,6 +75,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         // create ArrayList of courses from database
         taskItems1 = new ArrayList<TaskItem>();
         taskItems2 = new ArrayList<TaskItem>();
+
+        myTasks = new ArrayList<TaskItem>();
+        allTasks = new ArrayList<TaskItem>();
         // make array adapter to bind arraylist to listview with new custom item layout
         aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems1);
         bb = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems2);
@@ -73,10 +85,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         switch (currGroup) {
             case 2:
-                taskList.setAdapter(bb);
+                //taskList.setAdapter(bb);
                 break;
             default:
-                taskList.setAdapter(aa);
+                //taskList.setAdapter(aa);
         }
 
 
@@ -89,8 +101,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         taskItems2.add(2, item);
         taskItems2.add(3, item);
 
+        //dummy list for testing putting in tabs
+        TaskItem my_item = new TaskItem("mytask", "1");
+        TaskItem all_item = new TaskItem("alltask", "2");
+
+        myTasks.add(my_item);
+        myTasks.add(my_item);
+        myTasks.add(my_item);
+        allTasks.add(all_item);
+        allTasks.add(all_item);
+
         final TaskItem newItem = new TaskItem("newItem", "2");
-        taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
@@ -99,7 +121,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                     mDatabase.child("tasks").child(id_new).setValue(newItem);
                 }
             }
-        });
+        });*/
+
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter( this, getSupportFragmentManager( ) );
+        ViewPager viewPager = findViewById( R.id.view_pager );
+        viewPager.setAdapter( sectionsPagerAdapter );
+        TabLayout tabs = findViewById( R.id.tabs );
+        tabs.setupWithViewPager( viewPager );
     }
 
     @Override
@@ -147,8 +175,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.group1) {
-//            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//            startActivity(intent);
             taskList.setAdapter(aa);
             SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
             SharedPreferences.Editor edit = sharedPref.edit();
@@ -158,14 +184,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         if (id == R.id.group2) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "We've only built one group so far", Toast.LENGTH_SHORT);
             taskList.setAdapter(bb);
             SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
             SharedPreferences.Editor edit = sharedPref.edit();
             edit.putInt("group", 2);
             edit.commit();
-            toast.show();
         }
 
         if (id == R.id.nav_add_group) {

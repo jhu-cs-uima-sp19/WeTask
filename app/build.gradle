@@ -37,6 +37,7 @@ dependencies {
     // Java
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
