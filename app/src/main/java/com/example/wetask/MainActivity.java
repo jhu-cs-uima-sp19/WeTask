@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private ListView taskList;
     private TaskItemAdapter aa;
     private TaskItemAdapter bb;
+    private DatabaseReference mDatabase;
 
 
     // this is temporarily set up with package and static access so
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,15 +81,23 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
 
         TaskItem item = new TaskItem();
-        taskItems1.add(0, item);
-        taskItems2.add(0, item);
+        TaskItem add_task_item = new TaskItem("ADD TASK", "1");
+        taskItems1.add(0, add_task_item);
+        taskItems1.add(1, item);
+        taskItems2.add(0, add_task_item);
         taskItems2.add(1, item);
         taskItems2.add(2, item);
+        taskItems2.add(3, item);
 
+        final TaskItem newItem = new TaskItem("newItem", "2");
         taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
                         .setAction("Action", null).show();
+                if(position == 0){
+                    String id_new = newItem.getTaskId();
+                    mDatabase.child("tasks").child(id_new).setValue(newItem);
+                }
             }
         });
     }

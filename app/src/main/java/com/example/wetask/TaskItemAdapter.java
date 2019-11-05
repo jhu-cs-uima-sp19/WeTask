@@ -15,11 +15,14 @@ import java.util.List;
 public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
 
     private int resource;
+    private List<TaskItem> items;
+
 
     public TaskItemAdapter(Context ctx, int res, List<TaskItem> items)
     {
         super(ctx, res, items);
         resource = res;
+        this.items = items;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         TextView dateText = (TextView) taskView.findViewById(R.id.date_text);
         TextView amountText = (TextView) taskView.findViewById(R.id.amount_view);
 
-        amountText.setText("hi");
+        amountText.setText(items.get(position).getName());
         dateText.setText("hi");
         typeText.setText("hi");
 
