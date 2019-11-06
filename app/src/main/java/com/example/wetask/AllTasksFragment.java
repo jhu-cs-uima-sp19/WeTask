@@ -1,9 +1,11 @@
 package com.example.wetask;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +56,13 @@ public class AllTasksFragment extends Fragment {
         View view = inflater.inflate( R.layout.fragment_all_tasks, container, false );
         allList = (ListView) view.findViewById(R.id.allTaskItems);
         allList.setAdapter( adapter );
+        allList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+                //put extra with task id (so know to show details)
+                startActivity(intent);
+            }
+        });
         return view;
     }
 }

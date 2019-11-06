@@ -71,8 +71,6 @@ public class MyTasksFragment extends Fragment {
         myList.setAdapter( adapter );
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
-                //        .setAction("Action", null).show();
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
                 //put extra with task id (so know to show details)
                 intent.putExtra("TASK_ID", id); //this isn't quite right yet
