@@ -28,7 +28,7 @@ public class TaskItem {
     public String getDeadline() { return deadline; }
     public String getNotes() { return notes; }
     public String getTaskId() {return taskId; }
-    public String getTaskName() {return name;}
+    public String getName() {return name;}
     public void setDeadline(String newDL) { this.deadline = newDL; }
     public void setNotes(String newNotes) { this.notes = newNotes; }
     public void setTaskName(String newName) { this.name = newName;}

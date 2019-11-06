@@ -1,6 +1,7 @@
 package com.example.wetask;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,15 +69,16 @@ public class MyTasksFragment extends Fragment {
         View view = inflater.inflate( R.layout.fragment_my_tasks, container, false );
         myList = (ListView) view.findViewById(R.id.myTaskItems);
         myList.setAdapter( adapter );
-        return view;
-        /*  taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
-                if(position == 0){
-                    String id_new = newItem.getTaskId();
-                    mDatabase.child("tasks").child(id_new).setValue(newItem);
-                }
-            }*/
+                //Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
+                //        .setAction("Action", null).show();
+                Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+                //put extra with task id (so know to show details)
+                intent.putExtra("TASK_ID", id); //this isn't quite right yet
+                startActivity(intent);
+            }
+        });
+        return view;
     }
 }
