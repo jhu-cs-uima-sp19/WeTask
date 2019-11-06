@@ -6,33 +6,31 @@ package com.example.wetask;
 public class TaskItem {
     //Temp Variables
     private String name = "Task";
-    private String where;
-    private String when;
-    private String who;
+    private String createdDate;
+    private String deadline;
+    private String user;
     private String notes;
-    private float cost;
-    private float paid;
+    private String groupID;
     private String taskId;
 
-    TaskItem(String item_name, String id) { //Constructor currently empty, do stuff bout this
+    TaskItem(String item_name, String tID, String gID) { //Constructor currently empty, do stuff bout this
         this.name = item_name;
-        this.taskId = id;
+        this.taskId = tID;
+        this.groupID = gID;
     }
 
     TaskItem(){
 
     }
 
-    public String getWhere() { return where; }
-    public String getWhen() { return when; }
-    public String getWho() { return who; }
+    public String getCreatedDate() { return createdDate; }
+    public String getUser() { return user; }
+    public String getDeadline() { return deadline; }
     public String getNotes() { return notes; }
-    public float getCost() { return cost; }
-    public float getPaid() { return paid; }
     public String getTaskId() {return taskId; }
-    public String getName() {return name;}
+    public String getTaskName() {return name;}
+    public void setDeadline(String newDL) { this.deadline = newDL; }
+    public void setNotes(String newNotes) { this.notes = newNotes; }
+    public void setTaskName(String newName) { this.name = newName;}
 
-    public void setAll() {//Add stuff to set in the parameters
-
-    }
 }
