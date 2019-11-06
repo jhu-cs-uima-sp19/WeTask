@@ -18,7 +18,4 @@
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical"/>
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

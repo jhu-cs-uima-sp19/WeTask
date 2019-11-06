@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -50,6 +51,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private ArrayList<TaskItem> myTasks;
     private ArrayList<TaskItem> allTasks;
+    private TaskItemAdapter myTaskAdapter;
+    private TaskItemAdapter allTaskAdapter;
+    private TaskItemAdapter archiveTaskAdapter;
+    private ArrayList<TaskItemAdapter> masterList;
+    private ListView myList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,34 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
+
+        TaskItem my_item = new TaskItem("mytask", "1");
+        TaskItem all_item = new TaskItem("alltask", "2");
+
+        myTasks.add(my_item);
+        myTasks.add(my_item);
+        myTasks.add(my_item);
+        allTasks.add(all_item);
+        allTasks.add(all_item);
+
+        myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
+        allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
+        archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, taskItems1 );
+
+        masterList = new ArrayList<TaskItemAdapter>();
+        masterList.add(myTaskAdapter);
+        masterList.add(allTaskAdapter);
+        masterList.add(archiveTaskAdapter);
+
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);
+        ViewPager viewPager = findViewById( R.id.view_pager );
+        viewPager.setAdapter( sectionsPagerAdapter );
+        TabLayout tabs = findViewById( R.id.tabs );
+        tabs.setupWithViewPager( viewPager );
+
+        //myList = (ListView) findViewById(R.id.myTaskItems);
+        //myList.setAdapter(myTaskAdapter);
+/*
         // make array adapter to bind arraylist to listview with new custom item layout
         aa = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems1);
         bb = new TaskItemAdapter(this, R.layout.task_item_layout, taskItems2);
@@ -90,28 +124,37 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             default:
                 //taskList.setAdapter(aa);
         }
-
-
-        TaskItem item = new TaskItem();
+*/
+/*        TaskItem item = new TaskItem();
         TaskItem add_task_item = new TaskItem("ADD TASK", "1");
         taskItems1.add(0, add_task_item);
         taskItems1.add(1, item);
         taskItems2.add(0, add_task_item);
         taskItems2.add(1, item);
         taskItems2.add(2, item);
-        taskItems2.add(3, item);
-
+        taskItems2.add(3, item);*/
         //dummy list for testing putting in tabs
-        TaskItem my_item = new TaskItem("mytask", "1");
+        /*TaskItem my_item = new TaskItem("mytask", "1");
         TaskItem all_item = new TaskItem("alltask", "2");
 
         myTasks.add(my_item);
         myTasks.add(my_item);
         myTasks.add(my_item);
         allTasks.add(all_item);
-        allTasks.add(all_item);
+        allTasks.add(all_item);*/
 
-        final TaskItem newItem = new TaskItem("newItem", "2");
+/*        final TaskItem newItem = new TaskItem("newItem", "2");
+        taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+                if(position == 0){
+                    String id_new = newItem.getTaskId();
+                    mDatabase.child("tasks").child(id_new).setValue(newItem);
+                }
+            }
+        });*/
+        //final TaskItem newItem = new TaskItem("newItem", "2");
         /*taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
@@ -123,11 +166,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });*/
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter( this, getSupportFragmentManager( ) );
-        ViewPager viewPager = findViewById( R.id.view_pager );
-        viewPager.setAdapter( sectionsPagerAdapter );
-        TabLayout tabs = findViewById( R.id.tabs );
-        tabs.setupWithViewPager( viewPager );
+
     }
 
     @Override

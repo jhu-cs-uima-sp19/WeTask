@@ -6,6 +6,9 @@ import com.example.wetask.R;
 import com.example.wetask.AllTasksFragment;
 import com.example.wetask.ArchiveFragment;
 import com.example.wetask.MyTasksFragment;
+import com.example.wetask.TaskItemAdapter;
+
+import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -22,10 +25,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
+    private ArrayList<TaskItemAdapter> passed_adapters;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    public SectionsPagerAdapter(Context context,  FragmentManager fm, ArrayList<TaskItemAdapter> adap) {
         super( fm );
         mContext = context;
+        passed_adapters = adap;
     }
 
     @Override
@@ -36,11 +41,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch(position) {
             case 0:
-                return MyTasksFragment.newInstance("dummy1","dummy2");
+                return MyTasksFragment.newInstance(passed_adapters.get(position));
             case 1:
                 return AllTasksFragment.newInstance(2);
             case 2:
-                return ArchiveFragment.newInstance("dummy3", "dummy4");
+                return ArchiveFragment.newInstance("", "");
             default:
                 return AllTasksFragment.newInstance(2);
         }
@@ -54,7 +59,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
+        // Show 3 total pages.
         return 3;
     }
 }
