@@ -1,19 +1,13 @@
 package com.example.wetask;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.example.wetask.main.PageViewModel;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 
@@ -29,39 +23,37 @@ public class AllTasksFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    private PageViewModel pageViewModel;
+//    private PageViewModel pageViewModel;
+    private ListView allList;
+    private static TaskItemAdapter adapter;
 
-    public static AllTasksFragment newInstance(int index) {
+    public static AllTasksFragment newInstance(TaskItemAdapter aa) {
         AllTasksFragment fragment = new AllTasksFragment( );
         Bundle bundle = new Bundle( );
-        bundle.putInt( ARG_SECTION_NUMBER, index );
+        //bundle.putInt( ARG_SECTION_NUMBER, index );
         fragment.setArguments( bundle );
+        adapter = aa;
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        pageViewModel = ViewModelProviders.of( this ).get( PageViewModel.class );
-        int index = 1;
-        if (getArguments( ) != null) {
-            index = getArguments( ).getInt( ARG_SECTION_NUMBER );
-        }
-        pageViewModel.setIndex( index );
+//        pageViewModel = ViewModelProviders.of( this ).get( PageViewModel.class );
+//        int index = 1;
+//        if (getArguments( ) != null) {
+//            index = getArguments( ).getInt( ARG_SECTION_NUMBER );
+//        }
+//        pageViewModel.setIndex( index );
     }
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate( R.layout.fragment_all_tasks, container, false );
-        final TextView textView = root.findViewById( R.id.alltasks_text );
-        pageViewModel.getText( ).observe( this, new Observer<String>( ) {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText( s );
-            }
-        } );
-        return root;
+        View view = inflater.inflate( R.layout.fragment_all_tasks, container, false );
+        allList = (ListView) view.findViewById(R.id.allTaskItems);
+        allList.setAdapter( adapter );
+        return view;
     }
 }

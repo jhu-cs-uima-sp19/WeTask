@@ -1,4 +1,4 @@
-package com.example.wetask.main;
+package com.example.wetask;
 
 import android.content.Context;
 
@@ -38,16 +38,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         //return AllTasksFragment.newInstance( position + 1 );
-
         switch(position) {
             case 0:
-                return MyTasksFragment.newInstance(passed_adapters.get(position));
+                return MyTasksFragment.newInstance(passed_adapters.get(0));
             case 1:
-                return AllTasksFragment.newInstance(2);
+                return AllTasksFragment.newInstance(passed_adapters.get(1));
             case 2:
-                return ArchiveFragment.newInstance("", "");
+                return ArchiveFragment.newInstance(passed_adapters.get(2));
             default:
-                return AllTasksFragment.newInstance(2);
+                return null;
         }
     }
 

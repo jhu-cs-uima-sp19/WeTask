@@ -39,14 +39,6 @@ public class MyTasksFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyTasksFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static MyTasksFragment newInstance(TaskItemAdapter aa) {
         MyTasksFragment fragment = new MyTasksFragment( );
@@ -74,9 +66,14 @@ public class MyTasksFragment extends Fragment {
         myList = (ListView) view.findViewById(R.id.myTaskItems);
         myList.setAdapter( adapter );
         return view;
-    }
-
-    public void setTaskAdapter(TaskItemAdapter adapter) {
-        myList.setAdapter(adapter);
+        /*  taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
+                        .setAction("Action", null).show();
+                if(position == 0){
+                    String id_new = newItem.getTaskId();
+                    mDatabase.child("tasks").child(id_new).setValue(newItem);
+                }
+            }*/
     }
 }
