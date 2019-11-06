@@ -159,9 +159,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-        TaskItem my_item = new TaskItem("mytask", "1");
-        TaskItem all_item = new TaskItem("alltask", "2");
-        TaskItem archive_item = new TaskItem("archive", "3");
+        TaskItem my_item = new TaskItem("mytask", "1", "");
+        TaskItem all_item = new TaskItem("alltask", "2", "");
+        TaskItem archive_item = new TaskItem("archive", "3", "");
 
         myTasks.add(my_item);
         myTasks.add(my_item);
