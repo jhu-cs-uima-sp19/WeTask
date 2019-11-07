@@ -68,12 +68,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //new stuff
         addMenuItemInNavMenuDrawer(groupNames);
-        Menu menu = navigationView.getMenu();
-        //was going to use this to programmatically rename but that's only useful for rn
-        //next thing: refactor so all menu items are programmatically added (how it will have to be!)
-        //and then programmatically navigate appropriately when clicked
 
         /** Dummy data for testing layouts--make sure to replace this with real data pulled from database!**/
         masterList = makeDummyData();
@@ -119,34 +114,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     //@Override
-    public boolean onNavigationItemSelected(MenuItem item) {//Could make a list of lists of 3 lists of taskItems(3 for personal, all, and archive).
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        //TODO: add ability to switch groups back in--will need to get programmatically added
-        //items by index and set adapter, toolbar title, etc by index
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
-/*        if (id == R.id.group1) {
-            //taskList.setAdapter(aa);
-            SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-            SharedPreferences.Editor edit = sharedPref.edit();
-            edit.putInt("group", 0); //MAGIC NUMBER--figure out how to get index, collapse these
-            edit.commit(); //we'll need to do that when we programmatically add groups to nav bar anyway
+        for (int i = 0; i < groupNames.size(); i++) {
+            if (item == groupMenu.getItem(i)) {
+                //set correct masterList based on new group
+                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putInt("group", i);
+                edit.commit();
 
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle(groupNames.get(0));
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setTitle(groupNames.get(i));
+            }
         }
-
-        if (id == R.id.group2) {
-            //taskList.setAdapter(bb);
-            SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-            SharedPreferences.Editor edit = sharedPref.edit();
-            edit.putInt("group", 1); //MAGIC NUMBER!
-            edit.commit();
-
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle(groupNames.get(1));
-        }*/
 
         if (id == R.id.nav_add_group) {
             Intent intent = new Intent(MainActivity.this, GroupSettings.class);
@@ -215,15 +201,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     /*Programmatically adds groups to nav drawer.**/
     private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-
         Menu menu = navView.getMenu();
         Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
 
-        //TODO: understand order so can add these above add group option
         for (int i = 0; i < groupNames.size(); i++) {
-            submenu.add(groupNames.get(i));
+            submenu.add(NONE, NONE, 0, groupNames.get(i));
         }
-
         navView.invalidate();
     }
 }
