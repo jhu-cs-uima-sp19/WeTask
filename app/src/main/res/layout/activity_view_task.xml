@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#26E8A7"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/Theme.AppCompat.Light" />
 
 
     <TextView
@@ -75,17 +75,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintTop_toBottomOf="@+id/comments" />
 
-    <ImageView
-        android:id="@+id/deleteTask"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/baseline_delete_black_18dp"/>
-    <!--TODO: Change this to be an ImageButton when the functions are developed -->
 
-    <ImageView
-        android:id="@+id/editTask"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/baseline_edit_black_18dp"/>
-    <!--TODO: Change this to be an ImageButton when the functions are developed -->
 </LinearLayout>
