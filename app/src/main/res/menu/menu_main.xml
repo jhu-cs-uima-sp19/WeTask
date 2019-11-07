@@ -4,14 +4,15 @@ xmlns:tools="http://schemas.android.com/tools"
 tools:showIn="navigation_view"
     tools:context="com.example.PiggyBankApp.MainActivity" >
 
-    <item android:title="Groups">
-        <menu>
-            <item
+    <item android:title="Groups"
+        android:id="@+id/groupSubmenuHolder">
+        <menu android:id = "@+id/groupSubmenu">
+<!--            <item
                 android:id="@+id/group1"
                 android:title="Group 1"/>
             <item
                 android:id="@+id/group2"
-                android:title="Group 2"/>
+                android:title="Group 2"/>-->
             <item
                 android:id="@+id/nav_add_group"
                 android:title="Add Group"/>
@@ -19,7 +20,7 @@ tools:showIn="navigation_view"
     </item>
 
     <item android:title="Other">
-        <menu>
+        <menu android:id="@+id/actionSubmenu">
             <item
                 android:id="@+id/settings"
                 android:title="Settings"/>
