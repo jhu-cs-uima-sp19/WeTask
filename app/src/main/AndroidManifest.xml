@@ -17,10 +17,11 @@
         <activity android:name=".GroupSettings" />
         <activity
             android:name=".Login"
-            android:label="@string/app_name"/>
+            android:label="@string/Login"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

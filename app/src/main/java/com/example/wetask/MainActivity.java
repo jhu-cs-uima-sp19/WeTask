@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
+        int currGroup = sharedPref.getInt("group", 1);
+        //TODO: use currGroup to send correct adapter to SecPagAd for current group
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //TODO: get actual group name based on group id
+        String title = "Group " + currGroup;
+        toolbar.setTitle(title);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //CoordinatorLayout drawer = (CoordinatorLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -56,9 +64,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         /** Dummy data for testing layouts--make sure to replace this with real data pulled from database!**/
         masterList = makeDummyData();
-
-        int currGroup = sharedPref.getInt("group", 1);
-        //TODO: use currGroup to send correct adapter to SecPagAd for current group
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);
         ViewPager viewPager = findViewById( R.id.view_pager );
@@ -137,6 +142,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Can't log you out right now", Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+        if (id == R.id.login) {
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

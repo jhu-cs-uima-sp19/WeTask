@@ -29,7 +29,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="#26E8A7"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_editor_absoluteX="0dp"/>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
