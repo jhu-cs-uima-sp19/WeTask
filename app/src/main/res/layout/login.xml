@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".Login">
+    <!--TODO: Get app title to appear on the page -->
+
+
+    <!--        app:popupTheme="@style/AppTheme.PopupOverlay"-->
 
 
     <androidx.appcompat.widget.Toolbar
@@ -13,11 +18,10 @@
         android:background="#26E8A7"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
-<!--        app:popupTheme="@style/AppTheme.PopupOverlay"-->
 
     <EditText
         android:id="@+id/emailUsername"
-        android:layout_width="319dp"
+        android:layout_width="300dp"
         android:layout_height="46dp"
         android:layout_marginTop="140dp"
         android:layout_weight="1"
@@ -29,9 +33,9 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
-        android:id="@+id/editText3"
-        android:layout_width="317dp"
-        android:layout_height="38dp"
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="46dp"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPassword"
@@ -42,34 +46,32 @@
         app:layout_constraintTop_toBottomOf="@+id/emailUsername" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="306dp"
+        android:id="@+id/login"
+        android:layout_width="300dp"
         android:layout_height="46dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="32dp"
+        android:ems="10"
         android:background="@color/colorPrimary"
         android:contentDescription="@string/login"
         android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="307dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="156dp"
+        android:id="@+id/signup"
+        android:layout_width="300dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
         android:contentDescription="@string/sign_up"
         android:text="@string/sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
