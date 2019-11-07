@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         int id = item.getItemId();
 
         //TODO: add ability to switch groups back in--will need to get programmatically added
-        //items by index and do these things by index too
+        //items by index and set adapter, toolbar title, etc by index
 
 /*        if (id == R.id.group1) {
             //taskList.setAdapter(aa);
