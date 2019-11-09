@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.Menu.NONE;
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //TODO: get actual names of groups this person is in from database
         groupNames = new ArrayList<String>();
         groupNames.add("Apartment 101"); //dummy data
-        groupNames.add("ASPCA Volunteers"); //dummy data
+        groupNames.add("ASPCA Volunteers"); //dummy
 
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
