@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = getIntent();
-        userId = i.getStringExtra("userId");
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        userId = sharedPref.getString("userID", "N/A");
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groupNames.add("Apartment 101"); //dummy data
         groupNames.add("ASPCA Volunteers"); //dummy
 
-        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
         int currGroup = sharedPref.getInt("group", 0);
         //TODO: use currGroup to send correct adapter to SecPagAd for current group
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         addMenuItemInNavMenuDrawer(groupNames);
 
         /** Dummy data for testing layouts--make sure to replace this with real data pulled from database!**/
+
         masterList = makeDummyData();
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);

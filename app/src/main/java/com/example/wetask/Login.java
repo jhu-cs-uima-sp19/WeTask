@@ -68,6 +68,10 @@ public class Login extends AppCompatActivity {
                 if(dataSnapshot.child(username).exists()){
                     UserObject login = dataSnapshot.child(username).getValue(UserObject.class);
                     if(login.getPassword().equals(password)){
+                        SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
+                        SharedPreferences.Editor edit = sharedPref.edit();
+                        edit.putString("userID", username);
+                        edit.commit();
                         Intent main = new Intent(Login.this, MainActivity.class);
                         startActivity(main);
                     }else{
@@ -91,7 +95,7 @@ public class Login extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.child(username).exists()) {
                     ArrayList<String> test_list = new ArrayList<String>();
-                    UserObject test_user = new UserObject("simon", test_list, password);
+                    UserObject test_user = new UserObject(username, test_list, password);
                     users.child(username).setValue(test_user);
                     Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
                     Intent main = new Intent(Login.this, MainActivity.class);
