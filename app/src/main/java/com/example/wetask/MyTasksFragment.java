@@ -2,6 +2,7 @@ package com.example.wetask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,6 +74,18 @@ public class MyTasksFragment extends Fragment {
         myList.setAdapter( adapter );
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //get task at position from database, put data in shared prefs from there
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putString("title", "");
+                edit.putString("created", "");
+                edit.putString("deadline", "");
+                edit.putString("assigner", "");
+                edit.putString("assignee", "");
+                edit.putString("comments", "");
+                edit.commit();
+
+
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
                 //put extra with task id (so know to show details)
                 intent.putExtra("TASK_ID", id); //this isn't quite right yet
