@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/edit_task"
-        android:orderInCategory="100"
-        android:title="Edit Task"
-        app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="activity_view_task"
+    tools:context="com.example.wetask.MainActivity"
 
-    <item
-        android:id="@+id/delete_task"
-        android:orderInCategory="100"
-        android:title="Delete Task"
-        app:showAsAction="never" />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <menu android:id="@+id/view_task_menu">
+        <item
+            android:id="@+id/edit_task"
+            android:orderInCategory="100"
+            android:title="Edit Task"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/delete_task"
+            android:orderInCategory="100"
+            android:title="Delete Task"
+            app:showAsAction="never" />
+    </menu>
+
+
 </menu>
