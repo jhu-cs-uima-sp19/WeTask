@@ -8,7 +8,7 @@ tools:showIn="navigation_view">
         <menu android:id = "@+id/groupSubmenu">
             <item
                 android:id="@+id/nav_add_group"
-                android:title="Add Group"
+                android:title="@string/nav_add_group"
                 android:orderInCategory="1"/>
         </menu>
     </item>
@@ -17,13 +17,10 @@ tools:showIn="navigation_view">
         <menu android:id="@+id/actionSubmenu">
             <item
                 android:id="@+id/settings"
-                android:title="Settings"/>
+                android:title="@string/nav_settings"/>
             <item
                 android:id="@+id/logout"
-                android:title="Logout"/>
-            <item
-                android:id="@+id/login"
-                android:title="Login (for testing)" />
+                android:title="@string/nav_logout"/>
         </menu>
     </item>
 
