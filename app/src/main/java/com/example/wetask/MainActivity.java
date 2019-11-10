@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private DatabaseReference groups, tasks, users;
     private String userId;
     private String groupId = "g100"; // need to figure out how to get group id
-    private ArrayList<TaskItem> myTasks;
-    private ArrayList<TaskItem> allTasks;
+    static ArrayList<TaskItem> myTasks;
+    static ArrayList<TaskItem> allTasks;
     private ArrayList<TaskItem> archiveTasks;
     private TaskItemAdapter myTaskAdapter;
     private TaskItemAdapter allTaskAdapter;
@@ -330,6 +330,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         mRef.child("users").child(SIMON.getUserID()).setValue(SIMON);
         mRef.child("users").child(JACOB.getUserID()).setValue(JACOB);
 
+    }
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
+        allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
     }
 
 }
