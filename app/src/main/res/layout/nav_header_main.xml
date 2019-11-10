@@ -14,11 +14,11 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
-        android:id="@+id/nav_balance"
+        android:id="@+id/profile_info"
         android:layout_width="match_parent"
         android:layout_height="29dp"
         android:layout_marginTop="4dp"
-        android:text="Profile Pic Stuff Up Here"
+        android:text="Profile Pic and Name"
         android:textColor="@android:color/black"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"

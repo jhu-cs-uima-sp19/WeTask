@@ -19,9 +19,9 @@
     <string name="complete">COMPLETE</string>
 
     <string name="comments">Comments:</string>
-    <string name="assigned_to">Assigned To</string>
-    <string name="assigned_by">Assigned By</string>
-    <string name="created">Created</string>
+    <string name="assigned_to">Assigned To:</string>
+    <string name="assigned_by">Assigned By:</string>
+    <string name="created">Created By:</string>
     <string name="deadline">Deadline</string>
     <string name="task_title_goes_here">TASK TITLE GOES HERE</string>
 </resources>
