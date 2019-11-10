@@ -13,8 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -75,6 +81,44 @@ public class MyTasksFragment extends Fragment {
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //get task at position from database, put data in shared prefs from there
+
+                DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
+                users.orderByValue().equalTo(adapter.getTaskIdAtPos(position)).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                        System.out.println(dataSnapshot.getKey());
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "Can't log you out right now", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey){
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "on child changed", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    public void onChildRemoved(DataSnapshot dataSnapshot){
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "on child removed", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey){
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "on child moved", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    public void onCancelled(DatabaseError de) {
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                                "on cancelled", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                    // ...
+                });
+
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
                 edit.putString("title", "");
@@ -83,12 +127,10 @@ public class MyTasksFragment extends Fragment {
                 edit.putString("assigner", "");
                 edit.putString("assignee", "");
                 edit.putString("comments", "");
+                edit.putString("taskId", "");
                 edit.commit();
 
-
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
-                //put extra with task id (so know to show details)
-                intent.putExtra("TASK_ID", id); //this isn't quite right yet
                 startActivity(intent);
             }
         });

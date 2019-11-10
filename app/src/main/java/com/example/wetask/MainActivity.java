@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
-                if(task.getUser().equals(userId)) {
+                if(task.getAssignedTo().equals(userId)) {
                     myTasks.add(task);
                 }
             }
@@ -289,9 +289,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     private void make_dummy_database(){
-        TaskItem task_1 = new TaskItem("wash_dishes", "t100", "g100", "simon");
-        TaskItem task_2 = new TaskItem("take_out_trash", "t101", "g100", "simon");
-        TaskItem task_3 = new TaskItem("change_sheets", "t102", "g100", "jacob");
+        TaskItem task_1 = new TaskItem("Wash dishes", "t100", "g100", "simon");
+        TaskItem task_2 = new TaskItem("Take out trash", "t101", "g100", "simon");
+        TaskItem task_3 = new TaskItem("Change Sheets", "t102", "g100", "jacob");
 
         ArrayList<String> simon_group = new ArrayList<String>();
         ArrayList<String> jacob_group = new ArrayList<String>();

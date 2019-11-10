@@ -50,5 +50,9 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         return taskView;
     }
 
+    public String getTaskIdAtPos(int pos) {
+        return getItem(pos).getTaskId();
+    }
+
 
 }

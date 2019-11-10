@@ -10,7 +10,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,7 +39,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         groupNames.add("Apartment 101"); //dummy data
         groupNames.add("ASPCA Volunteers"); //dummy data
 
-        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
         toolbar.setTitle(currGroupStr);
 
@@ -62,12 +66,19 @@ public class ViewTaskActivity extends AppCompatActivity {
         TextView comments = findViewById(R.id.comments);
         String commentStr = "Comments: " + sharedPref.getString("comments", " ");
         comments.setText(commentStr);
-    }
 
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        finish();
-//        return true;
-//    }
+        Button complete = findViewById(R.id.complete);
+        complete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v)
+            {
+                sharedPref.getString("taskId", "");
+                TaskItem task = new TaskItem(); //get that task from database;
+                task.complete();
+                //put it back in database
+                finish();
+            }
+        });
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -78,13 +89,21 @@ public class ViewTaskActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.edit_task:
                 Intent intent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
-                //put extra with current group name (editing not creating)
+                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putString("mode", "edit");
+                edit.commit();
                 startActivity(intent);
                 return true;
 
             case R.id.delete_task:
+                return true;
+
+            case android.R.id.home:
+                finish();
 
             default:
                 // If we got here, the user's action was not recognized.
