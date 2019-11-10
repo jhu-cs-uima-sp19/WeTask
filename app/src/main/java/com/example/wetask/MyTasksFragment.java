@@ -85,41 +85,6 @@ public class MyTasksFragment extends Fragment {
                 //get task at position from database, put data in shared prefs from there
 
                 DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
-                users.orderByValue().equalTo(adapter.getTaskIdAtPos(position)).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                        System.out.println(dataSnapshot.getKey());
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "Can't log you out right now", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey){
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "on child changed", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    public void onChildRemoved(DataSnapshot dataSnapshot){
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "on child removed", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey){
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "on child moved", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    public void onCancelled(DatabaseError de) {
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                                "on cancelled", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-
-                    // ...
-                });
 
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
