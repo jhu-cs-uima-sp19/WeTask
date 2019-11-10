@@ -123,7 +123,8 @@
         android:contentDescription="@string/confirm_changes"
         android:text="@string/confirm_changes"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="55dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/comments_detail"

@@ -69,7 +69,6 @@ public class Login extends AppCompatActivity {
                     UserObject login = dataSnapshot.child(username).getValue(UserObject.class);
                     if(login.getPassword().equals(password)){
                         Intent main = new Intent(Login.this, MainActivity.class);
-                        main.putExtra("userId", username);
                         startActivity(main);
                     }else{
                         Toast.makeText(Login.this, "Wrong username/password combination", Toast.LENGTH_LONG).show();
@@ -90,10 +89,16 @@ public class Login extends AppCompatActivity {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> test_list = new ArrayList<String>();
-                UserObject test_user = new UserObject("simon", test_list, password);
-                users.child(username).setValue(test_user);
-                Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
+                if(!dataSnapshot.child(username).exists()) {
+                    ArrayList<String> test_list = new ArrayList<String>();
+                    UserObject test_user = new UserObject("simon", test_list, password);
+                    users.child(username).setValue(test_user);
+                    Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
+                    Intent main = new Intent(Login.this, MainActivity.class);
+                    startActivity(main);
+                } else {
+                    Toast.makeText(Login.this, "This username already exists", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
