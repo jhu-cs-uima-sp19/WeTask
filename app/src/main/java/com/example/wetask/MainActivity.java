@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private ArrayList<TaskItemAdapter> masterList;
     private ArrayList<String> groupNames;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
         setSupportActionBar(toolbar);
 
         //TODO: get actual names of groups this person is in from database
@@ -79,6 +83,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
+                startActivity(intent);
+            }
+        });
+
         addMenuItemInNavMenuDrawer(groupNames);
 
         /** Dummy data for testing layouts--make sure to replace this with real data pulled from database!**/
@@ -90,6 +102,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -171,6 +184,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

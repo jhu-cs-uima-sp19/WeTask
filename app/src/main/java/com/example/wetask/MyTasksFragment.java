@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -94,4 +96,5 @@ public class MyTasksFragment extends Fragment {
         });
         return view;
     }
+
 }
