@@ -193,8 +193,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
 
         updateMyTasks();
-        allTasks.add(all_item);
-        allTasks.add(all_item);
+        updateAllTasks();
         archiveTasks.add(archive_item);
 
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
@@ -218,6 +217,24 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             submenu.add(NONE, NONE, 0, groupNames.get(i));
         }
         navView.invalidate();
+    }
+
+    private void updateAllTasks(){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                ArrayList<String> tasks = group.getGroupTaskList();
+                for(int i = 0; i < tasks.size(); i++){
+                    allTask_add(tasks.get(i));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void updateMyTasks(){
@@ -247,6 +264,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 if(task.getUser().equals(userId)) {
                     myTasks.add(task);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void allTask_add(final String taskId){
+        tasks.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
+                allTasks.add(task);
             }
 
             @Override
