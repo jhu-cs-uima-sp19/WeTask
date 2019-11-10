@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login">
+    <!--TODO: Get app title to appear on the page -->
+
+
+    <!--        app:popupTheme="@style/AppTheme.PopupOverlay"-->
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,11 +26,12 @@
         android:layout_marginTop="140dp"
         android:layout_weight="1"
         android:ems="10"
+        android:hint="Username or Email"
         android:inputType="textPersonName"
-        android:text="Username or Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:text="Username or Email" />
 
     <EditText
         android:id="@+id/password"
@@ -33,12 +39,13 @@
         android:layout_height="46dp"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:text="Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.37"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/emailUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/emailUsername"
+        tools:text="Password" />
 
     <Button
         android:id="@+id/login"
