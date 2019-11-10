@@ -14,11 +14,10 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/baseline_account_circle_black_18dp"
         app:layout_constraintBottom_toTopOf="@+id/profile_info"
-        app:layout_constraintEnd_toEndOf="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
