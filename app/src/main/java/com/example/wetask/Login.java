@@ -69,6 +69,7 @@ public class Login extends AppCompatActivity {
                     UserObject login = dataSnapshot.child(username).getValue(UserObject.class);
                     if(login.getPassword().equals(password)){
                         Intent main = new Intent(Login.this, MainActivity.class);
+                        main.putExtra("userId", username);
                         startActivity(main);
                     }else{
                         Toast.makeText(Login.this, "Wrong username/password combination", Toast.LENGTH_LONG).show();
@@ -89,7 +90,7 @@ public class Login extends AppCompatActivity {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> test_list = new ArrayList<String>();
+                ArrayList<String> test_list = new ArrayList<String>();
                 UserObject test_user = new UserObject("simon", test_list, password);
                 users.child(username).setValue(test_user);
                 Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
