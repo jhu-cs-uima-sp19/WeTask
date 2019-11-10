@@ -35,6 +35,9 @@ public class EditTaskActivity extends AppCompatActivity {
         TextView create = findViewById(R.id.create);
         String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
         create.setText(createdBy);
+
+        //add on click listener to confirm changes which either creates task or changes task (and pushes
+        //to database) depending on sharedpref mode attribute being edit or create
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

@@ -44,7 +44,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         taskTitle.setText(title);
 
         TextView create = findViewById(R.id.create);
-        String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
+        String createdBy = "Created: " + sharedPref.getString("created", "1/1/2020");
         create.setText(createdBy);
 
         TextView deadline = findViewById(R.id.deadline);
