@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
