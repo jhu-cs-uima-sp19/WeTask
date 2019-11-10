@@ -13,10 +13,11 @@ public class TaskItem {
     private String groupID;
     private String taskId;
 
-    TaskItem(String item_name, String tID, String gID) { //Constructor currently empty, do stuff bout this
+    TaskItem(String item_name, String tID, String gID, String user) {
         this.name = item_name;
         this.taskId = tID;
         this.groupID = gID;
+        this.user = user;
     }
 
     TaskItem(){

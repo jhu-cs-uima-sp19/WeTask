@@ -1,5 +1,6 @@
 package com.example.wetask;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,12 +14,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +32,9 @@ import static android.view.Menu.NONE;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DatabaseReference mDatabase;
-
+    private DatabaseReference groups, tasks, users;
+    private String userId;
+    private String groupId = "g100"; // need to figure out how to get group id
     private ArrayList<TaskItem> myTasks;
     private ArrayList<TaskItem> allTasks;
     private ArrayList<TaskItem> archiveTasks;
@@ -41,7 +47,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        Intent i = getIntent();
+        userId = i.getStringExtra("userId");
+        groups = FirebaseDatabase.getInstance().getReference("groups");
+        tasks = FirebaseDatabase.getInstance().getReference("tasks");
+        users = FirebaseDatabase.getInstance().getReference("users");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -177,13 +187,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-        TaskItem my_item = new TaskItem("mytask", "1", "");
-        TaskItem all_item = new TaskItem("alltask", "2", "");
-        TaskItem archive_item = new TaskItem("archive", "3", "");
+        make_dummy_database();
+        TaskItem my_item = new TaskItem("mytask", "1", "", "simon");
+        TaskItem all_item = new TaskItem("alltask", "2", "", "simon");
+        TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
 
-        myTasks.add(my_item);
-        myTasks.add(my_item);
-        myTasks.add(my_item);
+        updateMyTasks();
         allTasks.add(all_item);
         allTasks.add(all_item);
         archiveTasks.add(archive_item);
@@ -210,4 +219,71 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
         navView.invalidate();
     }
+
+    private void updateMyTasks(){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                ArrayList<String> tasks = group.getGroupTaskList();
+                for(int i = 0; i < tasks.size(); i++){
+                    myTask_add(tasks.get(i), userId);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void myTask_add(final String taskId, final String userId){
+        tasks.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
+                if(task.getUser().equals(userId)) {
+                    myTasks.add(task);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void make_dummy_database(){
+        TaskItem task_1 = new TaskItem("wash_dishes", "t100", "g100", "simon");
+        TaskItem task_2 = new TaskItem("take_out_trash", "t101", "g100", "simon");
+        TaskItem task_3 = new TaskItem("change_sheets", "t102", "g100", "jacob");
+
+        ArrayList<String> simon_group = new ArrayList<String>();
+        ArrayList<String> jacob_group = new ArrayList<String>();
+        simon_group.add("g100");
+        jacob_group.add("g100");
+
+        UserObject SIMON = new UserObject("simon", simon_group, "123456");
+        UserObject JACOB = new UserObject("jacob", jacob_group, "123456");
+
+        GroupObject APARTMENT = new GroupObject("g100", "Apartment101");
+        APARTMENT.addUser(SIMON.getUserID());
+        APARTMENT.addUser(JACOB.getUserID());
+        APARTMENT.addGroupTask(task_1.getTaskId());
+        APARTMENT.addGroupTask(task_2.getTaskId());
+        APARTMENT.addGroupTask(task_3.getTaskId());
+
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        groups.child(APARTMENT.getGroupID()).setValue(APARTMENT);
+        mRef.child("tasks").child(task_1.getTaskId()).setValue(task_1);
+        mRef.child("tasks").child(task_2.getTaskId()).setValue(task_2);
+        mRef.child("tasks").child(task_3.getTaskId()).setValue(task_3);
+        mRef.child("users").child(SIMON.getUserID()).setValue(SIMON);
+        mRef.child("users").child(JACOB.getUserID()).setValue(JACOB);
+
+    }
+
 }
