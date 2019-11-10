@@ -22,10 +22,10 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.223"
+        app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintVertical_bias="0.112" />
 
     <TextView
         android:id="@+id/wifi_settings"
@@ -81,16 +81,16 @@
 
     <TextView
         android:id="@+id/group2_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="91dp"
+        android:layout_height="30dp"
         android:text="Device"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
+        app:layout_constraintHorizontal_bias="0.102"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576" />
+        app:layout_constraintVertical_bias="0.571" />
 
     <TextView
         android:id="@+id/display_settings"
@@ -132,51 +132,81 @@
         app:layout_constraintVertical_bias="0.857" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/apps_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_android_black_18dp"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="597dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/apps_settings"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sound_icon"
+        app:layout_constraintVertical_bias="0.257"
+        app:srcCompat="@drawable/baseline_android_black_18dp" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/bluetooth_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_bluetooth_black_18dp"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="192dp" />
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toStartOf="@+id/bluetooth_settings"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wifi_icon"
+        app:srcCompat="@drawable/baseline_bluetooth_black_18dp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/Display_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_brightness_medium_black_18dp"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="458dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/display_settings"
+        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group2_settings"
+        app:srcCompat="@drawable/baseline_brightness_medium_black_18dp" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/data_usage_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_data_usage_black_18dp"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="269dp" />
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toStartOf="@+id/Data_using_settings"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_icon"
+        app:srcCompat="@drawable/baseline_data_usage_black_18dp" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/more_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_more_horiz_black_18dp"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="333dp" />
+        android:layout_marginStart="36dp"
+        app:layout_constraintBottom_toTopOf="@+id/group2_settings"
+        app:layout_constraintEnd_toStartOf="@+id/more_settings"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/data_usage_icon"
+        app:layout_constraintVertical_bias="0.474"
+        app:srcCompat="@drawable/baseline_more_horiz_black_18dp" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/wifi_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/baseline_wifi_black_18dp"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="123dp" />
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="128dp" />
+
+    <ImageView
+        android:id="@+id/sound_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toStartOf="@+id/sound_notification_settings"
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Display_icon"
+        app:srcCompat="@drawable/baseline_notification_important_black_18dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
