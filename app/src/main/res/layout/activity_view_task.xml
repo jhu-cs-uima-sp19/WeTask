@@ -19,9 +19,9 @@
 
 
     <TextView
-        android:id="@+id/taskTile"
-        android:layout_width="221dp"
-        android:layout_height="20dp"
+        android:id="@+id/taskTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="@string/task_title_goes_here"
@@ -33,21 +33,21 @@
 
     <TextView
         android:id="@+id/create"
-        android:layout_width="82dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/created"
         app:layout_constraintBottom_toTopOf="@+id/deadline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTile" />
+        app:layout_constraintTop_toBottomOf="@+id/taskTitle" />
 
     <TextView
         android:id="@+id/deadline"
-        android:layout_width="79dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/deadline"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,10 +55,10 @@
 
     <TextView
         android:id="@+id/assignedBy"
-        android:layout_width="93dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/assigned_by"
         app:layout_constraintBottom_toTopOf="@+id/assignedTo"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,10 +66,10 @@
 
     <TextView
         android:id="@+id/assignedTo"
-        android:layout_width="93dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/assigned_to"
         app:layout_constraintBottom_toTopOf="@+id/comments"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +77,8 @@
 
     <TextView
         android:id="@+id/comments"
-        android:layout_width="87dp"
-        android:layout_height="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="250dp"

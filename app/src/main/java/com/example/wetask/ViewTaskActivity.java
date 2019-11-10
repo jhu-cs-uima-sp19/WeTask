@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,32 @@ public class ViewTaskActivity extends AppCompatActivity {
         groupNames.add("ASPCA Volunteers"); //dummy data
 
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-        int currGroup = sharedPref.getInt("group", 0);
-        toolbar.setTitle(groupNames.get(currGroup));
+        String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
+        toolbar.setTitle(currGroupStr);
+
+        TextView taskTitle = findViewById(R.id.taskTitle);
+        String title = sharedPref.getString("title", "No Title");
+        taskTitle.setText(title);
+
+        TextView create = findViewById(R.id.create);
+        String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
+        create.setText(createdBy);
+
+        TextView deadline = findViewById(R.id.deadline);
+        String deadlineStr = "Deadline: " + sharedPref.getString("deadline", "1/1/2020");
+        deadline.setText(deadlineStr);
+
+        TextView assignedBy = findViewById(R.id.assignedBy);
+        String assigner = "Assigned By: " + sharedPref.getString("assigner", "User Not Found");
+        assignedBy.setText(assigner);
+
+        TextView assignedTo = findViewById(R.id.assignedTo);
+        String assignee = "Assigned To: " + sharedPref.getString("assignee", "User Not Found");
+        assignedTo.setText(assignee);
+
+        TextView comments = findViewById(R.id.comments);
+        String commentStr = "Comments: " + sharedPref.getString("comments", " ");
+        comments.setText(commentStr);
     }
 
 //    public boolean onOptionsItemSelected(MenuItem item){
@@ -54,11 +79,10 @@ public class ViewTaskActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit_task:
-//                Intent intent = new Intent(MainActivity.this, GroupSettings.class);
-//                //put extra with current group name (editing not creating)
-//                startActivity(intent);
-//                return true;
-
+                Intent intent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
+                //put extra with current group name (editing not creating)
+                startActivity(intent);
+                return true;
 
             case R.id.delete_task:
 
