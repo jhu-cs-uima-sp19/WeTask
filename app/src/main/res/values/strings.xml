@@ -2,10 +2,13 @@
     <string name="app_name">WeTask</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_group_settings">Group Settings</string>
+    <string name="title_group_settings">Edit Group</string>
     <string name="title_app_settings">App Settings</string>
     <string name="Login">Login</string>
 
+    <string name="nav_settings">Settings</string>
+    <string name="nav_add_group">+ Add Group</string>
+    <string name="nav_logout">Logout</string>
 
     <string name="group_name">Default Group</string>
 
@@ -21,7 +24,9 @@
     <string name="comments">Comments:</string>
     <string name="assigned_to">Assigned To:</string>
     <string name="assigned_by">Assigned By:</string>
-    <string name="created">Created By:</string>
-    <string name="deadline">Deadline</string>
-    <string name="task_title_goes_here">TASK TITLE GOES HERE</string>
+    <string name="created">Created:</string>
+    <string name="deadline">Deadline:</string>
+    <string name="task_title_goes_here">TITLE</string>
+    <string name="confirm_changes">CONFIRM CHANGES</string>
+    <string name="sample_date">MM/DD/YYYY</string>
 </resources>
