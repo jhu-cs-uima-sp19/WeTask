@@ -2,7 +2,7 @@
     <string name="app_name">WeTask</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="title_group_settings">Group Settings</string>
+    <string name="title_group_settings">Edit Group</string>
     <string name="title_app_settings">App Settings</string>
     <string name="Login">Login</string>
 
