@@ -12,6 +12,7 @@ public class TaskItem {
     private String notes;
     private String groupID;
     private String taskId;
+    private boolean finished = false;
 
     TaskItem(String item_name, String tID, String gID, String user) {
         this.name = item_name;
@@ -33,5 +34,7 @@ public class TaskItem {
     public void setDeadline(String newDL) { this.deadline = newDL; }
     public void setNotes(String newNotes) { this.notes = newNotes; }
     public void setTaskName(String newName) { this.name = newName;}
+    public void setFinished(){this.finished = true;}
+    public boolean ifFinished(){return this.finished;}
 
 }
