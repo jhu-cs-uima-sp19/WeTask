@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class ViewTaskActivity extends AppCompatActivity {
@@ -88,17 +91,19 @@ public class ViewTaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         switch (item.getItemId()) {
-
             case R.id.edit_task:
                 Intent intent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
-                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
                 intent.putExtra("if_new", 0);
                 intent.putExtra("taskID", sharedPref.getString("taskId", ""));
                 startActivity(intent);
                 return true;
 
             case R.id.delete_task:
+                DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
+                tasks.child(sharedPref.getString("taskId", "")).removeValue();
+                finish();
                 return true;
 
             case android.R.id.home:

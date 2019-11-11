@@ -30,23 +30,27 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         LinearLayout taskView;
         TaskItem tk = getItem(position);
 
+
         if (convertView == null) {
-            taskView = new LinearLayout(getContext());
+            taskView = new LinearLayout( getContext( ) );
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
-            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
-            vi.inflate(resource, taskView, true);
+            LayoutInflater vi = (LayoutInflater) getContext( ).getSystemService( inflater );
+            vi.inflate( resource, taskView, true );
         } else {
             taskView = (LinearLayout) convertView;
         }
 
-        TextView typeText = (TextView) taskView.findViewById(R.id.transaction_text);
-        TextView dateText = (TextView) taskView.findViewById(R.id.date_text);
-        TextView amountText = (TextView) taskView.findViewById(R.id.amount_view);
+        if (tk != null) {
 
-        amountText.setText(items.get(position).getName());
-        //amountText.setText("hi2");
-        dateText.setText("hi");
-        typeText.setText("hi");
+            TextView typeText = (TextView) taskView.findViewById( R.id.transaction_text );
+            TextView dateText = (TextView) taskView.findViewById( R.id.date_text );
+            TextView amountText = (TextView) taskView.findViewById( R.id.amount_view );
+
+            amountText.setText( items.get( position ).getName( ) );
+            //amountText.setText("hi2");
+            dateText.setText( "hi" );
+            typeText.setText( "hi" );
+        }
 
         return taskView;
     }

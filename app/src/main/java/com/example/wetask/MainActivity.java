@@ -273,10 +273,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
-                if(task.getAssignedTo().equals(userId)) {
-                    myTasks.add(task);
+                if (task != null) {
+                    if (task.getAssignedTo( ).equals( userId )) {
+                        myTasks.add( task );
+                    }
+                    myTaskAdapter.notifyDataSetChanged( );
                 }
-                myTaskAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -291,8 +293,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
-                allTasks.add(task);
-                allTaskAdapter.notifyDataSetChanged();
+                if (task != null) {
+                    allTasks.add( task );
+                    allTaskAdapter.notifyDataSetChanged( );
+                }
             }
 
             @Override
@@ -336,7 +340,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     public void onResume(){
         super.onResume();
-        updateAllTasks();
         //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
         masterList.set(0, myTaskAdapter);
