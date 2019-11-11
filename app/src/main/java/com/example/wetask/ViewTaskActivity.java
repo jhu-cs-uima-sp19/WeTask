@@ -93,9 +93,8 @@ public class ViewTaskActivity extends AppCompatActivity {
             case R.id.edit_task:
                 Intent intent = new Intent(ViewTaskActivity.this, EditTaskActivity.class);
                 SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putString("mode", "edit");
-                edit.commit();
+                intent.putExtra("if_new", 0);
+                intent.putExtra("taskID", sharedPref.getString("taskId", ""));
                 startActivity(intent);
                 return true;
 

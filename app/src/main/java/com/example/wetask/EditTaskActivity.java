@@ -42,10 +42,7 @@ public class EditTaskActivity extends AppCompatActivity {
         users = FirebaseDatabase.getInstance().getReference("users");
 
         get_current_group();
-        Intent intent = getIntent();
-        if(intent.getIntExtra("if_new", 0) == 0){
-
-        }
+        final Intent intent = getIntent();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,23 +72,44 @@ public class EditTaskActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String c_date = create_date.getText().toString();
-                String ddl = deadline.getText().toString();
-                String com = comment.getText().toString();
-                String name = new_task_name.getText().toString();
+                if((intent.getIntExtra("if_new", 0) == 0)){
+                    String c_date = create_date.getText().toString();
+                    String ddl = deadline.getText().toString();
+                    String com = comment.getText().toString();
+                    String name = new_task_name.getText().toString();
 
-                Random r = new Random();
-                int tag = r.nextInt();
-                String ID = Integer.toString(tag);
+                    Random r = new Random();
+                    int tag = r.nextInt();
+                    String ID = Integer.toString(tag);
 
-                TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
-                tasks.child(new_task.getTaskId()).setValue(new_task);
-                current_group.addGroupTask(new_task.getTaskId());
-                groups.child("g100").setValue(current_group);
-                MainActivity.myTasks.add(new_task);
-                MainActivity.allTasks.add(new_task);
-                Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
-                startActivity(intent);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                    tasks.child(new_task.getTaskId()).setValue(new_task);
+                    current_group.addGroupTask(new_task.getTaskId());
+                    groups.child("g100").setValue(current_group);
+                    MainActivity.myTasks.add(new_task);
+                    MainActivity.allTasks.add(new_task);
+                    Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    String c_date = create_date.getText().toString();
+                    String ddl = deadline.getText().toString();
+                    String com = comment.getText().toString();
+                    String name = new_task_name.getText().toString();
+
+                    Random r = new Random();
+                    int tag = r.nextInt();
+                    String ID = Integer.toString(tag);
+
+                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                    tasks.child(new_task.getTaskId()).setValue(new_task);
+                    current_group.addGroupTask(new_task.getTaskId());
+                    groups.child("g100").setValue(current_group);
+                    MainActivity.myTasks.add(new_task);
+                    MainActivity.allTasks.add(new_task);
+                    Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
         //add on click listener to confirm changes which either creates task or changes task (and pushes
