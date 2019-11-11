@@ -46,7 +46,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
         app:layout_constraintStart_toStartOf="@+id/create"
-        app:layout_constraintTop_toBottomOf="@+id/create"/>
+        app:layout_constraintTop_toBottomOf="@+id/create" />
 
     <TextView
         android:id="@+id/assignedBy"
@@ -81,8 +81,8 @@
 
     <EditText
         android:id="@+id/created_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="148dp"
+        android:layout_height="45dp"
         android:layout_marginStart="150dp"
         android:autofillHints=""
         android:ems="5"
@@ -94,8 +94,8 @@
 
     <EditText
         android:id="@+id/deadline_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="148dp"
+        android:layout_height="50dp"
         android:ems="5"
         android:hint="@string/sample_date"
         android:inputType="date"
@@ -104,8 +104,8 @@
 
     <EditText
         android:id="@+id/assigner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="146dp"
+        android:layout_height="44dp"
         android:ems="5"
         android:hint="@string/enter_user"
         android:inputType="textPersonName"
@@ -114,8 +114,8 @@
 
     <EditText
         android:id="@+id/assignee"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="148dp"
+        android:layout_height="45dp"
         android:ems="5"
         android:hint="@string/enter_user"
         android:inputType="textPersonName"
