@@ -40,17 +40,13 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
             taskView = (LinearLayout) convertView;
         }
 
-        if (tk != null) {
+        TextView titleText = (TextView) taskView.findViewById( R.id.task_title );
+        TextView createdText = (TextView) taskView.findViewById( R.id.created );
+        TextView assignedText = (TextView) taskView.findViewById( R.id.assigned_to );
 
-            TextView typeText = (TextView) taskView.findViewById( R.id.transaction_text );
-            TextView dateText = (TextView) taskView.findViewById( R.id.date_text );
-            TextView amountText = (TextView) taskView.findViewById( R.id.amount_view );
-
-            amountText.setText( items.get( position ).getName( ) );
-            //amountText.setText("hi2");
-            dateText.setText( "hi" );
-            typeText.setText( "hi" );
-        }
+        titleText.setText(items.get(position).getName());
+        createdText.setText(items.get(position).getCreatedDate());
+        assignedText.setText(items.get(position).getAssignedTo());
 
         return taskView;
     }
