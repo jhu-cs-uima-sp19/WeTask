@@ -35,7 +35,7 @@ import static android.view.Menu.NONE;
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseReference groups, tasks, users;
-    private String userId;
+    static String userId;
     private String groupId = "g100"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;

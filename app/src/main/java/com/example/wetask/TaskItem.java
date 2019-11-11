@@ -6,12 +6,12 @@ package com.example.wetask;
 public class TaskItem {
     //Temp Variables
     private String name= "default name";
-    private String createdDate;
-    private String assignedBy;
-    private String assignedTo;
-    private String deadline;
-    private String comments;
-    private String groupID;
+    private String createdDate = " ";
+    private String assignedBy = " ";
+    private String assignedTo = " ";
+    private String deadline = " ";
+    private String comments = " ";
+    private String groupID = " ";
     private String taskId;
     private boolean finished;
 

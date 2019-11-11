@@ -75,6 +75,7 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
+                    String ID = intent.getStringExtra("taskID");
                     String name = taskTitle.getText().toString();
                     String c_date = create_date.getText().toString();
                     String aBy = assigner.getText().toString();
@@ -82,17 +83,24 @@ public class EditTaskActivity extends AppCompatActivity {
                     String ddl = deadline.getText().toString();
                     String com = comment.getText().toString();
 
-                    Random r = new Random();
-                    int tag = r.nextInt();
-                    String ID = Integer.toString(tag);
 
-                    //TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
                     TaskItem new_task = new TaskItem(name, ID, "g100", c_date, aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
-                    current_group.addGroupTask(new_task.getTaskId());
-                    groups.child("g100").setValue(current_group);
-                    MainActivity.myTasks.add(new_task);
-                    MainActivity.allTasks.add(new_task);
+                    for(int i = 1; i < MainActivity.allTasks.size(); i++){
+                        if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
+                            MainActivity.allTasks.remove(i);
+                            MainActivity.allTasks.add(new_task);
+                        }
+                    }
+                    for(int i = 1; i < MainActivity.myTasks.size(); i++){
+                        if(MainActivity.myTasks.get(i).getTaskId().equals(ID)){
+                            MainActivity.myTasks.remove(i);
+                            if(MainActivity.userId.equals(assignee)){
+                                MainActivity.myTasks.add(new_task);
+                            }
+                        }
+                    }
+
                     Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                     startActivity(intent);
 
