@@ -20,7 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:ems="10"
+        android:ems="11"
+        android:textSize="24sp"
         android:hint="@string/add_title"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/create"
@@ -32,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/created"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@id/deadline"
         app:layout_constraintStart_toStartOf="@+id/new_task_name"
         app:layout_constraintTop_toBottomOf="@+id/new_task_name" />
@@ -41,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/deadline"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
         app:layout_constraintStart_toStartOf="@+id/create"
         app:layout_constraintTop_toBottomOf="@+id/create"/>
@@ -50,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/assigned_by"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/assignedTo"
         app:layout_constraintStart_toStartOf="@+id/deadline"
         app:layout_constraintTop_toBottomOf="@+id/deadline" />
@@ -57,6 +61,7 @@
     <TextView
         android:id="@+id/assignedTo"
         android:layout_width="wrap_content"
+        android:textSize="20sp"
         android:layout_height="wrap_content"
         android:text="@string/assigned_to"
         app:layout_constraintBottom_toTopOf="@+id/comments"
@@ -65,6 +70,7 @@
 
     <TextView
         android:id="@+id/comments"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comments"
@@ -73,16 +79,13 @@
         app:layout_constraintTop_toBottomOf="@+id/assignedTo" />
 
 
-
-
-
     <EditText
         android:id="@+id/created_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
         android:autofillHints=""
-        android:ems="10"
+        android:ems="5"
         android:hint="@string/sample_date"
         android:inputType="date"
         app:layout_constraintBaseline_toBaselineOf="@+id/create"
@@ -93,7 +96,7 @@
         android:id="@+id/deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="5"
         android:hint="@string/sample_date"
         android:inputType="date"
         app:layout_constraintBaseline_toBaselineOf="@+id/deadline"
@@ -103,7 +106,7 @@
         android:id="@+id/assigner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="5"
         android:hint="@string/enter_user"
         android:inputType="textPersonName"
         app:layout_constraintBaseline_toBaselineOf="@+id/assignedBy"
@@ -113,7 +116,7 @@
         android:id="@+id/assignee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="5"
         android:hint="@string/enter_user"
         android:inputType="textPersonName"
         app:layout_constraintBaseline_toBaselineOf="@+id/assignedTo"
@@ -123,7 +126,7 @@
         android:id="@+id/comments_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="8"
         android:gravity="start|top"
         android:hint="@string/add_comments"
         android:inputType="textMultiLine"
