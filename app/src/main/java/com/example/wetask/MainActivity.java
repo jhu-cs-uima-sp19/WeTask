@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     private DatabaseReference groups, tasks, users;
     static String userId;
-    private String groupId = "g100"; // need to figure out how to get group id
+    static String groupId = "g100"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     private ArrayList<TaskItem> archiveTasks;
-    private TaskItemAdapter myTaskAdapter;
-    private TaskItemAdapter allTaskAdapter;
+    static TaskItemAdapter myTaskAdapter;
+    static TaskItemAdapter allTaskAdapter;
     private TaskItemAdapter archiveTaskAdapter;
     private ArrayList<TaskItemAdapter> masterList;
     private ArrayList<String> groupNames;
@@ -351,6 +351,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
 
+    }
+
+    public static void notify_changes(){
+        myTaskAdapter.notifyDataSetChanged();
+        allTaskAdapter.notifyDataSetChanged();
     }
 
 }

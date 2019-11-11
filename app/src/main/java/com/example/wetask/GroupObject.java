@@ -25,6 +25,13 @@ public class GroupObject {
     public void addGroupTask(String taskID) {
         this.groupTaskList.add(taskID);
     }
+    public void removeGroupTask(String taskID){
+        for(int i = 0; i < groupTaskList.size(); i++){
+            if(groupTaskList.get(i).equals(taskID)){
+                groupTaskList.remove(i);
+            }
+        }
+    }
 
     public void addUser(String userID) {
         this.userList.add(userID);
