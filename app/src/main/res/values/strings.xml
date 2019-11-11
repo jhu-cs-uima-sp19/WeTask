@@ -27,11 +27,14 @@
     <string name="created">Created:</string>
     <string name="deadline">Deadline:</string>
     <string name="task_title_goes_here">TITLE</string>
-    <string name="confirm_changes">CONFIRM CHANGES</string>
+    <string name="confirm">CONFIRM</string>
     <string name="sample_date">MM/DD/YYYY</string>
     <string name="create_group">CREATE</string>
     <string name="edit_group_name">Group Name</string>
     <string name="add_user">Add a Member (Limit 8)</string>
+    <string name="enter_user">Type Username</string>
+    <string name="add_comments">Add Comments</string>
+    <string name="add_title">Enter Title</string>
 
     <string name="Wireless_and_network">Wireless + Network</string>
     <string name="Wifi">Wi-Fi</string>

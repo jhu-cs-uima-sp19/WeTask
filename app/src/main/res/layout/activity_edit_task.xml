@@ -15,156 +15,134 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
-
-    <TextView
-        android:id="@+id/taskTitle"
-        android:layout_width="221dp"
-        android:layout_height="20dp"
+    <EditText
+        android:id="@+id/new_task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/task_title_goes_here"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:ems="10"
+        android:hint="@string/add_title"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/create"
-        android:layout_width="82dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/created"
-        app:layout_constraintBottom_toTopOf="@+id/deadline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle" />
+        app:layout_constraintBottom_toTopOf="@id/deadline"
+        app:layout_constraintStart_toStartOf="@+id/new_task_name"
+        app:layout_constraintTop_toBottomOf="@+id/new_task_name" />
+
+    <TextView
+        android:id="@+id/deadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/deadline"
+        app:layout_constraintBottom_toTopOf="@+id/assignedBy"
+        app:layout_constraintStart_toStartOf="@+id/create"
+        app:layout_constraintTop_toBottomOf="@+id/create"/>
+
+    <TextView
+        android:id="@+id/assignedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/assigned_by"
+        app:layout_constraintBottom_toTopOf="@+id/assignedTo"
+        app:layout_constraintStart_toStartOf="@+id/deadline"
+        app:layout_constraintTop_toBottomOf="@+id/deadline" />
+
+    <TextView
+        android:id="@+id/assignedTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/assigned_to"
+        app:layout_constraintBottom_toTopOf="@+id/comments"
+        app:layout_constraintStart_toStartOf="@+id/assignedBy"
+        app:layout_constraintTop_toBottomOf="@+id/assignedBy" />
+
+    <TextView
+        android:id="@+id/comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comments"
+        app:layout_constraintBottom_toTopOf="@+id/confirm"
+        app:layout_constraintStart_toStartOf="@+id/assignedTo"
+        app:layout_constraintTop_toBottomOf="@+id/assignedTo" />
+
+
+
+
 
     <EditText
         android:id="@+id/created_date"
-        android:layout_width="147dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="125dp"
-        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/sample_date"
         android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/deadline_date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/create"
-        app:layout_constraintTop_toBottomOf="@+id/taskTitle"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintBaseline_toBaselineOf="@+id/create"
+        app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="o" />
 
     <EditText
         android:id="@+id/deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="25dp"
         android:ems="10"
         android:hint="@string/sample_date"
         android:inputType="date"
-        app:layout_constraintBottom_toTopOf="@+id/assignedBy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/deadline" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/deadline"
+        app:layout_constraintStart_toStartOf="@+id/created_date" />
 
-    <TextView
-        android:id="@+id/deadline"
-        android:layout_width="79dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/deadline"
-        app:layout_constraintBottom_toTopOf="@+id/assignedBy"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create" />
+    <EditText
+        android:id="@+id/assigner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_user"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/assignedBy"
+        app:layout_constraintStart_toStartOf="@+id/deadline_date" />
 
-    <TextView
-        android:id="@+id/assignedBy"
-        android:layout_width="93dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/assigned_by"
-        app:layout_constraintBottom_toTopOf="@+id/assignedTo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deadline" />
+    <EditText
+        android:id="@+id/assignee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_user"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/assignedTo"
+        app:layout_constraintStart_toStartOf="@+id/assigner" />
 
-    <TextView
-        android:id="@+id/assignedTo"
-        android:layout_width="93dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/assigned_to"
-        app:layout_constraintBottom_toTopOf="@+id/comments"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignedBy" />
-
-    <TextView
-        android:id="@+id/comments"
-        android:layout_width="88dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="250dp"
-        android:text="@string/comments"
-        app:layout_constraintBottom_toTopOf="@+id/confirm_changes"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignedTo" />
+    <EditText
+        android:id="@+id/comments_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/add_comments"
+        android:inputType="textMultiLine"
+        app:layout_constraintBaseline_toBaselineOf="@+id/comments"
+        app:layout_constraintStart_toStartOf="@+id/assignee" />
 
     <Button
-        android:id="@+id/confirm_changes"
+        android:id="@+id/confirm"
         android:layout_width="300dp"
         android:layout_height="46dp"
         android:layout_marginBottom="44dp"
         android:background="@color/colorPrimary"
-        android:contentDescription="@string/confirm_changes"
-        android:text="@string/confirm_changes"
+        android:contentDescription="@string/confirm"
+        android:text="@string/confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/comments_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="@+id/comments"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
-        app:layout_constraintStart_toEndOf="@+id/comments"
-        app:layout_constraintTop_toTopOf="@+id/comments"
-        app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="New Task Name:"
-        app:layout_constraintBottom_toBottomOf="@id/newtaskname"
-        app:layout_constraintTop_toBottomOf="@+id/comments"
-        tools:layout_editor_absoluteX="19dp" />
-
-    <EditText
-        android:id="@+id/newtaskname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="40dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comments_detail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

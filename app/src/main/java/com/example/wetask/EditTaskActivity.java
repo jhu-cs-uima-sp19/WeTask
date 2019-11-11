@@ -21,8 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class EditTaskActivity extends AppCompatActivity {
     private GroupObject current_group;
@@ -51,38 +49,45 @@ public class EditTaskActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled( true );
         }
 
-        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
         toolbar.setTitle(currGroupStr);
 
-        TextView taskTitle = findViewById(R.id.taskTitle);
-        String title = sharedPref.getString("title", "No Title");
-        taskTitle.setText(title);
-
-        TextView create = findViewById(R.id.create);
-        final String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
-        create.setText(createdBy);
-
-        final EditText comment = findViewById(R.id.comments_detail);
-        final EditText deadline = findViewById(R.id.deadline_date);
+        final EditText taskTitle = findViewById(R.id.new_task_name);
         final EditText create_date = findViewById(R.id.created_date);
-        final EditText new_task_name = findViewById(R.id.newtaskname);
+        final EditText deadline = findViewById(R.id.deadline_date);
+        final EditText assigner = findViewById(R.id.assigner);
+        final EditText assignee = findViewById(R.id.assignee);
+        final EditText comment = findViewById(R.id.comments_edit);
 
-        Button button = findViewById(R.id.confirm_changes);
+
+        if ((sharedPref.getString( "mode", "create")).equals("edit")) {
+            taskTitle.setText(sharedPref.getString("title", "No Title"));
+            create_date.setText(sharedPref.getString("create", "1/1/2020"));
+            deadline.setText(sharedPref.getString("deadline", "1/1/2020"));
+            assigner.setText(sharedPref.getString("assigner", "User Not Found"));
+            assignee.setText(sharedPref.getString("assignee", "User Not Found"));
+            comment.setText(sharedPref.getString("comments", ""));
+        }
+
+        Button button = findViewById(R.id.confirm );
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if((intent.getIntExtra("if_new", 0) == 0)){
+                if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
+                    String name = taskTitle.getText().toString();
                     String c_date = create_date.getText().toString();
+                    String aBy = assigner.getText().toString();
+                    String aTo = assignee.getText().toString();
                     String ddl = deadline.getText().toString();
                     String com = comment.getText().toString();
-                    String name = new_task_name.getText().toString();
 
                     Random r = new Random();
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                    //TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
                     groups.child("g100").setValue(current_group);
@@ -90,17 +95,20 @@ public class EditTaskActivity extends AppCompatActivity {
                     MainActivity.allTasks.add(new_task);
                     Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                     startActivity(intent);
-                } else {
+
+                } else { //IF CREATING A TASK
+                    String name = taskTitle.getText().toString();
                     String c_date = create_date.getText().toString();
+                    String aBy = assigner.getText().toString();
+                    String aTo = assignee.getText().toString();
                     String ddl = deadline.getText().toString();
                     String com = comment.getText().toString();
-                    String name = new_task_name.getText().toString();
 
                     Random r = new Random();
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
                     groups.child("g100").setValue(current_group);
@@ -112,8 +120,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
             }
         });
-        //add on click listener to confirm changes which either creates task or changes task (and pushes
-        //to database) depending on sharedpref mode attribute being edit or create
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

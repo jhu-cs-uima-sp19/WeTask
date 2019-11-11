@@ -171,12 +171,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         if (id == R.id.logout) {
-            Toast toast = Toast.makeText(getApplicationContext(),
+/*            Toast toast = Toast.makeText(getApplicationContext(),
                     "Can't log you out right now", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-
-        if (id == R.id.login) {
+            toast.show();*/
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
         }
@@ -279,6 +276,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 if(task.getAssignedTo().equals(userId)) {
                     myTasks.add(task);
                 }
+                myTaskAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -294,6 +292,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
                 allTasks.add(task);
+                allTaskAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -338,8 +337,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public void onResume(){
         super.onResume();
         updateAllTasks();
-        myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
-        allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
+        //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
+        //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
         masterList.set(0, myTaskAdapter);
         masterList.set(1, allTaskAdapter);
 
