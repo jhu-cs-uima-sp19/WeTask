@@ -5,7 +5,7 @@ package com.example.wetask;
  */
 public class TaskItem {
     //Temp Variables
-    private String name;
+    private String name= "default name";
     private String createdDate;
     private String assignedBy;
     private String assignedTo;

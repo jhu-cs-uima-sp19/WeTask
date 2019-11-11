@@ -338,6 +338,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onResume();
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
+        masterList.set(0, myTaskAdapter);
+        masterList.set(1, allTaskAdapter);
+
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);
+        ViewPager viewPager = findViewById( R.id.view_pager );
+        viewPager.setAdapter( sectionsPagerAdapter );
+        TabLayout tabs = findViewById( R.id.tabs );
+        tabs.setupWithViewPager( viewPager );
+
     }
 
 }

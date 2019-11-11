@@ -43,7 +43,8 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         TextView dateText = (TextView) taskView.findViewById(R.id.date_text);
         TextView amountText = (TextView) taskView.findViewById(R.id.amount_view);
 
-        amountText.setText(items.get(position).getName());
+        //amountText.setText(items.get(position).getName());
+        amountText.setText("hi2");
         dateText.setText("hi");
         typeText.setText("hi");
 
