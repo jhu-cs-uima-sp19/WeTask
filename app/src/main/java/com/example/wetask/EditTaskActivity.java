@@ -69,6 +69,7 @@ public class EditTaskActivity extends AppCompatActivity {
         final EditText comment = findViewById(R.id.comments_detail);
         final EditText deadline = findViewById(R.id.deadline_date);
         final EditText create_date = findViewById(R.id.created_date);
+        final EditText new_task_name = findViewById(R.id.newtaskname);
 
         Button button = findViewById(R.id.confirm_changes);
         button.setOnClickListener(new View.OnClickListener() {
@@ -77,12 +78,13 @@ public class EditTaskActivity extends AppCompatActivity {
                 String c_date = create_date.getText().toString();
                 String ddl = deadline.getText().toString();
                 String com = comment.getText().toString();
+                String name = new_task_name.getText().toString();
 
                 Random r = new Random();
                 int tag = r.nextInt();
                 String ID = Integer.toString(tag);
 
-                TaskItem new_task = new TaskItem(ID, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                TaskItem new_task = new TaskItem(name, ID, "g100", c_date, "jacob", "simon", ddl, com);
                 tasks.child(new_task.getTaskId()).setValue(new_task);
                 current_group.addGroupTask(new_task.getTaskId());
                 groups.child("g100").setValue(current_group);

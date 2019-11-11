@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newTaskName"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditTaskActivity">
@@ -32,8 +33,8 @@
         android:id="@+id/create"
         android:layout_width="82dp"
         android:layout_height="18dp"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/created"
         app:layout_constraintBottom_toTopOf="@+id/deadline"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,21 +63,21 @@
         android:id="@+id/deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
         android:layout_marginStart="25dp"
+        android:layout_marginBottom="25dp"
         android:ems="10"
         android:hint="@string/sample_date"
         android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/deadline"/>
+        app:layout_constraintStart_toEndOf="@+id/deadline" />
 
     <TextView
         android:id="@+id/deadline"
         android:layout_width="79dp"
         android:layout_height="19dp"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/deadline"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +98,8 @@
         android:id="@+id/assignedTo"
         android:layout_width="93dp"
         android:layout_height="19dp"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:text="@string/assigned_to"
         app:layout_constraintBottom_toTopOf="@+id/comments"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,8 +139,32 @@
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="@+id/comments"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toEndOf="@+id/comments"
-        app:layout_constraintTop_toTopOf="@+id/comments" />
+        app:layout_constraintTop_toTopOf="@+id/comments"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="New Task Name:"
+        app:layout_constraintBottom_toBottomOf="@+id/newtaskname"
+        app:layout_constraintTop_toBottomOf="@+id/comments"
+        tools:layout_editor_absoluteX="19dp" />
+
+    <EditText
+        android:id="@+id/newtaskname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comments_detail" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
