@@ -59,6 +59,7 @@ public class AllTasksFragment extends Fragment {
         allList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+                intent.putExtra("if_new", 0);
                 //put extra with task id (so know to show details)
                 startActivity(intent);
             }

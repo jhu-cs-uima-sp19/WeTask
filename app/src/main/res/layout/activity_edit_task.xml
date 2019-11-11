@@ -44,16 +44,19 @@
         android:layout_width="147dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="7dp"
         android:layout_marginEnd="125dp"
+        android:layout_marginBottom="7dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/sample_date"
         android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/deadline_date"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/create"
         app:layout_constraintTop_toBottomOf="@+id/taskTitle"
-        android:autofillHints="" tools:targetApi="o"/>
+        app:layout_constraintVertical_bias="1.0"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/deadline_date"

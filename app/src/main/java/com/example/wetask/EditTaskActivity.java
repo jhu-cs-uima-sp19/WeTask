@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,25 +20,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Random;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EditTaskActivity extends AppCompatActivity {
     private GroupObject current_group;
-    private DatabaseReference groups;
+    private UserObject current_user;
+    private DatabaseReference groups, tasks, users;
+    private boolean if_new;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_edit_task );
+        //get_current_user();
         DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
-        final DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
+        tasks = FirebaseDatabase.getInstance().getReference("tasks");
         groups = FirebaseDatabase.getInstance().getReference("groups");
+        users = FirebaseDatabase.getInstance().getReference("users");
+
+        get_current_group();
+        Intent intent = getIntent();
+        if(intent.getIntExtra("if_new", 0) == 0){
+
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar( );
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled( true );
@@ -52,16 +63,28 @@ public class EditTaskActivity extends AppCompatActivity {
         taskTitle.setText(title);
 
         TextView create = findViewById(R.id.create);
-        String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
+        final String createdBy = "Created By: " + sharedPref.getString("create", "User Not Found");
         create.setText(createdBy);
+
+        final EditText comment = findViewById(R.id.comments_detail);
+        final EditText deadline = findViewById(R.id.deadline_date);
+        final EditText create_date = findViewById(R.id.created_date);
 
         Button button = findViewById(R.id.confirm_changes);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TaskItem new_task = new TaskItem("Bob", "10", "g100", "simon");
-                tasks.child("10").setValue(new_task);
-                //current_group.addGroupTask(new_task.getTaskId());
+                String c_date = create_date.getText().toString();
+                String ddl = deadline.getText().toString();
+                String com = comment.getText().toString();
+
+                Random r = new Random();
+                int tag = r.nextInt();
+                String ID = Integer.toString(tag);
+
+                TaskItem new_task = new TaskItem(ID, ID, "g100", c_date, "jacob", "simon", ddl, com);
+                tasks.child(new_task.getTaskId()).setValue(new_task);
+                current_group.addGroupTask(new_task.getTaskId());
                 groups.child("g100").setValue(current_group);
                 MainActivity.myTasks.add(new_task);
                 MainActivity.allTasks.add(new_task);
@@ -83,6 +106,21 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 current_group = dataSnapshot.child("g100").getValue(GroupObject.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void get_current_user(){
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                current_user = dataSnapshot.child("simon").getValue(UserObject.class);
             }
 
             @Override

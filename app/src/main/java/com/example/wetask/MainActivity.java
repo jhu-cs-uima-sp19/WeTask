@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
+                intent.putExtra("if_new", 1);
                 startActivity(intent);
             }
         });
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-        make_dummy_database();
+        //make_dummy_database();
         TaskItem my_item = new TaskItem("mytask", "1", "", "simon");
         TaskItem all_item = new TaskItem("alltask", "2", "", "simon");
         TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
@@ -336,6 +337,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     public void onResume(){
         super.onResume();
+        updateAllTasks();
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
         masterList.set(0, myTaskAdapter);

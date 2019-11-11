@@ -98,6 +98,7 @@ public class MyTasksFragment extends Fragment {
                 edit.commit();
 
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+                intent.putExtra("if_new", 0);
                 startActivity(intent);
             }
         });
