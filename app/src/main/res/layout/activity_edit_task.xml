@@ -150,7 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="New Task Name:"
-        app:layout_constraintBottom_toBottomOf="@+id/newtaskname"
+        app:layout_constraintBottom_toBottomOf="@id/newtaskname"
         app:layout_constraintTop_toBottomOf="@+id/comments"
         tools:layout_editor_absoluteX="19dp" />
 

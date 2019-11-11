@@ -2,6 +2,7 @@ package com.example.wetask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,11 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ArchiveFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ArchiveFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -45,8 +47,6 @@ public class ArchiveFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ArchiveFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -78,9 +78,20 @@ public class ArchiveFragment extends Fragment {
         archiveList.setAdapter(adapter);
         archiveList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TaskItem selected = adapter.getTaskAtPos(position);
+
+                SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putString("title", selected.getName());
+                edit.putString("created", selected.getCreatedDate());
+                edit.putString("deadline", selected.getDeadline());
+                edit.putString("assigner", selected.getAssignedBy());
+                edit.putString("assignee", selected.getAssignedTo());
+                edit.putString("comments", selected.getComments());
+                edit.putString("taskId", selected.getTaskId());
+                edit.commit();
+
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
-                intent.putExtra("if_new", 0);
-                //put extra with task id (so know to show details)
                 startActivity(intent);
             }
         });

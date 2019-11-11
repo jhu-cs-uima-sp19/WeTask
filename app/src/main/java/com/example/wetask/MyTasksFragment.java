@@ -84,17 +84,17 @@ public class MyTasksFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //get task at position from database, put data in shared prefs from there
 
-                DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
+                TaskItem selected = adapter.getTaskAtPos(position);
 
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putString("title", "");
-                edit.putString("created", "");
-                edit.putString("deadline", "");
-                edit.putString("assigner", "");
-                edit.putString("assignee", "");
-                edit.putString("comments", "");
-                edit.putString("taskId", "");
+                edit.putString("title", selected.getName());
+                edit.putString("created", selected.getCreatedDate());
+                edit.putString("deadline", selected.getDeadline());
+                edit.putString("assigner", selected.getAssignedBy());
+                edit.putString("assignee", selected.getAssignedTo());
+                edit.putString("comments", selected.getComments());
+                edit.putString("taskId", selected.getTaskId());
                 edit.commit();
 
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);

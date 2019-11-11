@@ -55,5 +55,7 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         return getItem(pos).getTaskId();
     }
 
+    public TaskItem getTaskAtPos(int pos) {return getItem(pos);}
+
 
 }
