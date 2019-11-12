@@ -38,18 +38,11 @@ public class TabFragment extends Fragment {
 
     private static final String TAB = "tab";
 
-    //private int tab;
     private String groupId = "g100"; // need to figure out how to get group id
     private ArrayList<TaskItem> tasks;
-    //private static TaskItemAdapter adapter;
 
     public TabFragment() {
         // Required empty public constructor
-    }
-
-    private TabFragment(int tab) {
-        //this.tab = tab;
-        //tasks = new ArrayList<TaskItem>();
     }
 
     /**
@@ -80,14 +73,10 @@ public class TabFragment extends Fragment {
         tasks = new ArrayList<TaskItem>();
         TaskItemAdapter adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
 
-//        int tab = savedInstanceState.getInt(TAB, 0);
         int tab = 3;
         if (getArguments( ) != null) {
             tab = getArguments( ).getInt(TAB);
         }
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                    ""+tab, Toast.LENGTH_SHORT);
-        toast.show();
 
         switch (tab) {
             case 0:
@@ -105,30 +94,6 @@ public class TabFragment extends Fragment {
         }
 
         final TaskItemAdapter adap = adapter;
-
-        /*DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
-        groups.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
-                ArrayList<String> tasksStr = group.getGroupTaskList();
-
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                        ""+tasksStr.size(), Toast.LENGTH_SHORT);
-                toast.show();
-
-                for(int i = 0; i < tasksStr.size(); i++){
-                    tasks.add(dataSnapshot.child(tasksStr.get(i)).getValue(TaskItem.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-*/
 
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

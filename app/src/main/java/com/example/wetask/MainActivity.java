@@ -55,17 +55,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
         setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         //TODO: get actual names of groups this person is in from database
         groupNames = new ArrayList<String>();
         groupNames.add("Apartment 101"); //dummy data
         groupNames.add("ASPCA Volunteers"); //dummy
-
 
         int currGroup = sharedPref.getInt("group", 0);
         //TODO: use currGroup to send correct adapter to SecPagAd for current group
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         toolbar.setTitle(groupNames.get(currGroup));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //CoordinatorLayout drawer = (CoordinatorLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -94,7 +91,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         addMenuItemInNavMenuDrawer(groupNames);
 
-        //masterList = makeDummyData();
         makeDummyData();
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -169,9 +165,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         if (id == R.id.logout) {
-/*            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Can't log you out right now", Toast.LENGTH_SHORT);
-            toast.show();*/
             Intent intent = new Intent(MainActivity.this, Login.class);
             startActivity(intent);
         }
@@ -181,26 +174,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        //savedInstanceState.putDouble("balance", balance_value);
-        //esavedInstanceState.putDouble("input_amount", curr_input);
-    }
-
-    //public ArrayList<TaskItemAdapter> makeDummyData () {
     public void makeDummyData() {
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-/*        //make_dummy_database();
-        TaskItem my_item = new TaskItem("mytask", "1", "", "simon");
-        TaskItem all_item = new TaskItem("alltask", "2", "", "simon");*/
+/*        //make_dummy_database();*/
         TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
 
         updateMyTasks();
@@ -210,12 +189,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
         archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
-
-        //masterList = new ArrayList<TaskItemAdapter>();
-        //masterList.add(myTaskAdapter);
-        //masterList.add(allTaskAdapter);
-        //masterList.add(archiveTaskAdapter);
-        //return masterList;
     }
 
     /*Programmatically adds groups to nav drawer.**/
@@ -332,29 +305,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         mRef.child("tasks").child(task_3.getTaskId()).setValue(task_3);
         mRef.child("users").child(SIMON.getUserID()).setValue(SIMON);
         mRef.child("users").child(JACOB.getUserID()).setValue(JACOB);
-
-    }
-
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
-        //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
-        //masterList.set(0, myTaskAdapter);
-        //masterList.set(1, allTaskAdapter);
-
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById( R.id.view_pager );
-        viewPager.setAdapter( sectionsPagerAdapter );
-        TabLayout tabs = findViewById( R.id.tabs );
-        tabs.setupWithViewPager( viewPager );
-
     }
 
     public static void notify_changes(){
         myTaskAdapter.notifyDataSetChanged();
         allTaskAdapter.notifyDataSetChanged();
     }
-
 }
