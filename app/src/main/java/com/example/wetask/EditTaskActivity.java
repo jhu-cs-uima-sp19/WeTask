@@ -101,6 +101,7 @@ public class EditTaskActivity extends AppCompatActivity {
                         }
                     }
 
+                    MainActivity.notify_changes();
                     Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                     startActivity(intent);
 
