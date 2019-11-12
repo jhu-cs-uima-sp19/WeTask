@@ -41,11 +41,11 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
         }
 
         TextView titleText = (TextView) taskView.findViewById( R.id.task_title );
-        TextView createdText = (TextView) taskView.findViewById( R.id.created );
+        TextView deadlineText = (TextView) taskView.findViewById( R.id.due );
         TextView assignedText = (TextView) taskView.findViewById( R.id.assigned_to );
 
         titleText.setText(items.get(position).getName());
-        createdText.setText(items.get(position).getCreatedDate());
+        deadlineText.setText(items.get(position).getDeadline());
         assignedText.setText(items.get(position).getAssignedTo());
 
         return taskView;
