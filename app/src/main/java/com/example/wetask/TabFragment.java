@@ -40,7 +40,8 @@ public class TabFragment extends Fragment {
 
     //private int tab;
     private String groupId = "g100"; // need to figure out how to get group id
-    //static ArrayList<TaskItem> tasks;
+    private ArrayList<TaskItem> tasks;
+    private static TaskItemAdapter adapter;
 
     public TabFragment() {
         // Required empty public constructor
@@ -76,9 +77,34 @@ public class TabFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate( R.layout.fragment_tab, container, false );
         ListView list = (ListView) view.findViewById(R.id.taskList);
-        final ArrayList<TaskItem> tasks = new ArrayList<TaskItem>();
+        tasks = new ArrayList<TaskItem>();
+        adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
 
-        DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
+//        int tab = savedInstanceState.getInt(TAB, 0);
+        int tab = 0;
+        if (getArguments( ) != null) {
+            tab = getArguments( ).getInt(TAB);
+        }
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                    ""+tab, Toast.LENGTH_SHORT);
+        toast.show();
+
+        switch (tab) {
+            case 0:
+                //tasks = MainActivity.myTasks;
+                adapter = MainActivity.myTaskAdapter;
+                break;
+            case 1:
+                //tasks = MainActivity.allTasks;
+                adapter = MainActivity.allTaskAdapter;
+                break;
+            case 2:
+                //tasks = MainActivity.archiveTasks;
+                adapter = MainActivity.archiveTaskAdapter;
+                break;
+        }
+
+        /*DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -100,29 +126,31 @@ public class TabFragment extends Fragment {
 
             }
         });
+*/
 
-        list.setAdapter(new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks));
+        list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                TaskItem selected = tasks.get(position);
+                //TaskItem selected = tasks.get(position);
+                TaskItem selected = adapter.getItem(position);
 
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
-//                edit.putString("title", selected.getName());
-//                edit.putString("created", selected.getCreatedDate());
-//                edit.putString("deadline", selected.getDeadline());
-//                edit.putString("assigner", selected.getAssignedBy());
+                edit.putString("title", selected.getName());
+                edit.putString("created", selected.getCreatedDate());
+                edit.putString("deadline", selected.getDeadline());
+                edit.putString("assigner", selected.getAssignedBy());
                 edit.putString("assignee", selected.getAssignedTo());
-//                edit.putString("comments", selected.getComments());
-                //edit.putString("taskId", selected.getTaskId());
+                edit.putString("comments", selected.getComments());
+                edit.putString("taskId", selected.getTaskId());
                 edit.commit();
 
                 Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
+                intent.putExtra("if_new", 0);
                 startActivity(intent);
             }
         });
         return view;
     }
-
 }
