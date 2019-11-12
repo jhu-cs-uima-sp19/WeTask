@@ -61,7 +61,7 @@ public class EditTaskActivity extends AppCompatActivity {
         final EditText comment = findViewById(R.id.comments_edit);
 
 
-        if ((sharedPref.getString( "mode", "create")).equals("edit")) {
+        if (intent.getIntExtra("if_new", 0) == 0) {
             taskTitle.setText(sharedPref.getString("title", "No Title"));
             create_date.setText(sharedPref.getString("create", "1/1/2020"));
             deadline.setText(sharedPref.getString("deadline", "1/1/2020"));

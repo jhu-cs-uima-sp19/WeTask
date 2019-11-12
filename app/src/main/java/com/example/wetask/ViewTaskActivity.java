@@ -82,10 +82,11 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 sharedPref.getString("taskId", "");
-                TaskItem task = new TaskItem(); //get that task from database;
+                delete_task();
+/*                TaskItem task = new TaskItem(); //get that task from database;
                 task.complete();
                 //put it back in database
-                finish();
+                finish();*/
             }
         });
     }
@@ -108,7 +109,8 @@ public class ViewTaskActivity extends AppCompatActivity {
                 return true;
 
             case R.id.delete_task:
-                DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
+                delete_task();
+                /*DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
                 String tag = sharedPref.getString("taskId", "");
                 tasks.child(tag).removeValue();
                 String groupID = MainActivity.groupId;
@@ -126,7 +128,7 @@ public class ViewTaskActivity extends AppCompatActivity {
                     }
                 }
                 MainActivity.notify_changes();
-                finish();
+                finish();*/
                 return true;
 
             case android.R.id.home:
@@ -155,6 +157,30 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void delete_task() {
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+
+        DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
+        String tag = sharedPref.getString("taskId", "");
+        tasks.child(tag).removeValue();
+        String groupID = MainActivity.groupId;
+        groups = FirebaseDatabase.getInstance().getReference("groups");
+        remove_task_from_group(tag, groupID);
+
+        for(int i = 0; i < MainActivity.allTasks.size(); i++){
+            if(MainActivity.allTasks.get(i).getTaskId().equals(tag)){
+                MainActivity.allTasks.remove(i);
+            }
+        }
+        for(int i = 0; i < MainActivity.myTasks.size(); i++){
+            if(MainActivity.myTasks.get(i).getTaskId().equals(tag)){
+                MainActivity.myTasks.remove(i);
+            }
+        }
+        MainActivity.notify_changes();
+        finish();
     }
 
 

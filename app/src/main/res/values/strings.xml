@@ -35,6 +35,8 @@
     <string name="enter_user">Type Username</string>
     <string name="add_comments">Add Comments</string>
     <string name="add_title">Enter Title</string>
+    <string name="default_title">No Title</string>
+    <string name="not_assigned">Not Assigned</string>
 
     <string name="Wireless_and_network">Wireless + Network</string>
     <string name="Wifi">Wi-Fi</string>
