@@ -101,6 +101,7 @@ public class EditTaskActivity extends AppCompatActivity {
                         }
                     }
 
+                    MainActivity.notify_changes();
                     Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                     startActivity(intent);
 
@@ -122,6 +123,7 @@ public class EditTaskActivity extends AppCompatActivity {
                     groups.child("g100").setValue(current_group);
                     MainActivity.myTasks.add(new_task);
                     MainActivity.allTasks.add(new_task);
+                    MainActivity.notify_changes();
                     Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
