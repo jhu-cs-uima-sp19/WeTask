@@ -41,7 +41,7 @@ public class TabFragment extends Fragment {
     //private int tab;
     private String groupId = "g100"; // need to figure out how to get group id
     private ArrayList<TaskItem> tasks;
-    private static TaskItemAdapter adapter;
+    //private static TaskItemAdapter adapter;
 
     public TabFragment() {
         // Required empty public constructor
@@ -78,10 +78,10 @@ public class TabFragment extends Fragment {
         View view =  inflater.inflate( R.layout.fragment_tab, container, false );
         ListView list = (ListView) view.findViewById(R.id.taskList);
         tasks = new ArrayList<TaskItem>();
-        adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
+        TaskItemAdapter adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
 
 //        int tab = savedInstanceState.getInt(TAB, 0);
-        int tab = 0;
+        int tab = 3;
         if (getArguments( ) != null) {
             tab = getArguments( ).getInt(TAB);
         }
@@ -103,6 +103,8 @@ public class TabFragment extends Fragment {
                 adapter = MainActivity.archiveTaskAdapter;
                 break;
         }
+
+        final TaskItemAdapter adap = adapter;
 
         /*DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -133,7 +135,7 @@ public class TabFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //TaskItem selected = tasks.get(position);
-                TaskItem selected = adapter.getItem(position);
+                TaskItem selected = adap.getItem(position);
 
                 SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();

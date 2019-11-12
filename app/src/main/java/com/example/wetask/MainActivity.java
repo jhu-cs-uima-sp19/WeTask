@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
     static TaskItemAdapter archiveTaskAdapter;
-    private ArrayList<TaskItemAdapter> masterList;
+    //private ArrayList<TaskItemAdapter> masterList;
     private ArrayList<String> groupNames;
 
 
@@ -83,6 +83,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
+                intent.putExtra("if_new", 1);
+                startActivity(intent);
+            }
+        });
+
+        addMenuItemInNavMenuDrawer(groupNames);
+
+        //masterList = makeDummyData();
+        makeDummyData();
+
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = findViewById( R.id.view_pager );
+        viewPager.setAdapter( sectionsPagerAdapter );
+        TabLayout tabs = findViewById( R.id.tabs );
+        tabs.setupWithViewPager( viewPager );
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,14 +192,15 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         //esavedInstanceState.putDouble("input_amount", curr_input);
     }
 
-    public ArrayList<TaskItemAdapter> makeDummyData () {
+    //public ArrayList<TaskItemAdapter> makeDummyData () {
+    public void makeDummyData() {
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-        //make_dummy_database();
+/*        //make_dummy_database();
         TaskItem my_item = new TaskItem("mytask", "1", "", "simon");
-        TaskItem all_item = new TaskItem("alltask", "2", "", "simon");
+        TaskItem all_item = new TaskItem("alltask", "2", "", "simon");*/
         TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
 
         updateMyTasks();
@@ -191,11 +211,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
         archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
 
-        masterList = new ArrayList<TaskItemAdapter>();
-        masterList.add(myTaskAdapter);
-        masterList.add(allTaskAdapter);
-        masterList.add(archiveTaskAdapter);
-        return masterList;
+        //masterList = new ArrayList<TaskItemAdapter>();
+        //masterList.add(myTaskAdapter);
+        //masterList.add(allTaskAdapter);
+        //masterList.add(archiveTaskAdapter);
+        //return masterList;
     }
 
     /*Programmatically adds groups to nav drawer.**/
@@ -321,10 +341,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         super.onResume();
         //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
-        masterList.set(0, myTaskAdapter);
-        masterList.set(1, allTaskAdapter);
+        //masterList.set(0, myTaskAdapter);
+        //masterList.set(1, allTaskAdapter);
 
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById( R.id.view_pager );
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );

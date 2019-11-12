@@ -25,12 +25,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
-    private ArrayList<TaskItemAdapter> passed_adapters;
+    //private ArrayList<TaskItemAdapter> passed_adapters;
 
-    public SectionsPagerAdapter(Context context,  FragmentManager fm, ArrayList<TaskItemAdapter> adap) {
+    public SectionsPagerAdapter(Context context,  FragmentManager fm) {
         super( fm );
         mContext = context;
-        passed_adapters = adap;
+        //passed_adapters = adap;
     }
 
     @Override
