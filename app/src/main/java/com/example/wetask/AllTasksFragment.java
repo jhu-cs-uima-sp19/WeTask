@@ -32,12 +32,12 @@ public class AllTasksFragment extends Fragment {
     private ListView allList;
     private static TaskItemAdapter adapter;
 
-    public static AllTasksFragment newInstance(TaskItemAdapter aa) {
+    public static AllTasksFragment newInstance() {
         AllTasksFragment fragment = new AllTasksFragment( );
         Bundle bundle = new Bundle( );
         //bundle.putInt( ARG_SECTION_NUMBER, index );
         fragment.setArguments( bundle );
-        adapter = aa;
+        adapter = MainActivity.allTaskAdapter;
         return fragment;
     }
 

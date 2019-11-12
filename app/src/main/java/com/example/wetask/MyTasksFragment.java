@@ -55,12 +55,12 @@ public class MyTasksFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static MyTasksFragment newInstance(TaskItemAdapter aa) {
+    public static MyTasksFragment newInstance() {
         MyTasksFragment fragment = new MyTasksFragment( );
         Bundle args = new Bundle( );
         args.putString( ARG_PARAM1, "");
         fragment.setArguments( args );
-        adapter = aa;
+        adapter = MainActivity.myTaskAdapter;
         return fragment;
     }
 

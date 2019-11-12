@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static String groupId = "g100"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
-    private ArrayList<TaskItem> archiveTasks;
+    static ArrayList<TaskItem> archiveTasks;
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
-    private TaskItemAdapter archiveTaskAdapter;
+    static TaskItemAdapter archiveTaskAdapter;
     private ArrayList<TaskItemAdapter> masterList;
     private ArrayList<String> groupNames;
 

@@ -50,13 +50,13 @@ public class ArchiveFragment extends Fragment {
      * @return A new instance of fragment ArchiveFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ArchiveFragment newInstance(TaskItemAdapter aa) {
+    public static ArchiveFragment newInstance() {
         ArchiveFragment fragment = new ArchiveFragment( );
         Bundle args = new Bundle( );
         //args.putString( ARG_PARAM1, param1 );
         //args.putString( ARG_PARAM2, param2 );
         fragment.setArguments( args );
-        adapter = aa;
+        adapter = MainActivity.archiveTaskAdapter;
         return fragment;
     }
 

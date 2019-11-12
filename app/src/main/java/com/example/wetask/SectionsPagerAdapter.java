@@ -40,11 +40,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         //return AllTasksFragment.newInstance( position + 1 );
         switch(position) {
             case 0:
-                return MyTasksFragment.newInstance(passed_adapters.get(0));
+                return MyTasksFragment.newInstance();
             case 1:
-                return AllTasksFragment.newInstance(passed_adapters.get(1));
+                return AllTasksFragment.newInstance();
             case 2:
-                return ArchiveFragment.newInstance(passed_adapters.get(2));
+                return ArchiveFragment.newInstance();
             default:
                 return null;
         }
