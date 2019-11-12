@@ -83,27 +83,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, EditTaskActivity.class);
-                intent.putExtra("if_new", 1);
-                startActivity(intent);
-            }
-        });
-
-        addMenuItemInNavMenuDrawer(groupNames);
-
-        /** Dummy data for testing layouts--make sure to replace this with real data pulled from database!**/
-
-        masterList = makeDummyData();
-
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager( ), masterList);
-        ViewPager viewPager = findViewById( R.id.view_pager );
-        viewPager.setAdapter( sectionsPagerAdapter );
-        TabLayout tabs = findViewById( R.id.tabs );
-        tabs.setupWithViewPager( viewPager );
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
