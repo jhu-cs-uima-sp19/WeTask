@@ -180,11 +180,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         archiveTasks = new ArrayList<TaskItem>();
 
 /*        //make_dummy_database();*/
-        TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
+        //TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
 
         updateMyTasks();
         updateAllTasks();
-        archiveTasks.add(archive_item);
+        //archiveTasks.add(archive_item);
 
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
@@ -278,10 +278,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         });
     }
 
-    private void make_dummy_database(){
-        TaskItem task_1 = new TaskItem("Wash dishes", "t100", "g100", "simon");
-        TaskItem task_2 = new TaskItem("Take out trash", "t101", "g100", "simon");
-        TaskItem task_3 = new TaskItem("Change Sheets", "t102", "g100", "jacob");
+/*    private void make_dummy_database(){
+        //TaskItem task_1 = new TaskItem("Wash dishes", "t100", "g100", "simon");
+        //TaskItem task_2 = new TaskItem("Take out trash", "t101", "g100", "simon");
+        //TaskItem task_3 = new TaskItem("Change Sheets", "t102", "g100", "jacob");
 
         ArrayList<String> simon_group = new ArrayList<String>();
         ArrayList<String> jacob_group = new ArrayList<String>();
@@ -294,18 +294,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         GroupObject APARTMENT = new GroupObject("g100", "Apartment101");
         APARTMENT.addUser(SIMON.getUserID());
         APARTMENT.addUser(JACOB.getUserID());
-        APARTMENT.addGroupTask(task_1.getTaskId());
-        APARTMENT.addGroupTask(task_2.getTaskId());
-        APARTMENT.addGroupTask(task_3.getTaskId());
+        //APARTMENT.addGroupTask(task_1.getTaskId());
+        //APARTMENT.addGroupTask(task_2.getTaskId());
+        //APARTMENT.addGroupTask(task_3.getTaskId());
 
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
         groups.child(APARTMENT.getGroupID()).setValue(APARTMENT);
-        mRef.child("tasks").child(task_1.getTaskId()).setValue(task_1);
-        mRef.child("tasks").child(task_2.getTaskId()).setValue(task_2);
-        mRef.child("tasks").child(task_3.getTaskId()).setValue(task_3);
+        //mRef.child("tasks").child(task_1.getTaskId()).setValue(task_1);
+        //mRef.child("tasks").child(task_2.getTaskId()).setValue(task_2);
+        //mRef.child("tasks").child(task_3.getTaskId()).setValue(task_3);
         mRef.child("users").child(SIMON.getUserID()).setValue(SIMON);
         mRef.child("users").child(JACOB.getUserID()).setValue(JACOB);
-    }
+    }*/
 
     public static void notify_changes(){
         myTaskAdapter.notifyDataSetChanged();

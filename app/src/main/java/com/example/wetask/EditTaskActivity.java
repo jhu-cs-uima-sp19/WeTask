@@ -54,7 +54,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
         final EditText taskTitle = findViewById(R.id.new_task_name);
         final EditText deadline = findViewById(R.id.deadline_date);
-        final EditText assigner = findViewById(R.id.assigner);
         final EditText assignee = findViewById(R.id.assignee);
         final EditText comment = findViewById(R.id.comments_edit);
 
@@ -62,7 +61,6 @@ public class EditTaskActivity extends AppCompatActivity {
         if (intent.getIntExtra("if_new", 0) == 0) {
             taskTitle.setText(sharedPref.getString("title", "No Title"));
             deadline.setText(sharedPref.getString("deadline", "1/1/2020"));
-            assigner.setText(sharedPref.getString("assigner", "User Not Found"));
             assignee.setText(sharedPref.getString("assignee", "User Not Found"));
             comment.setText(sharedPref.getString("comments", ""));
         }
@@ -72,8 +70,12 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = taskTitle.getText().toString();
-                String aBy = assigner.getText().toString();
+                //String aBy = assigner.getText().toString();
                 String aTo = assignee.getText().toString();
+                String aBy = "Not Assigned Yet"; //or some other default message
+                if (!aTo.isEmpty()) {
+                    aBy = sharedPref.getString("userID", "user error");
+                }
                 String ddl = deadline.getText().toString();
                 String com = comment.getText().toString();
 
