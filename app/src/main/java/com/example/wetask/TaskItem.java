@@ -1,12 +1,14 @@
 package com.example.wetask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Holds data for one Task
  */
 public class TaskItem {
     //Temp Variables
     private String name= "default name";
-    private String createdDate = " ";
     private String assignedBy = " ";
     private String assignedTo = " ";
     private String deadline = " ";
@@ -14,12 +16,14 @@ public class TaskItem {
     private String groupID = " ";
     private String taskId;
     private boolean finished;
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+    Date date = new Date();
+    private String createdDate = formatter.format(date);
 
     TaskItem(String item_name, String tID, String gID, String assignedTo) {
         this.name = item_name;
         this.taskId = tID;
         this.groupID = gID;
-        this.createdDate = "no date"; //make this today (bc it's being created now)
         this.assignedBy = "no user found";
         this.assignedTo = assignedTo;
         this.deadline = "no deadline";
@@ -27,12 +31,11 @@ public class TaskItem {
         this.finished = false;
     }
 
-    TaskItem(String item_name, String tID, String gID, String createdDate,
+    TaskItem(String item_name, String tID, String gID,
              String assignedBy, String assignedTo, String deadline, String comments) {
         this.name = item_name;
         this.taskId = tID;
         this.groupID = gID;
-        this.createdDate = createdDate; //make this today (bc it's being created now)
         this.assignedBy = assignedBy;
         this.assignedTo = assignedTo;
         this.deadline = deadline;

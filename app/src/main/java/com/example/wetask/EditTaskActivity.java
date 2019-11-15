@@ -28,7 +28,6 @@ public class EditTaskActivity extends AppCompatActivity {
     private DatabaseReference groups, tasks, users;
     private boolean if_new;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -54,7 +53,6 @@ public class EditTaskActivity extends AppCompatActivity {
         toolbar.setTitle(currGroupStr);
 
         final EditText taskTitle = findViewById(R.id.new_task_name);
-        final EditText create_date = findViewById(R.id.created_date);
         final EditText deadline = findViewById(R.id.deadline_date);
         final EditText assigner = findViewById(R.id.assigner);
         final EditText assignee = findViewById(R.id.assignee);
@@ -63,7 +61,6 @@ public class EditTaskActivity extends AppCompatActivity {
 
         if (intent.getIntExtra("if_new", 0) == 0) {
             taskTitle.setText(sharedPref.getString("title", "No Title"));
-            create_date.setText(sharedPref.getString("create", "1/1/2020"));
             deadline.setText(sharedPref.getString("deadline", "1/1/2020"));
             assigner.setText(sharedPref.getString("assigner", "User Not Found"));
             assignee.setText(sharedPref.getString("assignee", "User Not Found"));
@@ -74,17 +71,16 @@ public class EditTaskActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = taskTitle.getText().toString();
+                String aBy = assigner.getText().toString();
+                String aTo = assignee.getText().toString();
+                String ddl = deadline.getText().toString();
+                String com = comment.getText().toString();
+
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
                     String ID = intent.getStringExtra("taskID");
-                    String name = taskTitle.getText().toString();
-                    String c_date = create_date.getText().toString();
-                    String aBy = assigner.getText().toString();
-                    String aTo = assignee.getText().toString();
-                    String ddl = deadline.getText().toString();
-                    String com = comment.getText().toString();
 
-
-                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, aBy, aTo, ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     for(int i = 1; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
@@ -101,32 +97,24 @@ public class EditTaskActivity extends AppCompatActivity {
                         }
                     }
 
-                    MainActivity.notify_changes();
-                    Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
-                    startActivity(intent);
-
+                    //TODO: actually edit task in firebase (or at least remove old copy)
+                    //as is, we're just making a ton of duplicates we can never delete every time we edit
+                    //also, changing id and updating created date every time
                 } else { //IF CREATING A TASK
-                    String name = taskTitle.getText().toString();
-                    String c_date = create_date.getText().toString();
-                    String aBy = assigner.getText().toString();
-                    String aTo = assignee.getText().toString();
-                    String ddl = deadline.getText().toString();
-                    String com = comment.getText().toString();
-
                     Random r = new Random();
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", c_date, aBy, aTo, ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
                     groups.child("g100").setValue(current_group);
                     MainActivity.myTasks.add(new_task);
                     MainActivity.allTasks.add(new_task);
-                    MainActivity.notify_changes();
-                    Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
-                    startActivity(intent);
                 }
+                MainActivity.notify_changes();
+                Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
+                startActivity(intent);
 
             }
         });

@@ -24,19 +24,9 @@
         android:textSize="24sp"
         android:hint="@string/add_title"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/create"
+        app:layout_constraintBottom_toTopOf="@+id/deadline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/created"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/deadline"
-        app:layout_constraintStart_toStartOf="@+id/new_task_name"
-        app:layout_constraintTop_toBottomOf="@+id/new_task_name" />
 
     <TextView
         android:id="@+id/deadline"
@@ -45,8 +35,8 @@
         android:text="@string/deadline"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/assignedBy"
-        app:layout_constraintStart_toStartOf="@+id/create"
-        app:layout_constraintTop_toBottomOf="@+id/create" />
+        app:layout_constraintStart_toStartOf="@+id/new_task_name"
+        app:layout_constraintTop_toBottomOf="@+id/new_task_name" />
 
     <TextView
         android:id="@+id/assignedBy"
@@ -78,20 +68,6 @@
         app:layout_constraintStart_toStartOf="@+id/assignedTo"
         app:layout_constraintTop_toBottomOf="@+id/assignedTo" />
 
-
-    <EditText
-        android:id="@+id/created_date"
-        android:layout_width="148dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="150dp"
-        android:autofillHints=""
-        android:ems="5"
-        android:hint="@string/sample_date"
-        android:inputType="date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/create"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:targetApi="o" />
-
     <EditText
         android:id="@+id/deadline_date"
         android:layout_width="148dp"
@@ -99,8 +75,9 @@
         android:ems="5"
         android:hint="@string/sample_date"
         android:inputType="date"
+        android:layout_marginStart="150dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/deadline"
-        app:layout_constraintStart_toStartOf="@+id/created_date" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/assigner"
