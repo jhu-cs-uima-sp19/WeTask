@@ -37,8 +37,8 @@ public class EditTaskActivity extends AppCompatActivity {
     private static String aTo = "";
     private static ArrayList<String> users_list;
     private static ArrayAdapter<String> adapter;
-    static String deadline = "";
-    static TextView deadline_view;
+    String deadline = "";
+    TextView deadline_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

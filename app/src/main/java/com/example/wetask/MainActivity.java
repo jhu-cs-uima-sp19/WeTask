@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
     static TaskItemAdapter archiveTaskAdapter;
-    //private ArrayList<TaskItemAdapter> masterList;
     private ArrayList<String> groupNames;
 
 

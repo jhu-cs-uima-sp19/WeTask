@@ -28,7 +28,7 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        EditTaskActivity.deadline = (month + 1) + "/" + day + "/" + (year % 1000);
-        EditTaskActivity.deadline_view.setText(EditTaskActivity.deadline);
+        ((EditTaskActivity) getActivity()).deadline = (month + 1) + "/" + day + "/" + (year % 1000);
+        ((EditTaskActivity) getActivity()).deadline_view.setText(((EditTaskActivity) getActivity()).deadline);
     }
 }
