@@ -10,9 +10,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,25 +24,29 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class EditTaskActivity extends AppCompatActivity {
     private GroupObject current_group;
     private UserObject current_user;
     private DatabaseReference groups, tasks, users;
-    private boolean if_new;
+    private static String aTo = "";
+    private static ArrayList<String> users_list;
+    private static ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_edit_task );
-        //get_current_user();
         DatabaseReference users = FirebaseDatabase.getInstance().getReference("users");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         groups = FirebaseDatabase.getInstance().getReference("groups");
         users = FirebaseDatabase.getInstance().getReference("users");
 
         get_current_group();
+
         final Intent intent = getIntent();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -54,15 +62,32 @@ public class EditTaskActivity extends AppCompatActivity {
 
         final EditText taskTitle = findViewById(R.id.new_task_name);
         final EditText deadline = findViewById(R.id.deadline_date);
-        final EditText assignee = findViewById(R.id.assignee);
         final EditText comment = findViewById(R.id.comments_edit);
 
+        Spinner spinner = (Spinner) findViewById(R.id.assignee);
+        users_list = new ArrayList<String>();
+        populate_users_list();
 
-        if (intent.getIntExtra("if_new", 0) == 0) {
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, users_list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                aTo = (String) parent.getItemAtPosition(position);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                aTo = "Unassigned";
+            }
+        }) ;
+
+        if (intent.getIntExtra("if_new", 1) == 0) { //EDITING
             taskTitle.setText(sharedPref.getString("title", "No Title"));
             deadline.setText(sharedPref.getString("deadline", "1/1/2020"));
-            assignee.setText(sharedPref.getString("assignee", "User Not Found"));
             comment.setText(sharedPref.getString("comments", ""));
+            //TODO: make spinner start with right thing selected if necessary
         }
 
         Button button = findViewById(R.id.confirm );
@@ -70,10 +95,8 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = taskTitle.getText().toString();
-                //String aBy = assigner.getText().toString();
-                String aTo = assignee.getText().toString();
                 String aBy = "Not Assigned Yet"; //or some other default message
-                if (!aTo.isEmpty()) {
+                if (!aTo.equals("Unassigned")) {
                     aBy = sharedPref.getString("userID", "user error");
                 }
                 String ddl = deadline.getText().toString();
@@ -93,15 +116,12 @@ public class EditTaskActivity extends AppCompatActivity {
                     for(int i = 1; i < MainActivity.myTasks.size(); i++){
                         if(MainActivity.myTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.myTasks.remove(i);
-                            if(MainActivity.userId.equals(assignee)){
+                            if(MainActivity.userId.equals(aTo)){
                                 MainActivity.myTasks.add(new_task);
                             }
                         }
                     }
-
-                    //TODO: actually edit task in firebase (or at least remove old copy)
-                    //as is, we're just making a ton of duplicates we can never delete every time we edit
-                    //also, changing id and updating created date every time
+                    //also, updating created date every time
                 } else { //IF CREATING A TASK
                     Random r = new Random();
                     int tag = r.nextInt();
@@ -117,7 +137,6 @@ public class EditTaskActivity extends AppCompatActivity {
                 MainActivity.notify_changes();
                 Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
                 startActivity(intent);
-
             }
         });
     }
@@ -131,7 +150,7 @@ public class EditTaskActivity extends AppCompatActivity {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                current_group = dataSnapshot.child("g100").getValue(GroupObject.class);
+                current_group = dataSnapshot.child( MainActivity.groupId ).getValue( GroupObject.class );
             }
 
             @Override
@@ -142,6 +161,7 @@ public class EditTaskActivity extends AppCompatActivity {
 
     }
 
+    /*not currently used, but keep so can display pref name not user id*/
     private void get_current_user(){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -155,5 +175,14 @@ public class EditTaskActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void populate_users_list() {
+        //TODO: replace with list of users in current group (Simon/ThA)
+        users_list.add("Unassigned");
+        users_list.add("Sadie");
+        users_list.add("Zoe");
+        users_list.add("simon");
+        users_list.add("a");
     }
 }
