@@ -47,4 +47,12 @@
     <string name="display">Display</string>
     <string name="sound">Sound + Notification</string>
     <string name="apps">Apps</string>
+
+    <string name="confirm_complete_title">Complete task?</string>
+    <string name="confirm_delete_title">Delete task?</string>
+    <string name="confirm_delete_message">This action cannot be undone.</string>
+    <string name="error">Error</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>

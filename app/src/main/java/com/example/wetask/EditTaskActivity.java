@@ -97,14 +97,12 @@ public class EditTaskActivity extends AppCompatActivity {
             deadline = "";
         }
 
-        //UNDER CONSTRUCTION
         ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
         launch_date_picker.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getSupportFragmentManager(), "datePicker");
-                //deadline_view.setText(deadline);
             }
         });
 
