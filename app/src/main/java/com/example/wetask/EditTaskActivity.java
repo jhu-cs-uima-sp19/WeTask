@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,8 @@ public class EditTaskActivity extends AppCompatActivity {
     private static String aTo = "";
     private static ArrayList<String> users_list;
     private static ArrayAdapter<String> adapter;
+    static String deadline = "";
+    static TextView deadline_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class EditTaskActivity extends AppCompatActivity {
         toolbar.setTitle(currGroupStr);
 
         final EditText taskTitle = findViewById(R.id.new_task_name);
-        final EditText deadline = findViewById(R.id.deadline_date);
+        deadline_view = findViewById(R.id.deadline_date);
         final EditText comment = findViewById(R.id.comments_edit);
 
         Spinner spinner = (Spinner) findViewById(R.id.assignee);
@@ -85,10 +89,24 @@ public class EditTaskActivity extends AppCompatActivity {
 
         if (intent.getIntExtra("if_new", 1) == 0) { //EDITING
             taskTitle.setText(sharedPref.getString("title", "No Title"));
-            deadline.setText(sharedPref.getString("deadline", "1/1/2020"));
+            deadline = sharedPref.getString("deadline", "MM/DD/YY");
+            deadline_view.setText(deadline);
             comment.setText(sharedPref.getString("comments", ""));
-            //TODO: make spinner start with right thing selected if necessary
+            //TODO: make spinner start with right thing selected if task has already been assigned
+        } else {
+            deadline = "";
         }
+
+        //UNDER CONSTRUCTION
+        ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
+        launch_date_picker.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getSupportFragmentManager(), "datePicker");
+                //deadline_view.setText(deadline);
+            }
+        });
 
         Button button = findViewById(R.id.confirm );
         button.setOnClickListener(new View.OnClickListener() {
@@ -99,13 +117,12 @@ public class EditTaskActivity extends AppCompatActivity {
                 if (!aTo.equals("Unassigned")) {
                     aBy = sharedPref.getString("userID", "user error");
                 }
-                String ddl = deadline.getText().toString();
                 String com = comment.getText().toString();
 
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
                     String ID = intent.getStringExtra("taskID");
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, deadline, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     for(int i = 1; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
@@ -127,7 +144,7 @@ public class EditTaskActivity extends AppCompatActivity {
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, ddl, com);
+                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, deadline, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
                     groups.child("g100").setValue(current_group);

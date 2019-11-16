@@ -28,7 +28,7 @@
     <string name="deadline">Deadline:</string>
     <string name="task_title_goes_here">TITLE</string>
     <string name="confirm">CONFIRM</string>
-    <string name="sample_date">MM/DD/YYYY</string>
+    <string name="sample_date">MM/DD/YY</string>
     <string name="create_group">CREATE</string>
     <string name="edit_group_name">Group Name</string>
     <string name="add_user">Add a Member (Limit 8)</string>
