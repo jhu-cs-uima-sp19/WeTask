@@ -162,4 +162,43 @@ public class ViewTaskActivity extends AppCompatActivity {
         MainActivity.notify_changes();
         finish();
     }
+
+    public void complete_task(){
+        // Mark the task in database as finished, remove it from the group's task list, add it to the group's archived list
+        // Update Mytaskslist, AlltasksList, and archivedtasklits in MainActivity, then notify
+        DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
+        tasks.child(task_id).child("finished").setValue(true);
+        final DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject temp = dataSnapshot.child(MainActivity.groupId).getValue(GroupObject.class);
+                temp.completeTask(task_id);
+                groups.child(MainActivity.groupId).setValue(temp);  // Update database here
+                TaskItem archived_item = new TaskItem();
+                for(int i = 0; i < MainActivity.myTasks.size(); i++){
+                    if(MainActivity.myTasks.get(i).getTaskId().equals(task_id)){
+                        archived_item = MainActivity.myTasks.get(i);
+                        MainActivity.myTasks.remove(i);
+                    }
+                }
+                for(int i = 0; i < MainActivity.allTasks.size(); i++){
+                    if(MainActivity.allTasks.get(i).getTaskId().equals(task_id)){
+                        MainActivity.allTasks.remove(i);
+                    }
+                }
+                MainActivity.archiveTasks.add(archived_item);
+                MainActivity.notify_changes();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        finish();
+
+    }
+
+
 }

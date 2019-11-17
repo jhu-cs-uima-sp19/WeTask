@@ -33,7 +33,7 @@ public class ConfirmDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 if(action.equals("complete")) {
-                    ((ViewTaskActivity) getActivity( )).delete_task( );
+                    ((ViewTaskActivity) getActivity( )).complete_task( );
                     //TODO: replace with code to complete task once that's built
                     //move to archive/completed queue, pop if it has reached capacity
                 } else if (action.equals("delete")) {

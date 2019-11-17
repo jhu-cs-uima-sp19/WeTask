@@ -15,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -28,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.view.Menu.NONE;
 
@@ -183,6 +180,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         updateMyTasks();
         updateAllTasks();
+        updateArchivedTasks();
         //archiveTasks.add(archive_item);
 
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
@@ -200,6 +198,26 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             submenu.add(NONE, NONE, 0, groupNames.get(i));
         }
         navView.invalidate();
+    }
+
+    private void updateArchivedTasks(){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                ArrayList<String> temp = group.getArchivedTaskList();
+                if(temp != null) {
+                    for (int i = 0; i < temp.size(); i++) {
+                        archiveTask_add(temp.get(i));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void updateAllTasks(){
@@ -277,6 +295,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         });
     }
 
+    private void archiveTask_add(final String taskId){
+        tasks.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
+                if(task != null){
+                    archiveTasks.add(task);
+                    archiveTaskAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 /*    private void make_dummy_database(){
         //TaskItem task_1 = new TaskItem("Wash dishes", "t100", "g100", "simon");
         //TaskItem task_2 = new TaskItem("Take out trash", "t101", "g100", "simon");
@@ -309,5 +346,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public static void notify_changes(){
         myTaskAdapter.notifyDataSetChanged();
         allTaskAdapter.notifyDataSetChanged();
+        archiveTaskAdapter.notifyDataSetChanged();
     }
 }
