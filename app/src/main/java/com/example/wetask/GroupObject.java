@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GroupObject {
     private String groupID;
-    private ArrayList<String> userList = new ArrayList<String>();
+    private ArrayList<String> groupUserList = new ArrayList<String>();
     private ArrayList<String> groupTaskList = new ArrayList<String>();
     private String groupName;
 
@@ -21,6 +21,7 @@ public class GroupObject {
     public String getGroupID() {return groupID;}
     public String getGroupName() {return groupName;}
     public ArrayList<String> getGroupTaskList() {return groupTaskList;}
+    public ArrayList<String> getGroupUserList() {return groupUserList;}
 
     public void addGroupTask(String taskID) {
         this.groupTaskList.add(taskID);
@@ -34,6 +35,6 @@ public class GroupObject {
     }
 
     public void addUser(String userID) {
-        this.userList.add(userID);
+        this.groupUserList.add(userID);
     }
 }

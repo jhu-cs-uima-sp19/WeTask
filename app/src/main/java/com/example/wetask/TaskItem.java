@@ -1,12 +1,18 @@
 package com.example.wetask;
 
+import android.content.SharedPreferences;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Holds data for one Task
  */
 public class TaskItem {
     //Temp Variables
     private String name= "default name";
-    private String createdDate = " ";
     private String assignedBy = " ";
     private String assignedTo = " ";
     private String deadline = " ";
@@ -14,25 +20,30 @@ public class TaskItem {
     private String groupID = " ";
     private String taskId;
     private boolean finished;
+    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+    Date date = new Date();
+    private String createdDate = formatter.format(date);
 
-    TaskItem(String item_name, String tID, String gID, String assignedTo) {
+/*    TaskItem(String item_name, String tID, String gID, String assignedBy, String assignedTo) {
         this.name = item_name;
         this.taskId = tID;
         this.groupID = gID;
-        this.createdDate = "no date"; //make this today (bc it's being created now)
-        this.assignedBy = "no user found";
+        //this.assignedBy = "no user found";
+        this.assignedBy = assignedBy;
         this.assignedTo = assignedTo;
         this.deadline = "no deadline";
         this.comments = " ";
         this.finished = false;
-    }
+    }*/
 
-    TaskItem(String item_name, String tID, String gID, String createdDate,
+    TaskItem(String item_name, String tID, String gID,
              String assignedBy, String assignedTo, String deadline, String comments) {
         this.name = item_name;
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+        Date date = new Date();
+        this.createdDate = formatter.format(date);
         this.taskId = tID;
         this.groupID = gID;
-        this.createdDate = createdDate; //make this today (bc it's being created now)
         this.assignedBy = assignedBy;
         this.assignedTo = assignedTo;
         this.deadline = deadline;
@@ -40,8 +51,8 @@ public class TaskItem {
         this.finished = false;
     }
 
-    TaskItem(){
-
+    TaskItem() {
+        //necessary for Firebase--throws exception if you don't have one
     }
 
     public String getCreatedDate() { return createdDate; }

@@ -28,7 +28,7 @@
     <string name="deadline">Deadline:</string>
     <string name="task_title_goes_here">TITLE</string>
     <string name="confirm">CONFIRM</string>
-    <string name="sample_date">MM/DD/YYYY</string>
+    <string name="sample_date">MM/DD/YY</string>
     <string name="create_group">CREATE</string>
     <string name="edit_group_name">Group Name</string>
     <string name="add_user">Add a Member (Limit 8)</string>
@@ -47,4 +47,12 @@
     <string name="display">Display</string>
     <string name="sound">Sound + Notification</string>
     <string name="apps">Apps</string>
+
+    <string name="confirm_complete_title">Complete task?</string>
+    <string name="confirm_delete_title">Delete task?</string>
+    <string name="confirm_delete_message">This action cannot be undone.</string>
+    <string name="error">Error</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>
