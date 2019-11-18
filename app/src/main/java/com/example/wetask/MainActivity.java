@@ -25,7 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import static android.view.Menu.NONE;
 
@@ -175,13 +180,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
 
-/*        //make_dummy_database();*/
-        //TaskItem archive_item = new TaskItem("archive", "3", "", "simon");
-
         updateMyTasks();
         updateAllTasks();
         updateArchivedTasks();
-        //archiveTasks.add(archive_item);
+        Collections.sort(myTasks, new TaskComparator());
+        Collections.sort(allTasks, new TaskComparator());
+        Collections.sort(archiveTasks, new TaskComparator());
 
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
@@ -314,38 +318,36 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     }
 
-/*    private void make_dummy_database(){
-        //TaskItem task_1 = new TaskItem("Wash dishes", "t100", "g100", "simon");
-        //TaskItem task_2 = new TaskItem("Take out trash", "t101", "g100", "simon");
-        //TaskItem task_3 = new TaskItem("Change Sheets", "t102", "g100", "jacob");
-
-        ArrayList<String> simon_group = new ArrayList<String>();
-        ArrayList<String> jacob_group = new ArrayList<String>();
-        simon_group.add("g100");
-        jacob_group.add("g100");
-
-        UserObject SIMON = new UserObject("simon", simon_group, "123456");
-        UserObject JACOB = new UserObject("jacob", jacob_group, "123456");
-
-        GroupObject APARTMENT = new GroupObject("g100", "Apartment101");
-        APARTMENT.addUser(SIMON.getUserID());
-        APARTMENT.addUser(JACOB.getUserID());
-        //APARTMENT.addGroupTask(task_1.getTaskId());
-        //APARTMENT.addGroupTask(task_2.getTaskId());
-        //APARTMENT.addGroupTask(task_3.getTaskId());
-
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        groups.child(APARTMENT.getGroupID()).setValue(APARTMENT);
-        //mRef.child("tasks").child(task_1.getTaskId()).setValue(task_1);
-        //mRef.child("tasks").child(task_2.getTaskId()).setValue(task_2);
-        //mRef.child("tasks").child(task_3.getTaskId()).setValue(task_3);
-        mRef.child("users").child(SIMON.getUserID()).setValue(SIMON);
-        mRef.child("users").child(JACOB.getUserID()).setValue(JACOB);
-    }*/
-
     public static void notify_changes(){
+        Collections.sort(myTasks, new TaskComparator());
+        Collections.sort(allTasks, new TaskComparator());
+        Collections.sort(archiveTasks, new TaskComparator());
         myTaskAdapter.notifyDataSetChanged();
         allTaskAdapter.notifyDataSetChanged();
         archiveTaskAdapter.notifyDataSetChanged();
+    }
+
+    public static class TaskComparator implements Comparator<TaskItem> {
+        @Override
+        public int compare(TaskItem task_1, TaskItem task_2){
+            if(task_1.getAssignedTo().equals(" ")){
+                if(!task_2.getAssignedTo().equals(" ")) {  // if task1 is not assigned but task2 is assigned
+                    return 1;
+                }
+            }else{
+                if(task_2.getAssignedTo().equals(" ")){  //if task1 is assigned but task2 is not assigned
+                    return -1;
+                }
+            }
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YY");
+            String date1 = task_1.getDeadline();
+            String date2 = task_2.getDeadline();
+            try {
+                return formatter.parse(date1).compareTo(formatter.parse(date2));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        }
     }
 }

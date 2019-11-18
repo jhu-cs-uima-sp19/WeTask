@@ -21,7 +21,7 @@ public class TaskItem {
     private String taskId;
     private boolean finished;
     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-    Date date = new Date();
+    private Date date = new Date();
     private String createdDate = formatter.format(date);
 
 /*    TaskItem(String item_name, String tID, String gID, String assignedBy, String assignedTo) {
@@ -62,6 +62,7 @@ public class TaskItem {
     public String getName() {return name;}
     public String getAssignedBy() {return assignedBy;}
     public String getAssignedTo() {return assignedTo;}
+    public Date getDate(){return date;}
 
     public void setDeadline(String newDL) { this.deadline = newDL; }
     public void setComments(String newNotes) { this.comments = newNotes; }

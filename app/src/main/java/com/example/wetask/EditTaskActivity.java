@@ -111,6 +111,7 @@ public class EditTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String name = taskTitle.getText().toString();
+                String ddl_temp = deadline_view.getText().toString();
                 String aBy = "Not Assigned Yet"; //or some other default message
                 if (!aTo.equals("Unassigned")) {
                     aBy = sharedPref.getString("userID", "user error");
