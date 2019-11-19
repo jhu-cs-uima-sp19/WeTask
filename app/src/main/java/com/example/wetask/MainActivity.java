@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
     static TaskItemAdapter archiveTaskAdapter;
-    private ArrayList<String> groupNames;
+    static ArrayList<String> groupNames;
 
 
     @Override
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groupNames = new ArrayList<String>();
         groupNames.add("Apartment 101"); //dummy data
         groupNames.add("ASPCA Volunteers"); //dummy
+        // groupNames.add("Bob");
 
         int currGroup = sharedPref.getInt("group", 0);
         //TODO: use currGroup to send correct adapter to SecPagAd for current group
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
 
-        addMenuItemInNavMenuDrawer(groupNames);
+        addMenuItemInNavMenuDrawer();
 
         makeDummyData();
 
@@ -99,6 +100,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //addMenuItemInNavMenuDrawer(groupNames);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,15 +201,38 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     /*Programmatically adds groups to nav drawer.**/
-    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = navView.getMenu();
-        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+//    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
+//        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+//        Menu menu = navView.getMenu();
+//        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+//
+//        for (int i = 0; i < groupNames.size(); i++) {
+//            submenu.add(NONE, NONE, 0, groupNames.get(i));
+//        }
+//        navView.invalidate();
+//    }
 
-        for (int i = 0; i < groupNames.size(); i++) {
-            submenu.add(NONE, NONE, 0, groupNames.get(i));
-        }
-        navView.invalidate();
+    private void addMenuItemInNavMenuDrawer() {
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+                Menu menu = navView.getMenu();
+                Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    GroupObject group = snapshot.getValue(GroupObject.class);
+                    String groupName = group.getGroupName();
+                    submenu.add(NONE, NONE, 0, groupName);
+                }
+                navView.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void updateArchivedTasks(){
@@ -350,4 +381,5 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         }
     }
+
 }

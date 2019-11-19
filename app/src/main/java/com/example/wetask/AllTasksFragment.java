@@ -55,8 +55,8 @@ public class AllTasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate( R.layout.fragment_all_tasks, container, false );
-        allList = (ListView) view.findViewById(R.id.allTaskItems);
+        View view = inflater.inflate( R.layout.fragment_tab, container, false );
+        allList = (ListView) view.findViewById(R.id.taskList);
         allList.setAdapter( adapter );
         allList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
