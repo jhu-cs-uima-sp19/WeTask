@@ -20,13 +20,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:ems="11"
-        android:textSize="24sp"
         android:hint="@string/add_title"
         android:inputType="textPersonName"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/deadline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/deadline"
@@ -41,19 +43,22 @@
     <TextView
         android:id="@+id/assignedTo"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/assigned_to"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/comments"
         app:layout_constraintStart_toStartOf="@+id/deadline"
         app:layout_constraintTop_toBottomOf="@+id/deadline" />
 
     <TextView
         android:id="@+id/comments"
-        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="250dp"
         android:text="@string/comments"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/confirm"
         app:layout_constraintStart_toStartOf="@+id/assignedTo"
         app:layout_constraintTop_toBottomOf="@+id/assignedTo" />
@@ -62,25 +67,28 @@
         android:id="@+id/deadline_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:text="@string/sample_date"
         android:textSize="20sp"
-        android:layout_marginStart="150dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/deadline"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/deadline" />
 
     <Spinner
         android:id="@+id/assignee"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="42dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="50dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/assignedTo"
         app:layout_constraintStart_toStartOf="@+id/deadline_date"
-        app:layout_constraintTop_toTopOf="@+id/assignedTo" />
+        app:layout_constraintTop_toTopOf="@+id/assignedTo"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/comments_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:gravity="start|top"
         android:hint="@string/add_comments"
         android:inputType="textMultiLine"
