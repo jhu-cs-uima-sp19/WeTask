@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivity(intent);
             }
         });
-
         addMenuItemInNavMenuDrawer();
 
         makeDummyData();
@@ -126,6 +125,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.group_settings:
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
                 //put extra with current group name (editing not creating)
+                intent.putExtra("groupID", groupId);
+                intent.putExtra("edit?", 1);
                 startActivity(intent);
                 return true;
 
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if (id == R.id.nav_add_group) {
             Intent intent = new Intent(MainActivity.this, GroupSettings.class);
             //put extra with group name empty (populating new group)
+            intent.putExtra("edit?", 0);
             startActivity(intent);
         }
 

@@ -52,21 +52,30 @@ public class GroupSettings extends AppCompatActivity {
         groups = database.getReference("groups");
 
         complete = findViewById(R.id.create_group);
-
+        Intent intent = getIntent();
+        final int editVal = intent.getIntExtra("edit?", -1);
         complete.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 edit = (EditText) findViewById(R.id.edit_group_name);
                 String groupName = edit.getText().toString();
 
-                Random r = new Random();
-                int tag = r.nextInt();
-                String id = Integer.toString(tag);
+                if (editVal == 0) {
+                    Random r = new Random();
+                    int tag = r.nextInt();
+                    String id = Integer.toString(tag);
 
-                makeNewGroup(id, groupName);
+                    makeNewGroup(id, groupName);
 
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(GroupSettings.this, MainActivity.class);
+                    startActivity(intent);
+                } else if (editVal == 1) {
+                    Intent intent = getIntent();
+                    String id = intent.getStringExtra("groupId");
+                    editGroup("g100", groupName);
+                    intent = new Intent(GroupSettings.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -89,8 +98,27 @@ public class GroupSettings extends AppCompatActivity {
                 test_group.addUser(MainActivity.userId);//TODO: ADD THIS GROUP TO THE USER'S GROUP LIST
                 addGroupToUser(test_group.getGroupID(), MainActivity.userId);
                 groups.child(finalId).setValue(test_group);
-                Intent main = new Intent(GroupSettings.this, MainActivity.class);
-                startActivity(main);
+                Intent intent = new Intent(GroupSettings.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+        });
+    }
+
+    private void editGroup(final String id, final String newName) {
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DatabaseReference groupRef = groups.child(id);
+                groupRef.child("groupName").setValue(newName);
+                Intent intent = new Intent(GroupSettings.this, MainActivity.class);
+                startActivity(intent);
             }
 
             @Override
