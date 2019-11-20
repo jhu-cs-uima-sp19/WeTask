@@ -29,8 +29,6 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout taskView;
         TaskItem tk = getItem(position);
-
-
         if (convertView == null) {
             taskView = new LinearLayout( getContext( ) );
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
