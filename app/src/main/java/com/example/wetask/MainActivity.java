@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("LAUNCH", "MAIN ACTIVITY LAUNCH");
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         userId = sharedPref.getString("userID", "N/A");
         groups = FirebaseDatabase.getInstance().getReference("groups");
@@ -100,6 +102,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
+        Log.d("LENGTH", Integer.toString(myTasks.size()));
+        Log.d("LENGTH", Integer.toString(allTasks.size()));
+        Log.d("LENGTH", Integer.toString(archiveTasks.size()));
     }
 
 
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     public void makeDummyData() {
+        Log.d("CALL", "DUMMY DATA CALLED");
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
@@ -194,6 +200,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         Collections.sort(myTasks, new TaskComparator());
         Collections.sort(allTasks, new TaskComparator());
         Collections.sort(archiveTasks, new TaskComparator());
+        for(int i = 0; i < myTasks.size(); i++){
+            Log.d("DEADLINE", myTasks.get(i).getDeadline());
+            Log.d("Name", myTasks.get(i).getName());
+        }
 
         myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
         allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
@@ -299,7 +309,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
                 if (task != null) {
                     if (task.getAssignedTo( ).equals( userId )) {
+                        Log.d("ADD", "Adding to myTask");
                         myTasks.add( task );
+                        Log.d("ADD_LENGTH", "");
                     }
                     myTaskAdapter.notifyDataSetChanged( );
                 }
@@ -343,7 +355,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 

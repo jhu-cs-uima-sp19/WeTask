@@ -85,6 +85,7 @@ public class GroupSettings extends AppCompatActivity {
                 }
 
                 GroupObject test_group = new GroupObject(finalId, name);
+                test_group.addUser(MainActivity.userId);//TODO: ADD THIS GROUP TO THE USER'S GROUP LIST
                 groups.child(finalId).setValue(test_group);
                 Intent main = new Intent(GroupSettings.this, MainActivity.class);
                 startActivity(main);
