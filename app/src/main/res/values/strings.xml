@@ -26,6 +26,7 @@
     <string name="assigned_by">Assigned By:</string>
     <string name="created">Created:</string>
     <string name="deadline">Deadline:</string>
+    <string name="date_completed">Date Completed:</string>
     <string name="task_title_goes_here">TITLE</string>
     <string name="confirm">CONFIRM</string>
     <string name="sample_date">MM/DD/YY</string>
