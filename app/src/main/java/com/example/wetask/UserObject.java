@@ -22,4 +22,5 @@ public class UserObject {
     public String getUserID() {return userID;}
     public List<String> getGroupList() {return groupList;}
     public String getPassword(){return password;}
+    public void addGroup(String groupID){groupList.add(groupID);}
 }

@@ -29,7 +29,7 @@ import static android.view.Menu.NONE;
 
 public class GroupSettings extends AppCompatActivity {
     FirebaseDatabase database;
-    DatabaseReference groups;
+    DatabaseReference groups, users;
     Button complete;
     EditText edit;
 
@@ -48,6 +48,7 @@ public class GroupSettings extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
         database = FirebaseDatabase.getInstance();
+        users = database.getReference("users");
         groups = database.getReference("groups");
 
         complete = findViewById(R.id.create_group);
@@ -86,6 +87,7 @@ public class GroupSettings extends AppCompatActivity {
 
                 GroupObject test_group = new GroupObject(finalId, name);
                 test_group.addUser(MainActivity.userId);//TODO: ADD THIS GROUP TO THE USER'S GROUP LIST
+                addGroupToUser(test_group.getGroupID(), MainActivity.userId);
                 groups.child(finalId).setValue(test_group);
                 Intent main = new Intent(GroupSettings.this, MainActivity.class);
                 startActivity(main);
@@ -98,6 +100,23 @@ public class GroupSettings extends AppCompatActivity {
 
 
         });
+    }
+
+    private void addGroupToUser(final String groupID, final String userID){
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject curr_user = dataSnapshot.child(userID).getValue(UserObject.class);
+                curr_user.addGroup(groupID);
+                users.child(userID).setValue(curr_user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
