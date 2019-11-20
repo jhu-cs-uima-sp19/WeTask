@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,8 @@ public class GroupSettings extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+
         database = FirebaseDatabase.getInstance();
         groups = database.getReference("groups");
 
@@ -65,6 +68,9 @@ public class GroupSettings extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        EditText groupName = findViewById(R.id.edit_group_name);
+        groupName.setText(sharedPref.getString("groupStr", "Error: No Group Found"));
     }
 
     private void makeNewGroup(final String id, final String name) {
