@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
     private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
     static String userId;
-    static String groupId = "g100"; // need to figure out how to get group id
+    static String groupId  = "g100"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
@@ -65,7 +65,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
         get_first_group(userId);
-        Log.d("LAUNCH", groupId);
+
+        Log.d("LAUNCH_USERID", userId);
+        Log.d("LAUNCH_GROUPID", groupId);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -442,13 +445,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
-    private void get_first_group(final String userId){
+    private void get_first_group(String userId){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
+                UserObject temp = dataSnapshot.child(MainActivity.userId).getValue(UserObject.class);
                 ArrayList<String> groups = temp.getGroupList();
-                groupId = groups.get(0);
+                Log.d("LAUNCHID", groups.get(1));
+                MainActivity.groupId = groups.get(1);
             }
 
             @Override
