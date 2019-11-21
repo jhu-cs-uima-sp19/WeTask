@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static TaskItemAdapter archiveTaskAdapter;
     static ArrayList<String> groupNames;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +122,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onResume() {
         super.onResume();
+        update_task_lists();
         //addMenuItemInNavMenuDrawer(groupNames);
     }
 
