@@ -10,7 +10,7 @@ public class UserObject {
 
     UserObject(){
         this.userID = "nameHolder";
-        this.groupList = new ArrayList<String>();
+        this.groupList = new ArrayList<>();
         this.password = "passwordHolder";
     }
 

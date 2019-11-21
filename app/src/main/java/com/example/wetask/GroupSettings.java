@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +77,7 @@ public class GroupSettings extends AppCompatActivity {
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupId");
-                    editGroup(id, groupName, userID);
+                    editGroup(id, groupName);
                     intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -117,20 +118,15 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void editGroup(final String id, final String newName, final String new_userID) {
+    private void editGroup(final String id, final String newName) {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Add new user to group first
-                GroupObject edited_group = dataSnapshot.child(id).getValue(GroupObject.class);
-                edited_group.addUser(new_userID);
-                groups.child(id).setValue(edited_group);
 
-                // Change group name
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
-                startActivity(intent);
+//                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
+//                startActivity(intent);
             }
 
             @Override
