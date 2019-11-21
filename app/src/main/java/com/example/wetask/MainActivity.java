@@ -168,18 +168,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
-        for (int i = 0; i < groupNames.size(); i++) {
-            if (item == groupMenu.getItem(i)) {
-                //set correct masterList based on new group
-                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putInt("group", i);
-                edit.commit();
-
-                Toolbar toolbar = findViewById(R.id.toolbar);
-                toolbar.setTitle(groupNames.get(i));
-            }
-        }
+//        for (int i = 0; i < groupNames.size(); i++) {
+//            if (item == groupMenu.getItem(i)) {
+//                //set correct masterList based on new group
+//                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+//                SharedPreferences.Editor edit = sharedPref.edit();
+//                edit.putInt("group", i);
+//                edit.commit();
+//
+//                Toolbar toolbar = findViewById(R.id.toolbar);
+//                toolbar.setTitle(groupNames.get(i));
+//            }
+//        }
 
         if(current_groupID_list.keySet().contains(id)){
             // Update groupID and fragments
