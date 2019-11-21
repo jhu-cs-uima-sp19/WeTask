@@ -75,7 +75,7 @@ public class GroupSettings extends AppCompatActivity {
                     startActivity(intent);
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
-                    String id = intent.getStringExtra("groupId");
+                    String id = intent.getStringExtra("groupID");
                     editGroup(id, groupName, userID);
                     intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
@@ -84,7 +84,7 @@ public class GroupSettings extends AppCompatActivity {
         });
 
         EditText groupName = findViewById(R.id.edit_group_name);
-        groupName.setText(sharedPref.getString("groupStr", "Error: No Group Found"));
+        groupName.setText(intent.getStringExtra("groupName"));
     }
 
     private void makeNewGroup(final String id, final String name, final String userID) {
