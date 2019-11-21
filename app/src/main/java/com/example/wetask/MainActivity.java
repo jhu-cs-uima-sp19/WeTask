@@ -448,7 +448,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
                 ArrayList<String> groups = temp.getGroupList();
-                groupId = groups.get(1);
+                groupId = groups.get(0);
             }
 
             @Override
