@@ -60,21 +60,23 @@ public class GroupSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 edit = (EditText) findViewById(R.id.edit_group_name);
+                EditText user = (EditText) findViewById(R.id.add_user);
                 String groupName = edit.getText().toString();
+                String userID = user.getText().toString();
 
                 if (editVal == 0) { //if creating group
                     Random r = new Random();
                     int tag = r.nextInt();
                     String id = Integer.toString(tag);
 
-                    makeNewGroup(id, groupName);
+                    makeNewGroup(id, groupName, userID);
 
                     Intent intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupId");
-                    editGroup("g100", groupName);
+                    editGroup(id, groupName);
                     intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -85,7 +87,7 @@ public class GroupSettings extends AppCompatActivity {
         groupName.setText(sharedPref.getString("groupStr", "Error: No Group Found"));
     }
 
-    private void makeNewGroup(final String id, final String name) {
+    private void makeNewGroup(final String id, final String name, final String userID) {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,8 +99,10 @@ public class GroupSettings extends AppCompatActivity {
                 }
 
                 GroupObject test_group = new GroupObject(finalId, name);
-                test_group.addUser(MainActivity.userId);//TODO: ADD THIS GROUP TO THE USER'S GROUP LIST
+                test_group.addUser(MainActivity.userId);
+                test_group.addUser(userID);
                 addGroupToUser(test_group.getGroupID(), MainActivity.userId);
+                addGroupToUser(test_group.getGroupID(), userID);
                 groups.child(finalId).setValue(test_group);
                 Intent intent = new Intent(GroupSettings.this, MainActivity.class);
                 startActivity(intent);
@@ -119,7 +123,7 @@ public class GroupSettings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);
+                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
                 startActivity(intent);
             }
 
