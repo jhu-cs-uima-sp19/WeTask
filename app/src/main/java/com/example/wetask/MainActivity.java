@@ -43,8 +43,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private DatabaseReference groups, tasks, users;
     private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
     private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
+    private String current_group_name = "";
     static String userId;
-    static String groupId = "g100"; // need to figure out how to get group id
+    static String groupId  = "g100"; // need to figure out how to get group id
+    static int groupIdPos;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
@@ -64,28 +66,27 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
+        get_first_group();
 
-        addMenuItemInNavMenuDrawer();
-        get_first_group(userId);
+        Log.d("LAUNCH_USERID", userId);
+        Log.d("LAUNCH_GROUPID", groupId);
 
-
-        Log.d("LAUNCH", groupId);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
 
         //TODO: get actual names of groups this person is in from database
-//        groupNames = new ArrayList<String>();
-//        groupNames.add("Apartment 101"); //dummy data
-//        groupNames.add("ASPCA Volunteers"); //dummy
-//        // groupNames.add("Bob");
+        groupNames = new ArrayList<String>();
+        groupNames.add("Apartment 101"); //dummy data
+        groupNames.add("ASPCA Volunteers"); //dummy
+        // groupNames.add("Bob");
 
-//        int currGroup = sharedPref.getInt("group", 0);
-//        //TODO: use currGroup to send correct adapter to SecPagAd for current group
-//
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        toolbar.setTitle(groupNames.get(currGroup));
+        int currGroup = sharedPref.getInt("group", 0);
+        //TODO: use currGroup to send correct adapter to SecPagAd for current group
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle(groupNames.get(currGroup));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivity(intent);
             }
         });
-
+        addMenuItemInNavMenuDrawer();
 
         makeDummyData();
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onResume() {
         super.onResume();
-        addMenuItemInNavMenuDrawer();
+        //addMenuItemInNavMenuDrawer(groupNames);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -137,7 +138,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.group_settings:
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
                 //put extra with current group name (editing not creating)
-                intent.putExtra("groupId", groupId);
+                intent.putExtra("groupID", groupId);
+                intent.putExtra("groupName", current_groupName_list.get(groupIdPos));
                 intent.putExtra("edit?", 1);
                 startActivity(intent);
                 return true;
@@ -166,36 +168,30 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
+        for (int i = 0; i < groupNames.size(); i++) {
+            if (item == groupMenu.getItem(i)) {
+                //set correct masterList based on new group
+                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putInt("group", i);
+                edit.commit();
 
-//        for (int i = 0; i < groupNames.size(); i++) {
-//            if (item == groupMenu.getItem(i)) {
-//                //set correct masterList based on new group
-//                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-//                SharedPreferences.Editor edit = sharedPref.edit();
-//                edit.putInt("group", i);
-//                edit.commit();
-//
-//                Toolbar toolbar = findViewById(R.id.toolbar);
-//                toolbar.setTitle(groupNames.get(i));
-//            }
-//        }
-        if (id == R.id.nav_add_group) {
-            Intent intent = new Intent(MainActivity.this, GroupSettings.class);
-            //put extra with group name empty (populating new group)
-            intent.putExtra("edit?", 0);
-            startActivity(intent);
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setTitle(groupNames.get(i));
+            }
         }
-
 
         if(current_groupID_list.keySet().contains(id)){
             // Update groupID and fragments
             groupId = current_groupID_list.get(id);
+            groupIdPos = id;
             Log.d("SWITCHGROUP", Integer.toString(id));
             Log.d("SWITCHGROUP", "GROUP SWITCHED");
             Log.d("SWITCHGROUP", groupId);
             update_task_lists();// update task lists
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setTitle(current_groupName_list.get(id));
+            current_group_name = current_groupName_list.get(id);
         }
 
         if (id == R.id.nav_add_group) {
@@ -280,7 +276,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
                 Menu menu = navView.getMenu();
                 Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
-                submenu.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     GroupObject group = snapshot.getValue(GroupObject.class);
 
@@ -455,11 +450,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
-    private void get_first_group(final String userId){
+    private void get_first_group(){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
+                UserObject temp = dataSnapshot.child(MainActivity.userId).getValue(UserObject.class);
                 ArrayList<String> groups = temp.getGroupList();
                 if (groups.size() != 0) {
                     groupId = groups.get(0);
