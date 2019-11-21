@@ -164,10 +164,11 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         for (int i = 0; i < groupNames.size(); i++) {
             if (item == groupMenu.getItem(i)) {
-                //set correct masterList based on new group
                 SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putInt("group", i);
+                //edit.putInt("groupId", );
+                edit.putString("groupStr", groupNames.get(i));
+                //TODO: Change to be actual group name and group id
                 edit.commit();
 
                 Toolbar toolbar = findViewById(R.id.toolbar);
@@ -225,21 +226,25 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             Log.d("Name", myTasks.get(i).getName());
         }
 
-        myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
-        allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
-        archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
+        //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
+        //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
+        //archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
+        //TODO: finish making switch to recyclerview
+        myTaskAdapter = new TaskItemAdapter(myTasks);
+        allTaskAdapter = new TaskItemAdapter(allTasks);
+        archiveTaskAdapter = new TaskItemAdapter(archiveTasks);
     }
 
 
     public void update_task_lists() {
-        Log.d("CALL", "UPDATING TASK LISTS");
-        myTasks.clear();
-        allTasks.clear();
-        archiveTasks.clear();
+        Log.d( "CALL", "UPDATING TASK LISTS" );
+        myTasks.clear( );
+        allTasks.clear( );
+        archiveTasks.clear( );
 
-        updateMyTasks();
-        updateAllTasks();
-        updateArchivedTasks();
+        updateMyTasks( );
+        updateAllTasks( );
+        updateArchivedTasks( );
 
         myTaskAdapter.notifyDataSetChanged();
         allTaskAdapter.notifyDataSetChanged();
