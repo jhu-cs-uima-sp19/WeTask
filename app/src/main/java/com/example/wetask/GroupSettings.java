@@ -32,6 +32,8 @@ public class GroupSettings extends AppCompatActivity {
     DatabaseReference groups, users;
     Button complete;
     EditText edit;
+    //1 if we are editing, 0 if creating new group
+    int editVal = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +55,14 @@ public class GroupSettings extends AppCompatActivity {
 
         complete = findViewById(R.id.create_group);
         Intent intent = getIntent();
-        final int editVal = intent.getIntExtra("edit?", -1);
+        editVal = intent.getIntExtra("edit?", -1);
         complete.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 edit = (EditText) findViewById(R.id.edit_group_name);
                 String groupName = edit.getText().toString();
 
-                if (editVal == 0) {
+                if (editVal == 0) { //if creating group
                     Random r = new Random();
                     int tag = r.nextInt();
                     String id = Integer.toString(tag);
@@ -69,7 +71,7 @@ public class GroupSettings extends AppCompatActivity {
 
                     Intent intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
-                } else if (editVal == 1) {
+                } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupId");
                     editGroup("g100", groupName);

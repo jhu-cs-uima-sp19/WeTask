@@ -20,7 +20,7 @@ public class UserObject {
         this.password = password;
     }
     public String getUserID() {return userID;}
-    public List<String> getGroupList() {return groupList;}
+    public ArrayList<String> getGroupList() {return groupList;}
     public String getPassword(){return password;}
     public void addGroup(String groupID){groupList.add(groupID);}
 }

@@ -121,7 +121,7 @@ public class EditTaskActivity extends AppCompatActivity {
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
                     String ID = intent.getStringExtra("taskID");
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, deadline, com);
+                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, deadline, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     for(int i = 1; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
@@ -143,16 +143,17 @@ public class EditTaskActivity extends AppCompatActivity {
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, "g100", aBy, aTo, deadline, com);
+                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, deadline, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
-                    groups.child("g100").setValue(current_group);
-                    MainActivity.myTasks.add(new_task);
+                    groups.child(MainActivity.groupId).setValue(current_group);
+                    if(aTo.equals(MainActivity.userId)) {
+                        MainActivity.myTasks.add(new_task);
+                    }
                     MainActivity.allTasks.add(new_task);
                 }
                 MainActivity.notify_changes();
-                Intent intent = new Intent(EditTaskActivity.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

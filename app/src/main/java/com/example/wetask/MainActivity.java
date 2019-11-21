@@ -32,12 +32,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static android.view.Menu.NONE;
 
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseReference groups, tasks, users;
+    private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
+    private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
     static String userId;
     static String groupId = "g100"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
@@ -53,11 +58,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("LAUNCH", "MAIN ACTIVITY LAUNCH");
+
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         userId = sharedPref.getString("userID", "N/A");
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
+        get_first_group(userId);
+        Log.d("LAUNCH", groupId);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -151,7 +159,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
@@ -166,6 +173,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Toolbar toolbar = findViewById(R.id.toolbar);
                 toolbar.setTitle(groupNames.get(i));
             }
+        }
+
+        if(current_groupID_list.keySet().contains(id)){
+            // Update groupID and fragments
+            groupId = current_groupID_list.get(id);
+            Log.d("SWITCHGROUP", Integer.toString(id));
+            Log.d("SWITCHGROUP", "GROUP SWITCHED");
+            Log.d("SWITCHGROUP", groupId);
+            update_task_lists();// update task lists
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle(current_groupName_list.get(id));
         }
 
         if (id == R.id.nav_add_group) {
@@ -212,6 +230,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
     }
 
+
+    public void update_task_lists() {
+        Log.d("CALL", "UPDATING TASK LISTS");
+        myTasks.clear();
+        allTasks.clear();
+        archiveTasks.clear();
+
+        updateMyTasks();
+        updateAllTasks();
+        updateArchivedTasks();
+
+        myTaskAdapter.notifyDataSetChanged();
+        allTaskAdapter.notifyDataSetChanged();
+        archiveTaskAdapter.notifyDataSetChanged();
+    }
+
     /*Programmatically adds groups to nav drawer.**/
 //    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
 //        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
@@ -225,6 +259,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 //    }
 
     private void addMenuItemInNavMenuDrawer() {
+        current_groupID_list = new HashMap<Integer, String>();
+        current_groupName_list = new HashMap<Integer, String>();
+
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -233,8 +270,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     GroupObject group = snapshot.getValue(GroupObject.class);
+
+                    //check if current user has this group
+                    if(!group.getGroupUserList().contains(userId)){
+                        continue;
+                    }
                     String groupName = group.getGroupName();
-                    submenu.add(NONE, NONE, 0, groupName);
+                    Random r = new Random();
+                    MenuItem temp = submenu.add(NONE, r.nextInt(), 0, groupName);
+                    current_groupID_list.put(temp.getItemId(), group.getGroupID()); //store list of groupID for switching between groups
+                    current_groupName_list.put(temp.getItemId(), groupName);
+                    Log.d("GROUPID", Integer.toString(temp.getItemId()));
+                    Log.d("GROUPID", group.getGroupID());
                 }
                 navView.invalidate();
             }
@@ -333,8 +380,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
                 if (task != null) {
                     allTasks.add( task );
-                    allTaskAdapter.notifyDataSetChanged( );
                 }
+                allTaskAdapter.notifyDataSetChanged( );
             }
 
             @Override
@@ -394,5 +441,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         }
     }
+
+    private void get_first_group(final String userId){
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
+                ArrayList<String> groups = temp.getGroupList();
+                groupId = groups.get(1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
