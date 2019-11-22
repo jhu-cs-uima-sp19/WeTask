@@ -196,10 +196,25 @@ public class EditTaskActivity extends AppCompatActivity {
 
     private void populate_users_list() {
         //TODO: replace with list of users in current group (Simon/ThA)
-        users_list.add("Unassigned");
-        users_list.add("Sadie");
-        users_list.add("Zoe");
-        users_list.add("simon");
-        users_list.add("a");
+//        users_list.add("Unassigned");
+//        users_list.add("Sadie");
+//        users_list.add("Zoe");
+//        users_list.add("simon");
+//        users_list.add("a");
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> users = current_group.getGroupUserList();
+                users_list.addAll(users);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+        });
     }
 }
