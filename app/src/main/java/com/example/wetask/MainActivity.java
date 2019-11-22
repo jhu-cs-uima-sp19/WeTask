@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
     static String userId;
     static String groupId = "-1226243259"; // need to figure out how to get group id
+    static int groupPos;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
     static TaskItemAdapter archiveTaskAdapter;
-    static ArrayList<String> groupNames;
+    //static ArrayList<String> groupNames;
 
 
     @Override
@@ -72,16 +73,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         FloatingActionButton fab = findViewById(R.id.fab);
 
         //TODO: get actual names of groups this person is in from database
-        groupNames = new ArrayList<String>();
-        groupNames.add("Apartment 101"); //dummy data
-        groupNames.add("ASPCA Volunteers"); //dummy
-        // groupNames.add("Bob");
+//        groupNames = new ArrayList<String>();
+//        groupNames.add("Apartment 101"); //dummy data
+//        groupNames.add("ASPCA Volunteers"); //dummy
+//        groupNames.add("Bob");
 
         int currGroup = sharedPref.getInt("group", 0);
         //TODO: use currGroup to send correct adapter to SecPagAd for current group
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle(groupNames.get(currGroup));
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        toolbar.setTitle(groupNames.get(currGroup));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
                 //put extra with current group name (editing not creating)
                 intent.putExtra("groupID", groupId);
+                intent.putExtra("groupName",current_groupName_list.get(groupPos));
                 intent.putExtra("edit?", 1);
                 startActivity(intent);
                 return true;
@@ -161,21 +163,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        groupPos = id;
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
-        for (int i = 0; i < groupNames.size(); i++) {
-            if (item == groupMenu.getItem(i)) {
-                //set correct masterList based on new group
-                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putInt("group", i);
-                edit.commit();
-
-                Toolbar toolbar = findViewById(R.id.toolbar);
-                toolbar.setTitle(groupNames.get(i));
-            }
-        }
+//        for (int i = 0; i < groupNames.size(); i++) {
+//            if (item == groupMenu.getItem(i)) {
+//                //set correct masterList based on new group
+//                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+//                SharedPreferences.Editor edit = sharedPref.edit();
+//                edit.putInt("group", i);
+//                edit.commit();
+//
+//                Toolbar toolbar = findViewById(R.id.toolbar);
+//                toolbar.setTitle(groupNames.get(i));
+//            }
+//        }
 
         if(current_groupID_list.keySet().contains(id)){
             // Update groupID and fragments

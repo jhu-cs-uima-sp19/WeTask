@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -128,7 +127,6 @@ public class EditTaskActivity extends AppCompatActivity {
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.allTasks.remove(i);
                             MainActivity.allTasks.add(new_task);
-                            Log.d("EDIT_TASK", "ADDED TO ALLTASKS");
                         }
                     }
                     for(int i = 1; i < MainActivity.myTasks.size(); i++){
@@ -136,12 +134,9 @@ public class EditTaskActivity extends AppCompatActivity {
                             MainActivity.myTasks.remove(i);
                             if(MainActivity.userId.equals(aTo)){
                                 MainActivity.myTasks.add(new_task);
-                                Log.d("EDIT_TASK", "ADDED TO MYTASKS");
                             }
                         }
                     }
-                    MainActivity.notify_changes();
-                    finish();
                     //also, updating created date every time
                 } else { //IF CREATING A TASK
                     Random r = new Random();
