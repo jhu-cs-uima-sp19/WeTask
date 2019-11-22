@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -77,7 +78,7 @@ public class GroupSettings extends AppCompatActivity {
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupID");
-                    editGroup(id, groupName);
+                    editGroup(id, groupName, userID);
                     intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -101,9 +102,13 @@ public class GroupSettings extends AppCompatActivity {
 
                 GroupObject test_group = new GroupObject(finalId, name);
                 test_group.addUser(MainActivity.userId);
-                test_group.addUser(userID);
                 addGroupToUser(test_group.getGroupID(), MainActivity.userId);
-                addGroupToUser(test_group.getGroupID(), userID);
+
+                if (!userID.isEmpty()) {
+                    test_group.addUser(userID);
+                    addGroupToUser(test_group.getGroupID(), userID);
+                }
+
                 groups.child(finalId).setValue(test_group);
                 Intent intent = new Intent(GroupSettings.this, MainActivity.class);
                 startActivity(intent);
@@ -118,10 +123,16 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void editGroup(final String id, final String newName) {
+    private void editGroup(final String id, final String newName, final String newUserID) {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject temp = dataSnapshot.child(id).getValue(GroupObject.class);
+                if(!newUserID.isEmpty()){
+                    temp.addUser(newUserID);
+                    addGroupToUser(id, newUserID);
+                }
+                groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
                 Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
