@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -84,7 +86,7 @@ public class GroupSettings extends AppCompatActivity {
         });
 
         EditText groupName = findViewById(R.id.edit_group_name);
-        groupName.setText(intent.getStringExtra("groupName"));
+        groupName.setText(sharedPref.getString("groupStr", "Error: No Group Found"));
     }
 
     private void makeNewGroup(final String id, final String name, final String userID) {
@@ -92,7 +94,7 @@ public class GroupSettings extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String finalId = id;
-                while (dataSnapshot.child(id).exists()) {
+                while (dataSnapshot.child(finalId).exists()) {
                     Random r = new Random();
                     int tag = r.nextInt();
                     finalId = Integer.toString(tag);
@@ -100,9 +102,13 @@ public class GroupSettings extends AppCompatActivity {
 
                 GroupObject test_group = new GroupObject(finalId, name);
                 test_group.addUser(MainActivity.userId);
-                test_group.addUser(userID);
                 addGroupToUser(test_group.getGroupID(), MainActivity.userId);
-                addGroupToUser(test_group.getGroupID(), userID);
+
+                if (!userID.isEmpty()) {
+                    test_group.addUser(userID);
+                    addGroupToUser(test_group.getGroupID(), userID);
+                }
+
                 groups.child(finalId).setValue(test_group);
                 Intent intent = new Intent(GroupSettings.this, MainActivity.class);
                 startActivity(intent);
@@ -117,16 +123,16 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void editGroup(final String id, final String newName, final String new_userID) {
+    private void editGroup(final String id, final String newName, final String newUserID) {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Add new user to group first
-                GroupObject edited_group = dataSnapshot.child(id).getValue(GroupObject.class);
-                edited_group.addUser(new_userID);
-                groups.child(id).setValue(edited_group);
-
-                // Change group name
+                GroupObject temp = dataSnapshot.child(id).getValue(GroupObject.class);
+                if(!newUserID.isEmpty()){
+                    temp.addUser(newUserID);
+                    addGroupToUser(id, newUserID);
+                }
+                groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
                 Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
@@ -148,6 +154,7 @@ public class GroupSettings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserObject curr_user = dataSnapshot.child(userID).getValue(UserObject.class);
                 curr_user.addGroup(groupID);
+                Log.d("USERID", userID);
                 users.child(userID).setValue(curr_user);
             }
 
