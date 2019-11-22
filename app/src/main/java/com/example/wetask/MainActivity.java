@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
     private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
     static String userId;
-    static String groupId = "g100"; // need to figure out how to get group id
+    static String groupId = "-1226243259"; // need to figure out how to get group id
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         users = FirebaseDatabase.getInstance().getReference("users");
-        get_first_group(userId);
+        //get_first_group(userId);
         Log.d("LAUNCH", groupId);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivity(intent);
             }
         });
+
         addMenuItemInNavMenuDrawer();
 
         makeDummyData();
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     @Override
     protected void onResume() {
         super.onResume();
+        update_task_lists();
         //addMenuItemInNavMenuDrawer(groupNames);
     }
 

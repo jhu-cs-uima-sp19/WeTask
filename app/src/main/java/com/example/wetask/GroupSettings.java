@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +76,7 @@ public class GroupSettings extends AppCompatActivity {
                     startActivity(intent);
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
-                    String id = intent.getStringExtra("groupId");
+                    String id = intent.getStringExtra("groupID");
                     editGroup(id, groupName);
                     intent = new Intent(GroupSettings.this, MainActivity.class);
                     startActivity(intent);
@@ -92,7 +93,7 @@ public class GroupSettings extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String finalId = id;
-                while (dataSnapshot.child(id).exists()) {
+                while (dataSnapshot.child(finalId).exists()) {
                     Random r = new Random();
                     int tag = r.nextInt();
                     finalId = Integer.toString(tag);
@@ -142,6 +143,7 @@ public class GroupSettings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserObject curr_user = dataSnapshot.child(userID).getValue(UserObject.class);
                 curr_user.addGroup(groupID);
+                Log.d("USERID", userID);
                 users.child(userID).setValue(curr_user);
             }
 

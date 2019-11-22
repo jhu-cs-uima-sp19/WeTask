@@ -98,6 +98,9 @@ public class Login extends AppCompatActivity {
                     UserObject test_user = new UserObject(username, test_list, password);
                     users.child(username).setValue(test_user);
                     Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
+                    SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
+                    SharedPreferences.Editor edit = sharedPref.edit();
+                    edit.putString("userID", username);
                     Intent main = new Intent(Login.this, MainActivity.class);
                     startActivity(main);
                 } else {
