@@ -99,6 +99,11 @@ public class ViewTaskActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         switch (item.getItemId()) {

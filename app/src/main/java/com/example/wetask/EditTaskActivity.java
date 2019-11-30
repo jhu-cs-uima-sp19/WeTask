@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,11 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class EditTaskActivity extends AppCompatActivity {
+public class EditTaskActivity extends AppCompatActivity{
     private GroupObject current_group;
     private UserObject current_user;
     private DatabaseReference groups, tasks, users;
-    private static String aTo = "";
+    private String aTo = "SIMON";
     private static ArrayList<String> users_list;
     private static ArrayAdapter<String> adapter;
     String deadline = "";
@@ -71,6 +72,7 @@ public class EditTaskActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.assignee);
         users_list = new ArrayList<String>();
         populate_users_list();
+        Log.d("ASSIGNTO", aTo);
 
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, users_list);
@@ -79,7 +81,9 @@ public class EditTaskActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                aTo = (String) parent.getItemAtPosition(position);
+                Log.d("ASSIGNTO", parent.getItemAtPosition(position).toString());
+                aTo = parent.getItemAtPosition(position).toString();
+                Log.d("ASSIGNTO", aTo);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -196,10 +200,24 @@ public class EditTaskActivity extends AppCompatActivity {
 
     private void populate_users_list() {
         //TODO: replace with list of users in current group (Simon/ThA)
-        users_list.add("Unassigned");
-        users_list.add("Sadie");
-        users_list.add("Zoe");
-        users_list.add("simon");
-        users_list.add("a");
+//        users_list.add("Unassigned");
+//        users_list.add("Sadie");
+//        users_list.add("Zoe");
+//        users_list.add("simon");
+//        users_list.add("a");
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<String> users = current_group.getGroupUserList();
+                users_list.addAll(users);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+        });
     }
 }
