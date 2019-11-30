@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.wetask.MainActivity.groupId;
+
 public class Login extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference users;
@@ -72,6 +74,7 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor edit = sharedPref.edit();
                         edit.putString("userID", username);
                         edit.commit();
+                        get_first_group(username);
                         Intent main = new Intent(Login.this, MainActivity.class);
                         startActivity(main);
                     }else{
@@ -101,11 +104,34 @@ public class Login extends AppCompatActivity {
                     SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
                     SharedPreferences.Editor edit = sharedPref.edit();
                     edit.putString("userID", username);
-                    Intent main = new Intent(Login.this, MainActivity.class);
-                    startActivity(main);
+                    edit.commit();
+                    get_first_group(username);
                 } else {
                     Toast.makeText(Login.this, "This username already exists", Toast.LENGTH_LONG).show();
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void get_first_group(final String userId){
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
+                ArrayList<String> groups = temp.getGroupList();
+                String firstGroup = groups.get(0);
+                Log.d("LAUNCH_GETGROUP", firstGroup);
+                SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPref.edit();
+                edit.putString("groupID", firstGroup);
+                edit.commit();
+                Intent main = new Intent(Login.this, MainActivity.class);
+                startActivity(main);
             }
 
             @Override

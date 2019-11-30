@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
     private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
     static String userId;
-    static String groupId = "-1226243259"; // need to figure out how to get group id
+    static String groupId = "0"; // need to figure out how to get group id
     static int groupPos;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
@@ -59,13 +59,13 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("LAUNCH", "MAIN ACTIVITY LAUNCH");
-
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         userId = sharedPref.getString("userID", "N/A");
+        users = FirebaseDatabase.getInstance().getReference("users");
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
-        users = FirebaseDatabase.getInstance().getReference("users");
-        //get_first_group(userId);
+        groupId = sharedPref.getString("groupID", "N/A");
+
         Log.d("LAUNCH", groupId);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -104,16 +104,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         addMenuItemInNavMenuDrawer();
 
-        makeDummyData();
+        update_toolbar();
+
+        myTasks = new ArrayList<TaskItem>();
+        allTasks = new ArrayList<TaskItem>();
+        archiveTasks = new ArrayList<TaskItem>();
+        myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
+        allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
+        archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById( R.id.view_pager );
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
-        Log.d("LENGTH", Integer.toString(myTasks.size()));
-        Log.d("LENGTH", Integer.toString(allTasks.size()));
-        Log.d("LENGTH", Integer.toString(archiveTasks.size()));
+
+        //update_task_lists();
     }
 
 
@@ -454,6 +460,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
                 ArrayList<String> groups = temp.getGroupList();
                 groupId = groups.get(1);
+                Log.d("GETFIRSTGROUP", groups.get(1));
+                Log.d("GETFIRSTGROUP", groupId);
             }
 
             @Override
@@ -463,5 +471,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         });
     }
 
+    private void update_toolbar(){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                String name = group.getGroupName();
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setTitle(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }
