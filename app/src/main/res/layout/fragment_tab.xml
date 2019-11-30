@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".TabFragment">
 
-    <ListView
+   <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/taskList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,6 +13,6 @@
         android:isScrollContainer="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical">
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

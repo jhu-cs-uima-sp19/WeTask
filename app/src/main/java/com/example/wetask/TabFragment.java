@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,9 +71,12 @@ public class TabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate( R.layout.fragment_tab, container, false );
-        ListView list = (ListView) view.findViewById(R.id.taskList);
+//        ListView list = (ListView) view.findViewById(R.id.taskList);
+
+        //RecyclerView list = view.findViewById(R.id.taskList);
         tasks = new ArrayList<TaskItem>();
-        TaskItemAdapter adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
+        //TaskItemAdapter adapter = new TaskItemAdapter(getActivity(), R.layout.task_item_layout, tasks);
+        TaskItemAdapter adapter = new TaskItemAdapter(tasks);
 
         int tab = 3;
         if (getArguments( ) != null) {
@@ -93,31 +98,15 @@ public class TabFragment extends Fragment {
                 break;
         }
 
-        final TaskItemAdapter adap = adapter;
-
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //TaskItem selected = tasks.get(position);
-                TaskItem selected = adap.getItem(position);
-
-                SharedPreferences sharedPref = getActivity().getSharedPreferences("weTask", MODE_PRIVATE);
-                SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putString("title", selected.getName());
-                edit.putString("created", selected.getCreatedDate());
-                edit.putString("deadline", selected.getDeadline());
-                edit.putString("assigner", selected.getAssignedBy());
-                edit.putString("assignee", selected.getAssignedTo());
-                edit.putString("comments", selected.getComments());
-                edit.putString("taskId", selected.getTaskId());
-                edit.commit();
-
-                Intent intent = new Intent(getActivity(), ViewTaskActivity.class);
-                intent.putExtra("if_new", 0);
-                startActivity(intent);
-            }
-        });
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.taskList);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        // specify an adapter (see also next example)
+        recyclerView.setAdapter(adapter);
         return view;
     }
 }
