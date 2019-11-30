@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static TaskItemAdapter archiveTaskAdapter;
     //static ArrayList<String> groupNames;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 //        groupNames.add("Bob");
 
         int currGroup = sharedPref.getInt("group", 0);
-        //TODO: use currGroup to send correct adapter to SecPagAd for current group
 
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        toolbar.setTitle(groupNames.get(currGroup));
@@ -109,9 +107,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
-        //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
-        //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
-        //archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
+        myTaskAdapter = new TaskItemAdapter(myTasks);
+        allTaskAdapter = new TaskItemAdapter(allTasks);
+        archiveTaskAdapter = new TaskItemAdapter(archiveTasks);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById( R.id.view_pager );
