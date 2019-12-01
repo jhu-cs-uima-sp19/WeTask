@@ -33,7 +33,7 @@
     <string name="sample_date">MM/DD/YY</string>
     <string name="create_group">CREATE</string>
     <string name="edit_group_name">Group Name</string>
-    <string name="add_user">Add a Member (Limit 8)</string>
+    <string name="add_user">Add a User (Limit 8)</string>
     <string name="enter_user">Type Username</string>
     <string name="add_comments">Add Comments</string>
     <string name="add_title">Enter Title</string>

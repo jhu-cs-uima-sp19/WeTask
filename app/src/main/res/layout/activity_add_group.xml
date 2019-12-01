@@ -15,13 +15,13 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/confirm_group"
+        android:id="@+id/create_group"
         android:layout_width="300dp"
         android:layout_height="46dp"
         android:layout_marginBottom="44dp"
         android:background="@color/colorPrimary"
-        android:contentDescription="@string/confirm"
-        android:text="@string/confirm"
+        android:contentDescription="@string/create_group"
+        android:text="@string/create_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -47,7 +47,7 @@
         android:ems="10"
         android:hint="@string/add_user"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/confirm_group"
+        app:layout_constraintBottom_toTopOf="@+id/create_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toStartOf="parent"
