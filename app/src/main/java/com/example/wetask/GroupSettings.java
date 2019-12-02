@@ -35,12 +35,20 @@ public class GroupSettings extends AppCompatActivity {
     Button complete;
     EditText edit;
     //1 if we are editing, 0 if creating new group
-    int editVal = -1;
+    int editVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_settings);
+
+        Intent intent = getIntent();
+        editVal = intent.getIntExtra("edit?", -1);
+
+        if (editVal == 1) {
+            EditText groupName = findViewById(R.id.edit_group_name);
+            groupName.setText(intent.getStringExtra("groupName"));
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,9 +63,7 @@ public class GroupSettings extends AppCompatActivity {
         users = database.getReference("users");
         groups = database.getReference("groups");
 
-        complete = findViewById(R.id.create_group);
-        Intent intent = getIntent();
-        editVal = intent.getIntExtra("edit?", -1);
+        complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +91,7 @@ public class GroupSettings extends AppCompatActivity {
             }
         });
 
-        EditText groupName = findViewById(R.id.edit_group_name);
-        groupName.setText(intent.getStringExtra("groupName"));
+
     }
 
     private void makeNewGroup(final String id, final String name, final String userID) {
