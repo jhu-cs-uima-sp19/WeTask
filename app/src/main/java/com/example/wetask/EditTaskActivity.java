@@ -35,11 +35,10 @@ public class EditTaskActivity extends AppCompatActivity{
     private GroupObject current_group;
     private UserObject current_user;
     private DatabaseReference groups, tasks, users;
-    private String aTo = "SIMON";
-    private static ArrayList<String> users_list;
-    private static ArrayAdapter<String> adapter;
-    String deadline = "";
-    TextView deadline_view;
+    private String aTo = "Unassigned";
+    private ArrayList<String> users_list;
+    private String deadline = "";
+    private TextView deadline_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +68,18 @@ public class EditTaskActivity extends AppCompatActivity{
         deadline_view = findViewById(R.id.deadline_date);
         final EditText comment = findViewById(R.id.comments_edit);
 
-        Spinner spinner = (Spinner) findViewById(R.id.assignee);
+        Spinner spinner = findViewById(R.id.assignee);
         users_list = new ArrayList<String>();
         populate_users_list();
-        Log.d("ASSIGNTO", aTo);
 
-        adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, users_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("ASSIGNTO", parent.getItemAtPosition(position).toString());
                 aTo = parent.getItemAtPosition(position).toString();
-                Log.d("ASSIGNTO", aTo);
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -97,9 +93,7 @@ public class EditTaskActivity extends AppCompatActivity{
             deadline_view.setText(deadline);
             comment.setText(sharedPref.getString("comments", ""));
             //TODO: make spinner start with right thing selected if task has already been assigned
-        } else {
-            deadline = "";
-        }
+         }
 
         ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
         launch_date_picker.setOnClickListener( new View.OnClickListener() {
@@ -115,7 +109,7 @@ public class EditTaskActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String name = taskTitle.getText().toString();
-                String ddl_temp = deadline_view.getText().toString();
+                String ddl = deadline_view.getText().toString();
                 String aBy = "Not Assigned Yet"; //or some other default message
                 if (!aTo.equals("Unassigned")) {
                     aBy = sharedPref.getString("userID", "user error");
@@ -125,7 +119,7 @@ public class EditTaskActivity extends AppCompatActivity{
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
                     String ID = intent.getStringExtra("taskID");
 
-                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, deadline, com);
+                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     for(int i = 1; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
@@ -147,7 +141,7 @@ public class EditTaskActivity extends AppCompatActivity{
                     int tag = r.nextInt();
                     String ID = Integer.toString(tag);
 
-                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, deadline, com);
+                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, ddl, com);
                     tasks.child(new_task.getTaskId()).setValue(new_task);
                     current_group.addGroupTask(new_task.getTaskId());
                     groups.child(MainActivity.groupId).setValue(current_group);
@@ -214,5 +208,11 @@ public class EditTaskActivity extends AppCompatActivity{
 
 
         });
+        users_list.add("Unassigned");
+    }
+
+    public void datePicked(String ddl) {
+        deadline = ddl;
+        deadline_view.setText(deadline);
     }
 }
