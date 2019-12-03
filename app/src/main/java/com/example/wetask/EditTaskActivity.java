@@ -110,6 +110,10 @@ public class EditTaskActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String name = taskTitle.getText().toString();
+                if (name.isEmpty()) {
+                    Toast.makeText(EditTaskActivity.this, "Error: Empty Task Name", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String ddl = deadline_view.getText().toString();
                 String aBy = "Not Assigned Yet"; //or some other default message
                 if (!aTo.equals("Unassigned")) {

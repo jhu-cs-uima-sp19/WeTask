@@ -74,7 +74,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         taskTitle.setText(title);
 
         TextView create = findViewById(R.id.create);
-        String created = "Last Edited:" + sharedPref.getString("created", "1/1/2020");
+        String created = "Last Edited: " + sharedPref.getString("created", "1/1/2020");
         create.setText(created);
 
         TextView deadline = findViewById(R.id.deadline);
