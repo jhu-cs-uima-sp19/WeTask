@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        //TODO: get actual names of groups this person is in from database
 //        groupNames = new ArrayList<String>();
 //        groupNames.add("Apartment 101"); //dummy data
 //        groupNames.add("ASPCA Volunteers"); //dummy
@@ -234,10 +233,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             Log.d("Name", myTasks.get(i).getName());
         }
 
-        //myTaskAdapter = new TaskItemAdapter(this, R.layout.task_item_layout, myTasks);
-        //allTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, allTasks );
-        //archiveTaskAdapter = new TaskItemAdapter( this, R.layout.task_item_layout, archiveTasks );
-        //TODO: finish making switch to recyclerview
         myTaskAdapter = new TaskItemAdapter(myTasks);
         allTaskAdapter = new TaskItemAdapter(allTasks);
         archiveTaskAdapter = new TaskItemAdapter(archiveTasks);

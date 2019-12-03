@@ -24,18 +24,6 @@ public class TaskItem {
     private Date date = new Date();
     private String createdDate = formatter.format(date);
 
-/*    TaskItem(String item_name, String tID, String gID, String assignedBy, String assignedTo) {
-        this.name = item_name;
-        this.taskId = tID;
-        this.groupID = gID;
-        //this.assignedBy = "no user found";
-        this.assignedBy = assignedBy;
-        this.assignedTo = assignedTo;
-        this.deadline = "no deadline";
-        this.comments = " ";
-        this.finished = false;
-    }*/
-
     TaskItem(String item_name, String tID, String gID,
              String assignedBy, String assignedTo, String deadline, String comments) {
         this.name = item_name;

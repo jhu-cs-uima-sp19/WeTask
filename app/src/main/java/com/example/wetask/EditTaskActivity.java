@@ -205,7 +205,6 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
     private void populate_users_list() {
-        //TODO: replace with list of users in current group (Simon/ThA)
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -140,7 +140,7 @@ public class GroupSettings extends AppCompatActivity {
                 groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  // TODO: Try to not start  mainactivity twice
+                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  //TODO: Try to not start  mainactivity twice
                 startActivity(intent);
             }
 
