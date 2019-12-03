@@ -75,8 +75,6 @@ public class Login extends AppCompatActivity {
                         edit.putString("userID", username);
                         edit.commit();
                         get_first_group(username);
-                        Intent main = new Intent(Login.this, MainActivity.class);
-                        startActivity(main);
                     }else{
                         Toast.makeText(Login.this, "Wrong username/password combination", Toast.LENGTH_LONG).show();
                     }

@@ -58,7 +58,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("LAUNCH", "MAIN ACTIVITY LAUNCH");
+        setContentView(R.layout.activity_main);
 
+        /*initialize database instances and get group to start in*/
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         userId = sharedPref.getString("userID", "N/A");
         users = FirebaseDatabase.getInstance().getReference("users");
@@ -66,21 +68,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         groupId = sharedPref.getString("groupID", "N/A");
 
-        Log.d("LAUNCH", groupId);
-        setContentView(R.layout.activity_main);
+        /*enable hamburger icon nav drawer ability*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-//        groupNames = new ArrayList<String>();
-//        groupNames.add("Apartment 101"); //dummy data
-//        groupNames.add("ASPCA Volunteers"); //dummy
-//        groupNames.add("Bob");
-
-        int currGroup = sharedPref.getInt("group", 0);
-
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        toolbar.setTitle(groupNames.get(currGroup));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +81,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        /*builds functionality to launch add task into FAB*/
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,32 +91,27 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 startActivity(intent);
             }
         });
+
+        /*this stuff should be above*/
         addMenuItemInNavMenuDrawer();
 
         update_toolbar();
 
+        /*initializing public task lists and adapters*/
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
         archiveTasks = new ArrayList<TaskItem>();
         myTaskAdapter = new TaskItemAdapter(myTasks);
         allTaskAdapter = new TaskItemAdapter(allTasks);
         archiveTaskAdapter = new TaskItemAdapter(archiveTasks);
+        update_task_lists();
 
+        /*setting up pager adapter to set up tabs*/
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById( R.id.view_pager );
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
-
-        //update_task_lists();
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        update_task_lists();
-        //addMenuItemInNavMenuDrawer(groupNames);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,7 +120,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
-   @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.group_settings:
@@ -189,7 +176,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             Log.d("SWITCHGROUP", Integer.toString(id));
             Log.d("SWITCHGROUP", "GROUP SWITCHED");
             Log.d("SWITCHGROUP", groupId);
-            update_task_lists();// update task lists
+            update_task_lists(); //updating task lists for new group**************
             Toolbar toolbar = findViewById(R.id.toolbar);
             toolbar.setTitle(current_groupName_list.get(id));
         }
@@ -207,8 +194,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
 
         if (id == R.id.logout) {
-            Intent intent = new Intent(MainActivity.this, Login.class);
-            startActivity(intent);
+//            Intent intent = new Intent(MainActivity.this, Login.class);
+//            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -216,29 +204,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
-    public void makeDummyData() {
-        Log.d("CALL", "DUMMY DATA CALLED");
-        myTasks = new ArrayList<TaskItem>();
-        allTasks = new ArrayList<TaskItem>();
-        archiveTasks = new ArrayList<TaskItem>();
-
-        updateMyTasks();
-        updateAllTasks();
-        updateArchivedTasks();
-        Collections.sort(myTasks, new TaskComparator());
-        Collections.sort(allTasks, new TaskComparator());
-        Collections.sort(archiveTasks, new TaskComparator());
-        for(int i = 0; i < myTasks.size(); i++){
-            Log.d("DEADLINE", myTasks.get(i).getDeadline());
-            Log.d("Name", myTasks.get(i).getName());
-        }
-
-        myTaskAdapter = new TaskItemAdapter(myTasks);
-        allTaskAdapter = new TaskItemAdapter(allTasks);
-        archiveTaskAdapter = new TaskItemAdapter(archiveTasks);
-    }
-
-
+    /*Called when need to fill in task lists from scratch: on group switch or when app starts.*/
     public void update_task_lists() {
         Log.d( "CALL", "UPDATING TASK LISTS" );
         myTasks.clear( );
@@ -255,16 +221,16 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     /*Programmatically adds groups to nav drawer.**/
-//    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
-//        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-//        Menu menu = navView.getMenu();
-//        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
-//
-//        for (int i = 0; i < groupNames.size(); i++) {
-//            submenu.add(NONE, NONE, 0, groupNames.get(i));
-//        }
-//        navView.invalidate();
-//    }
+/*    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navView.getMenu();
+        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+
+        for (int i = 0; i < groupNames.size(); i++) {
+            submenu.add(NONE, NONE, 0, groupNames.get(i));
+        }
+        navView.invalidate();
+    }*/
 
     private void addMenuItemInNavMenuDrawer() {
         current_groupID_list = new HashMap<Integer, String>();
@@ -417,14 +383,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     }
 
-    public static void notify_changes(){
+    /**NEEDS UPDATE BEFORE USING AGAIN--currently too slow & unwieldy, need to sort, figure out where
+     * single item went, and then use adapter.notifyItemMoved() method for fast & reliable behavior
+     */
+/*    public static void notify_changes(){
         Collections.sort(myTasks, new TaskComparator());
         Collections.sort(allTasks, new TaskComparator());
         Collections.sort(archiveTasks, new TaskComparator());
         myTaskAdapter.notifyDataSetChanged();
         allTaskAdapter.notifyDataSetChanged();
         archiveTaskAdapter.notifyDataSetChanged();
-    }
+    }*/
 
     public static class TaskComparator implements Comparator<TaskItem> {
         @Override
@@ -448,24 +417,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 return 0;
             }
         }
-    }
-
-    private void get_first_group(final String userId){
-        users.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
-                ArrayList<String> groups = temp.getGroupList();
-                groupId = groups.get(1);
-                Log.d("GETFIRSTGROUP", groups.get(1));
-                Log.d("GETFIRSTGROUP", groupId);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void update_toolbar(){

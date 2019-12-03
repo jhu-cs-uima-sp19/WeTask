@@ -137,21 +137,24 @@ public class EditTaskActivity extends AppCompatActivity{
                     edit.putString("taskId", task.getTaskId());
                     edit.commit();
 
-                    for(int i = 1; i < MainActivity.allTasks.size(); i++){
+                    for(int i = 0; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
-                            MainActivity.allTasks.remove(i);
-                            MainActivity.allTasks.add(task);
+                            //MainActivity.allTasks.remove(i);
+                            //MainActivity.allTasks.add(task);
+                            MainActivity.allTasks.set(i, task);
+                            MainActivity.allTaskAdapter.notifyItemChanged(i);
                         }
                     }
-                    for(int i = 1; i < MainActivity.myTasks.size(); i++){
+                    for(int i = 0; i < MainActivity.myTasks.size(); i++){
                         if(MainActivity.myTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.myTasks.remove(i);
                             if(MainActivity.userId.equals(aTo)){
-                                MainActivity.myTasks.add(task);
+                                MainActivity.myTasks.add(i, task);
+                                MainActivity.myTaskAdapter.notifyItemChanged(i);
                             }
                         }
                     }
-                    //also, updating created date every time
+
                 } else { //IF CREATING A TASK
                     Random r = new Random();
                     int tag = r.nextInt();
@@ -163,10 +166,14 @@ public class EditTaskActivity extends AppCompatActivity{
                     groups.child(MainActivity.groupId).setValue(current_group);
                     if(aTo.equals(MainActivity.userId)) {
                         MainActivity.myTasks.add(new_task);
+                        int index = MainActivity.myTasks.size();
+                        MainActivity.myTaskAdapter.notifyItemInserted(index - 1);
                     }
                     MainActivity.allTasks.add(new_task);
+                    int index = MainActivity.allTasks.size();
+                    MainActivity.allTaskAdapter.notifyItemInserted(index - 1);
                 }
-                MainActivity.notify_changes();
+                //MainActivity.notify_changes();
                 finish();
             }
         });

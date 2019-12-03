@@ -148,20 +148,22 @@ public class ViewTaskActivity extends AppCompatActivity {
         for(int i = 0; i < MainActivity.allTasks.size(); i++){
             if(MainActivity.allTasks.get(i).getTaskId().equals(task_id)){
                 MainActivity.allTasks.remove(i);
+                MainActivity.allTaskAdapter.notifyItemRemoved(i);
             }
         }
         for(int i = 0; i < MainActivity.myTasks.size(); i++){
             if(MainActivity.myTasks.get(i).getTaskId().equals(task_id)){
                 MainActivity.myTasks.remove(i);
+                MainActivity.myTaskAdapter.notifyItemRemoved(i);
             }
         }
-        MainActivity.notify_changes();
+        //MainActivity.notify_changes();
         finish();
     }
 
     public void complete_task(){
         // Mark the task in database as finished, remove it from the group's task list, add it to the group's archived list
-        // Update Mytaskslist, AlltasksList, and archivedtasklits in MainActivity, then notify
+        // Update all three task lists in MainActivity, then notify on item level as appropriate
         DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
         tasks.child(task_id).child("finished").setValue(true);
         final DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
@@ -176,15 +178,19 @@ public class ViewTaskActivity extends AppCompatActivity {
                     if(MainActivity.myTasks.get(i).getTaskId().equals(task_id)){
                         archived_item = MainActivity.myTasks.get(i);
                         MainActivity.myTasks.remove(i);
+                        MainActivity.myTaskAdapter.notifyItemRemoved(i);
                     }
                 }
                 for(int i = 0; i < MainActivity.allTasks.size(); i++){
                     if(MainActivity.allTasks.get(i).getTaskId().equals(task_id)){
                         MainActivity.allTasks.remove(i);
+                        MainActivity.allTaskAdapter.notifyItemRemoved(i);
                     }
                 }
                 MainActivity.archiveTasks.add(archived_item);
-                MainActivity.notify_changes();
+                int index = MainActivity.archiveTasks.size();
+                MainActivity.archiveTaskAdapter.notifyItemInserted(index - 1);
+                //MainActivity.notify_changes();
             }
 
             @Override
