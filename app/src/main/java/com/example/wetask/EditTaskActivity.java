@@ -39,6 +39,7 @@ public class EditTaskActivity extends AppCompatActivity{
     private ArrayList<String> users_list;
     private String deadline = "";
     private TextView deadline_view;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,15 @@ public class EditTaskActivity extends AppCompatActivity{
         deadline_view = findViewById(R.id.deadline_date);
         final EditText comment = findViewById(R.id.comments_edit);
 
-        Spinner spinner = findViewById(R.id.assignee);
+        if (intent.getIntExtra("if_new", 1) == 0) { //EDITING
+            taskTitle.setText(sharedPref.getString("title", "No Title"));
+            deadline = sharedPref.getString("deadline", "MM/DD/YY");
+            deadline_view.setText(deadline);
+            comment.setText(sharedPref.getString("comments", ""));
+            aTo = sharedPref.getString("assignee", "Unassigned");
+        }
+
+        spinner = findViewById(R.id.assignee);
         users_list = new ArrayList<String>();
         populate_users_list();
 
@@ -86,14 +95,6 @@ public class EditTaskActivity extends AppCompatActivity{
                 aTo = "Unassigned";
             }
         }) ;
-
-        if (intent.getIntExtra("if_new", 1) == 0) { //EDITING
-            taskTitle.setText(sharedPref.getString("title", "No Title"));
-            deadline = sharedPref.getString("deadline", "MM/DD/YY");
-            deadline_view.setText(deadline);
-            comment.setText(sharedPref.getString("comments", ""));
-            //TODO: make spinner start with right thing selected if task has already been assigned
-         }
 
         ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
         launch_date_picker.setOnClickListener( new View.OnClickListener() {
@@ -210,13 +211,12 @@ public class EditTaskActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> users = current_group.getGroupUserList();
                 users_list.addAll(users);
+                spinner.setSelection(users.indexOf(aTo) + 1); //+1 bc unassigned always first (async)
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
-
 
         });
         users_list.add("Unassigned");
