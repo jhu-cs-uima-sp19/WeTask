@@ -42,40 +42,10 @@ public class ViewTaskActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled( true );
         }
 
-        //TODO: get actual names of groups this person is in from database
-        //or just group this task is in--store string groupname in sharedpref?
-        ArrayList<String> groupNames = new ArrayList<String>();
-        groupNames.add("Apartment 101"); //dummy data
-        groupNames.add("ASPCA Volunteers"); //dummy data
-
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
         toolbar.setTitle(currGroupStr);
         task_id = sharedPref.getString("taskId", "");
-
-        TextView taskTitle = findViewById(R.id.taskTitle);
-        String title = sharedPref.getString("title", "No Title");
-        taskTitle.setText(title);
-
-        TextView create = findViewById(R.id.create);
-        String createdBy = "Created: " + sharedPref.getString("created", "1/1/2020");
-        create.setText(createdBy);
-
-        TextView deadline = findViewById(R.id.deadline);
-        String deadlineStr = "Deadline: " + sharedPref.getString("deadline", "1/1/2020");
-        deadline.setText(deadlineStr);
-
-        TextView assignedBy = findViewById(R.id.assignedBy);
-        String assigner = "Assigned By: " + sharedPref.getString("assigner", "User Not Found");
-        assignedBy.setText(assigner);
-
-        TextView assignedTo = findViewById(R.id.assignedTo);
-        String assignee = "Assigned To: " + sharedPref.getString("assignee", "User Not Found");
-        assignedTo.setText(assignee);
-
-        TextView comments = findViewById(R.id.comments);
-        String commentStr = "Comments: " + sharedPref.getString("comments", " ");
-        comments.setText(commentStr);
 
         Button complete = findViewById(R.id.complete);
         complete.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +66,32 @@ public class ViewTaskActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+
+        TextView taskTitle = findViewById(R.id.taskTitle);
+        String title = sharedPref.getString("title", "No Title");
+        taskTitle.setText(title);
+
+        TextView create = findViewById(R.id.create);
+        String created = "Last Edited:" + sharedPref.getString("created", "1/1/2020");
+        create.setText(created);
+
+        TextView deadline = findViewById(R.id.deadline);
+        String deadlineStr = "Deadline: " + sharedPref.getString("deadline", "1/1/2020");
+        deadline.setText(deadlineStr);
+
+        TextView assignedBy = findViewById(R.id.assignedBy);
+        String assigner = "Assigned By: " + sharedPref.getString("assigner", "User Not Found");
+        assignedBy.setText(assigner);
+
+        TextView assignedTo = findViewById(R.id.assignedTo);
+        String assignee = "Assigned To: " + sharedPref.getString("assignee", "User Not Found");
+        assignedTo.setText(assignee);
+
+        TextView comments = findViewById(R.id.comments);
+        String commentStr = "Comments: " + sharedPref.getString("comments", " ");
+        comments.setText(commentStr);
     }
 
     @Override

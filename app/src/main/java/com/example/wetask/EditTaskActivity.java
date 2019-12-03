@@ -119,19 +119,30 @@ public class EditTaskActivity extends AppCompatActivity{
                 if((intent.getIntExtra("if_new", 0) == 0)){ //IF EDITING TASK
                     String ID = intent.getStringExtra("taskID");
 
-                    TaskItem new_task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, ddl, com);
-                    tasks.child(new_task.getTaskId()).setValue(new_task);
+                    TaskItem task = new TaskItem(name, ID, MainActivity.groupId, aBy, aTo, ddl, com);
+                    tasks.child(task.getTaskId()).setValue(task);
+
+                    SharedPreferences.Editor edit = sharedPref.edit();
+                    edit.putString("title", task.getName());
+                    edit.putString("created", task.getCreatedDate());
+                    edit.putString("deadline", task.getDeadline());
+                    edit.putString("assigner", task.getAssignedBy());
+                    edit.putString("assignee", task.getAssignedTo());
+                    edit.putString("comments", task.getComments());
+                    edit.putString("taskId", task.getTaskId());
+                    edit.commit();
+
                     for(int i = 1; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.allTasks.remove(i);
-                            MainActivity.allTasks.add(new_task);
+                            MainActivity.allTasks.add(task);
                         }
                     }
                     for(int i = 1; i < MainActivity.myTasks.size(); i++){
                         if(MainActivity.myTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.myTasks.remove(i);
                             if(MainActivity.userId.equals(aTo)){
-                                MainActivity.myTasks.add(new_task);
+                                MainActivity.myTasks.add(task);
                             }
                         }
                     }
