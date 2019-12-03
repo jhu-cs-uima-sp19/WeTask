@@ -9,12 +9,12 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="4dp"
         card_view:cardCornerRadius="4dp"
         card_view:cardBackgroundColor="@color/cardBackgroundColor">
 
-        <LinearLayout
+        <com.example.wetask.CardLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -27,6 +27,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/default_title"
+                android:gravity="center"
                 android:textSize="24sp"/>
 
             <TextView
@@ -47,7 +48,7 @@
                 android:paddingEnd="10dp"
                 android:text="@string/sample_date"
                 android:textSize="18sp"/>
-        </LinearLayout>
+        </com.example.wetask.CardLayout>
 
     </androidx.cardview.widget.CardView>
 
