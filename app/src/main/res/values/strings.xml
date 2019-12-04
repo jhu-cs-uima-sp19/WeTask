@@ -30,7 +30,7 @@
     <string name="date_completed">Date Completed:</string>
     <string name="task_title_goes_here">TITLE</string>
     <string name="confirm">CONFIRM</string>
-    <string name="sample_date">MM/DD/YY</string>
+    <string name="sample_date">--/--/--</string>
     <string name="create_group">CREATE</string>
     <string name="edit_group_name">Group Name</string>
     <string name="add_user">Add a User (Limit 8)</string>

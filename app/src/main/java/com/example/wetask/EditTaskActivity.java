@@ -38,7 +38,8 @@ public class EditTaskActivity extends AppCompatActivity{
     private String aTo = "Unassigned";
     private ArrayList<String> users_list;
     private String deadline = "";
-    private TextView deadline_view;
+    //private TextView deadline_view;
+    private Button deadline_view;
     private Spinner spinner;
 
     @Override
@@ -96,8 +97,9 @@ public class EditTaskActivity extends AppCompatActivity{
             }
         }) ;
 
-        ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
-        launch_date_picker.setOnClickListener( new View.OnClickListener() {
+        //ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
+        //Button launch_date_picker = findViewById(R.id.deadline_date);
+        deadline_view.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new DatePickerFragment();
