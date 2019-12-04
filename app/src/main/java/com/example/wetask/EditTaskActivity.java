@@ -38,9 +38,9 @@ public class EditTaskActivity extends AppCompatActivity{
     private String aTo = "Unassigned";
     private ArrayList<String> users_list;
     private String deadline = "";
-    //private TextView deadline_view;
     private Button deadline_view;
     private Spinner spinner;
+    private String origATo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +76,7 @@ public class EditTaskActivity extends AppCompatActivity{
             deadline_view.setText(deadline);
             comment.setText(sharedPref.getString("comments", ""));
             aTo = sharedPref.getString("assignee", "Unassigned");
+            origATo = aTo; //fixes async bug with spinner setup
         }
 
         spinner = findViewById(R.id.assignee);
@@ -97,8 +98,6 @@ public class EditTaskActivity extends AppCompatActivity{
             }
         }) ;
 
-        //ImageButton launch_date_picker = findViewById(R.id.launch_date_picker);
-        //Button launch_date_picker = findViewById(R.id.deadline_date);
         deadline_view.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,8 +140,6 @@ public class EditTaskActivity extends AppCompatActivity{
 
                     for(int i = 0; i < MainActivity.allTasks.size(); i++){
                         if(MainActivity.allTasks.get(i).getTaskId().equals(ID)){
-                            //MainActivity.allTasks.remove(i);
-                            //MainActivity.allTasks.add(task);
                             MainActivity.allTasks.set(i, task);
                             MainActivity.allTaskAdapter.notifyItemChanged(i);
                         }
@@ -153,6 +150,7 @@ public class EditTaskActivity extends AppCompatActivity{
                             if(MainActivity.userId.equals(aTo)){
                                 MainActivity.myTasks.add(i, task);
                                 MainActivity.myTaskAdapter.notifyItemChanged(i);
+                                //TODO: debug mytask changes--possibly here?
                             }
                         }
                     }
@@ -218,12 +216,16 @@ public class EditTaskActivity extends AppCompatActivity{
     }
 
     private void populate_users_list() {
+        users_list.add("Unassigned");
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> users = current_group.getGroupUserList();
                 users_list.addAll(users);
-                spinner.setSelection(users.indexOf(aTo) + 1); //+1 bc unassigned always first (async)
+                if (!origATo.isEmpty()) { //fixes async bug if editing
+                    aTo = origATo;
+                }
+                spinner.setSelection(users.indexOf(aTo) + 1);
             }
 
             @Override
@@ -231,7 +233,6 @@ public class EditTaskActivity extends AppCompatActivity{
             }
 
         });
-        users_list.add("Unassigned");
     }
 
     public void datePicked(String ddl) {
