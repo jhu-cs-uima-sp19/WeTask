@@ -188,14 +188,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             startActivity(intent);
         }
 
-        if (id == R.id.settings) {
-            Intent intent = new Intent(MainActivity.this, AppSettings.class);
-            startActivity(intent);
-        }
-
         if (id == R.id.logout) {
-//            Intent intent = new Intent(MainActivity.this, Login.class);
-//            startActivity(intent);
             finish();
         }
 
@@ -204,21 +197,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
-    /*Called when need to fill in task lists from scratch: on group switch or when app starts.*/
-    public void update_task_lists() {
-        Log.d( "CALL", "UPDATING TASK LISTS" );
-        myTasks.clear( );
-        allTasks.clear( );
-        archiveTasks.clear( );
 
-        updateMyTasks( );
-        updateAllTasks( );
-        updateArchivedTasks( );
-
-        myTaskAdapter.notifyDataSetChanged();
-        allTaskAdapter.notifyDataSetChanged();
-        archiveTaskAdapter.notifyDataSetChanged();
-    }
 
     /*Programmatically adds groups to nav drawer.**/
 /*    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
@@ -266,6 +245,41 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
 
+    }
+
+    private void update_toolbar(){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                String name = group.getGroupName();
+                Toolbar toolbar = findViewById(R.id.toolbar);
+                toolbar.setTitle(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**Below are methods to initialize lists and handle data changes.*/
+
+    /*Called when need to fill in task lists from scratch: on group switch or when app starts.*/
+    public void update_task_lists() {
+        Log.d( "CALL", "UPDATING TASK LISTS" );
+        myTasks.clear( );
+        allTasks.clear( );
+        archiveTasks.clear( );
+
+        updateMyTasks( );
+        updateAllTasks( );
+        updateArchivedTasks( );
+
+        myTaskAdapter.notifyDataSetChanged();
+        allTaskAdapter.notifyDataSetChanged();
+        archiveTaskAdapter.notifyDataSetChanged();
     }
 
     private void updateArchivedTasks(){
@@ -418,22 +432,4 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         }
     }
-
-    private void update_toolbar(){
-        groups.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
-                String name = group.getGroupName();
-                Toolbar toolbar = findViewById(R.id.toolbar);
-                toolbar.setTitle(name);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 }

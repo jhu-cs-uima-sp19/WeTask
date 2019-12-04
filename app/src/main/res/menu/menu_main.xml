@@ -6,18 +6,15 @@ tools:showIn="navigation_view">
     <item android:title="Groups"
         android:id="@+id/groupSubmenuHolder">
         <menu android:id = "@+id/groupSubmenu">
-            <item
-                android:id="@+id/nav_add_group"
-                android:title="@string/nav_add_group"
-                android:orderInCategory="1"/>
+            <!--programmatically adding groups user is in here-->
         </menu>
     </item>
 
-    <item android:title="Other">
+    <item android:title="Actions">
         <menu android:id="@+id/actionSubmenu">
             <item
-                android:id="@+id/settings"
-                android:title="@string/nav_settings"/>
+                android:id="@+id/nav_add_group"
+                android:title="@string/nav_add_group"/>
             <item
                 android:id="@+id/logout"
                 android:title="@string/nav_logout"/>

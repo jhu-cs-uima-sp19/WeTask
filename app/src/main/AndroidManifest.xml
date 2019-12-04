@@ -17,10 +17,6 @@
             android:name=".EditTaskActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AppSettings"
-            android:label="@string/title_app_settings"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".GroupSettings"
             android:label="@string/title_group_settings"
             android:theme="@style/AppTheme.NoActionBar"/>
