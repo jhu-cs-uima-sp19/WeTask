@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -78,8 +79,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        /*set up welcome message in nav drawer*/
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View navHeader = navigationView.getHeaderView(0);
+        TextView navMessage = navHeader.findViewById(R.id.profile_info);
+        navMessage.setText("Welcome, "+userId+"!");
 
         /*builds functionality to launch add task into FAB*/
         FloatingActionButton fab = findViewById(R.id.fab);
