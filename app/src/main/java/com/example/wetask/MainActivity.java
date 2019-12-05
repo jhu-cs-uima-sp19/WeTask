@@ -97,11 +97,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
 
-        /*this stuff should be above*/
-        addMenuItemInNavMenuDrawer();
-
-        update_toolbar();
-
         /*initializing public task lists and adapters*/
         myTasks = new ArrayList<TaskItem>();
         allTasks = new ArrayList<TaskItem>();
@@ -117,6 +112,12 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         viewPager.setAdapter( sectionsPagerAdapter );
         TabLayout tabs = findViewById( R.id.tabs );
         tabs.setupWithViewPager( viewPager );
+    }
+
+    public void onResume() {
+        super.onResume();
+        addMenuItemInNavMenuDrawer();
+        update_toolbar();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,6 +227,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
                 Menu menu = navView.getMenu();
                 Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+                submenu.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     GroupObject group = snapshot.getValue(GroupObject.class);
 
