@@ -144,15 +144,21 @@ public class EditTaskActivity extends AppCompatActivity{
                             MainActivity.allTaskAdapter.notifyItemChanged(i);
                         }
                     }
+                    boolean updated = false;
                     for(int i = 0; i < MainActivity.myTasks.size(); i++){
                         if(MainActivity.myTasks.get(i).getTaskId().equals(ID)){
                             MainActivity.myTasks.remove(i);
+                            MainActivity.myTaskAdapter.notifyItemRemoved(i);
                             if(MainActivity.userId.equals(aTo)){
                                 MainActivity.myTasks.add(i, task);
-                                MainActivity.myTaskAdapter.notifyItemChanged(i);
-                                //TODO: debug mytask changes--possibly here?
+                                MainActivity.myTaskAdapter.notifyItemInserted(i);
+                                updated = true;
                             }
                         }
+                    }
+                    if (MainActivity.userId.equals(aTo) && updated == false) {
+                        MainActivity.myTasks.add(task);
+                        MainActivity.myTaskAdapter.notifyItemInserted(MainActivity.myTasks.size()-1);
                     }
 
                 } else { //IF CREATING A TASK

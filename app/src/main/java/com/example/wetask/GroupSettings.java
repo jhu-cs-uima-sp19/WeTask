@@ -76,17 +76,11 @@ public class GroupSettings extends AppCompatActivity {
                     Random r = new Random();
                     int tag = r.nextInt();
                     String id = Integer.toString(tag);
-
                     makeNewGroup(id, groupName, userID);
-
-                    Intent intent = new Intent(GroupSettings.this, MainActivity.class);
-                    startActivity(intent);
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupID");
                     editGroup(id, groupName, userID);
-                    intent = new Intent(GroupSettings.this, MainActivity.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -115,8 +109,7 @@ public class GroupSettings extends AppCompatActivity {
                 }
 
                 groups.child(finalId).setValue(test_group);
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
 
             @Override
@@ -140,8 +133,7 @@ public class GroupSettings extends AppCompatActivity {
                 groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
-                Intent intent = new Intent(GroupSettings.this, MainActivity.class);  //TODO: Try to not start  mainactivity twice
-                startActivity(intent);
+                finish();
             }
 
             @Override
