@@ -1,27 +1,42 @@
 This is our final project for 601.290 - User Interfaces & Mobile Applications.
+Team 2 - Sadie, Simon, The Anh, & Zoe
 
-The main purpose of our app, WeTask, is to seamlessly integrate all of an individuals To-Do lists in
+The main purpose of our app, WeTask, is to seamlessly integrate all of an individuals' To-Do lists in
 one place. We hope our tool  will allow groups and communities of people to communicate efficiently
 and increase their overall productivity. The home page holds three main tabs: viewing your personal
-tasks, viewing the tasks in the current group you are in, and viewing all of your archived tasks. Our
-main color is seafoam green to take the user to an exciting and vibrant  experience.
-
+tasks, viewing the tasks in the current group you are in, and viewing all of your archived (completed)
+tasks. Our main color is seafoam green to take the user to an exciting and vibrant  experience.
 
 For our first sprint of this project, we wanted to focus on the individual's experience. We were able
 to create a database to hold our users with their account and all of their task information. An
 individual may create a task for themselves or their other group members and edit, complete,
-or delete an existing task in their 'My Tasks' page. We can currently log out and switch between
-different groups but do not have the tasks change between the groups yet.
+or delete an existing task in their 'My Tasks' page. At the end of the first sprint, users could
+log out and switch between different groups but tasks didn't change between the groups.
 
-Two of our testing accounts are:
+For our second sprint, we fully implemented the different group functionality, including creating,
+editing, deleting, leaving, and adding other users to groups. We made sure the tasks were separate
+in each group and the transition experience was as seamless as possible. We also fully implemented
+the ability to store and view created tasks in group archives and redesigned the way tasks themselves
+are viewed. Creating cards in a recycler view allowed us to enable animations on task insert and
+delete which are more familiar to Android users, giving our app more ease of use and legitimacy in the
+Material Design context.
+
+Testing accounts include:
 Username = Sadie
 Password = 1234
 
 Username = Zoe
-Password = zoe
+Password = 1234
 
-The current state of the app does not include the group color-coordinating functionality or the use of the
-'Archive Tasks' page. We will next implement the function of creating a group, editing group members,
-switching between groups and having tasks stick in their given groups. The main dynamic we hope to
-change in our layout is the use of a card format instead of the current list formatting.
+Username = The Anh
+Password = 1234
+
+(We have fully developed the ability to add a user and specify different passwords. Our display accounts
+have the same passwords because it's easy to remember and demo.)
+
+We accomplished most of our goals for this sprint. We have a number of things we could improve upon
+or "reach" ideas, but we're also proud of the product we've created. The biggest next priority would
+be adding additional color cues as specified in the design, mainly graying out completed tasks in the
+archive and color-coding tasks by assignee in the all tasks view. We could also enable task assignment
+through a drag-and-drop interface, but that was a reach goal from the beginning, as discussed.
 
