@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 UserObject user = dataSnapshot.child(userId).getValue(UserObject.class);
                 try {
                     groupId = user.getLastGroupAccessed();
-                    groupName = user.lastGroupName;
+                    groupName = user.getLastGroupName();
                     edit.putString("groupName", groupName);
                     Log.d("Name", groupName);
                     edit.apply();

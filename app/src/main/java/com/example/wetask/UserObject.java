@@ -8,7 +8,7 @@ public class UserObject {
     private ArrayList<String> groupList;
     private String password;
     private String lastGroupAccessed;
-    public String lastGroupName;
+    private String lastGroupName;
 
     UserObject(){
         this.userID = "nameHolder";
