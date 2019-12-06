@@ -74,12 +74,15 @@ public class GroupSettings extends AppCompatActivity {
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
 
+
+        // THIS IS WHERE I INITIATE THE ADAPTER FOR LIST VIEW
+        // THE LIST ITSELF IS FILLED IN LOADUSERS()
         userListView = findViewById(R.id.userList);
         ArrayAdapter<String> userAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, userList);
         userListView.setAdapter(userAdapter);
-        userAdapter.notifyDataSetChanged();
+
 
         if (editVal == 1) {
             Log.d("groupName",sharedPref.getString("groupName", "N/A"));
@@ -235,6 +238,7 @@ public class GroupSettings extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
                 ArrayList<String> users = group.getGroupUserList();
+                userList.clear();
                 userList.addAll(users);
             }
 
