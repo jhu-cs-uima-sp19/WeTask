@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -38,6 +40,7 @@ public class GroupSettings extends AppCompatActivity {
     DatabaseReference groups, users, tasks;
     Button complete, leave;
     EditText edit;
+    String groupId;
     //1 if we are editing, 0 if creating new group
     int editVal;
 
@@ -53,16 +56,29 @@ public class GroupSettings extends AppCompatActivity {
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
+        groupId = sharedPref.getString("groupID", "n/a");
+
+        ArrayList<String> globalUserList = new ArrayList<>();
+        loadGlobalUsers(globalUserList);
+
         ArrayList<String> userList = new ArrayList<>();
         loadUsers(userList);
+
 
         final AutoCompleteTextView user =  findViewById(R.id.add_user);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
-                userList);
+                globalUserList);
         user.setAdapter(adapter);
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
+
+        ListView userListView = findViewById(R.id.userList);
+        ArrayAdapter<String> userAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1, userList);
+        userListView.setAdapter(userAdapter);
+
 
         if (editVal == 1) {
             Log.d("groupName",sharedPref.getString("groupName", "N/A"));
@@ -192,15 +208,31 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void loadUsers(final ArrayList<String> userList){
+    private void loadGlobalUsers(final ArrayList<String> globalUserList){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     UserObject user = snapshot.getValue(UserObject.class);
                     String userId = user.getUserID();
-                    userList.add(userId);
+                    globalUserList.add(userId);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void loadUsers(final ArrayList<String> userList){
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                ArrayList<String> users = group.getGroupUserList();
+                userList.addAll(users);
             }
 
             @Override
