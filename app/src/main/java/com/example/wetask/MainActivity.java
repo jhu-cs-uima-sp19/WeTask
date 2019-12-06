@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static String userId;
     static String groupId = "0"; // need to figure out how to get group id
     static int groupPos;
-    static String groupName;
+    static String groupName = "0";
     static String userName;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
@@ -71,23 +71,27 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        final SharedPreferences.Editor edit = sharedPref.edit();
         userId = sharedPref.getString("userID", "N/A");
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject user = dataSnapshot.child(userId).getValue(UserObject.class);
                 try {
-                    groupId = dataSnapshot.child(userId).getValue(UserObject.class).getLastGroupAccessed();
-                    Log.d("here", groupId);
+                    groupId = user.getLastGroupAccessed();
+                    groupName = user.lastGroupName;
+                    edit.putString("groupName", groupName);
+                    Log.d("Name", groupName);
+                    edit.apply();
                 } catch (NullPointerException e) {
                     groupId = sharedPref.getString("groupID", "n/a");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
+
 
 
 
@@ -223,6 +227,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             edit.putString("groupName",groupName);
             edit.putString("groupID",groupId);
             users.child(userName).child("lastGroupAccessed").setValue(groupId);
+            users.child(userName).child("lastGroupName").setValue(groupName);
             edit.apply();
             Log.d("from shared pref", groupId);
             Log.d("SWITCHGROUP", Integer.toString(id));

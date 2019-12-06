@@ -8,6 +8,7 @@ public class UserObject {
     private ArrayList<String> groupList;
     private String password;
     private String lastGroupAccessed;
+    public String lastGroupName;
 
     UserObject(){
         this.userID = "nameHolder";
@@ -34,4 +35,6 @@ public class UserObject {
     }
     public void setLastGroup(String last) {lastGroupAccessed = last;}
     public String getLastGroupAccessed() {return lastGroupAccessed;}
+    public void setLastGroupName(String lastName) {lastGroupName = lastName;}
+    public String getLastGroupName() {return lastGroupName;}
 }
