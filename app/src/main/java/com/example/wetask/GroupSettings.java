@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,7 +102,7 @@ public class GroupSettings extends AppCompatActivity {
                     Intent intent = getIntent();
                     String GID = intent.getStringExtra("groupID");
                     leaveGroup(MainActivity.userId, GID);
-                    finish();
+                    //SystemClock.sleep(500); //Force wait for firebase update
                 }
             });
         }
@@ -109,20 +110,6 @@ public class GroupSettings extends AppCompatActivity {
     }
 
     private void leaveGroup(final String userID, final String groupID){
-        //Remove this user from the group's user list
-        groups.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
-                tempGroup.removeUser(userID);
-                groups.child(groupID).setValue(tempGroup);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         //Remove this group from the user's group list
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -145,6 +132,22 @@ public class GroupSettings extends AppCompatActivity {
                 for(String task: tempGroup.getGroupTaskList()){
                     unassignTask(task, userID);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //Remove this user from the group's user list
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
+                tempGroup.removeUser(userID);
+                groups.child(groupID).setValue(tempGroup);
+                finish();
             }
 
             @Override

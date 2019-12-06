@@ -204,20 +204,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         return true;
     }
 
-
-
-    /*Programmatically adds groups to nav drawer.**/
-/*    private void addMenuItemInNavMenuDrawer(ArrayList<String> groupNames) {
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        Menu menu = navView.getMenu();
-        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
-
-        for (int i = 0; i < groupNames.size(); i++) {
-            submenu.add(NONE, NONE, 0, groupNames.get(i));
-        }
-        navView.invalidate();
-    }*/
-
     private void addMenuItemInNavMenuDrawer() {
         Log.d("MENU", "UPDATE MENU");
         current_groupID_list = new HashMap<Integer, String>();
@@ -232,12 +218,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 submenu.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     GroupObject group = snapshot.getValue(GroupObject.class);
-
+                    String groupName = group.getGroupName();
                     //check if current user has this group
                     if(!group.getGroupUserList().contains(userId)){
                         continue;
                     }
-                    String groupName = group.getGroupName();
+
+                    Log.d("MENU", groupName);
+
                     Random r = new Random();
                     MenuItem temp = submenu.add(NONE, r.nextInt(), 0, groupName);
                     current_groupID_list.put(temp.getItemId(), group.getGroupID()); //store list of groupID for switching between groups
