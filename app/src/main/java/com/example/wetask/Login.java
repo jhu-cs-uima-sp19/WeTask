@@ -32,11 +32,15 @@ public class Login extends AppCompatActivity {
     DatabaseReference users, groups;
     EditText edtUsername, edtPassword;
     Button login, signup;
+    int first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.login);
+
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        first = sharedPref.getInt("first", 1);
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("users");
@@ -78,8 +82,14 @@ public class Login extends AppCompatActivity {
                         edit.putString("userID", username);
                         edit.commit();
                         //get_first_group(username);
-                        Intent main = new Intent(Login.this, MainActivity.class);
-                        startActivity(main);
+                        if (first == 1) {
+                            edit.putInt("first", 0);
+                            edit.apply();
+                            get_first_group(username);
+                        } else {
+                            Intent main = new Intent(Login.this, MainActivity.class);
+                            startActivity(main);
+                        }
                     }else{
                         Toast.makeText(Login.this, "Wrong username/password combination", Toast.LENGTH_LONG).show();
                     }
@@ -118,10 +128,10 @@ public class Login extends AppCompatActivity {
                     SharedPreferences.Editor edit = sharedPref.edit();
                     edit.putString("userID", username);
                     edit.putString("groupID", newGroupID);
+                    edit.putString("groupName", newGroupName);
                     edit.commit();
-                    //get_first_group(username);
-                    Intent main = new Intent(Login.this, MainActivity.class);
-                    startActivity(main);
+                    get_first_group(username);
+
                 } else {
                     Toast.makeText(Login.this, "This username already exists", Toast.LENGTH_LONG).show();
                 }

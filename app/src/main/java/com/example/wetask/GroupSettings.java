@@ -41,6 +41,7 @@ public class GroupSettings extends AppCompatActivity {
     Button complete, leave;
     EditText edit;
     String groupId;
+    ListView userListView;
     //1 if we are editing, 0 if creating new group
     int editVal;
 
@@ -73,12 +74,12 @@ public class GroupSettings extends AppCompatActivity {
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
 
-        ListView userListView = findViewById(R.id.userList);
+        userListView = findViewById(R.id.userList);
         ArrayAdapter<String> userAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, userList);
         userListView.setAdapter(userAdapter);
-
+        userAdapter.notifyDataSetChanged();
 
         if (editVal == 1) {
             Log.d("groupName",sharedPref.getString("groupName", "N/A"));
@@ -140,6 +141,8 @@ public class GroupSettings extends AppCompatActivity {
         }
 
     }
+
+
 
     private void leaveGroup(final String userID, final String groupID){
         //Remove this group from the user's group list
