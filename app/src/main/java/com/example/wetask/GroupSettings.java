@@ -44,12 +44,15 @@ public class GroupSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_settings);
 
+        final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
 
         if (editVal == 1) {
+            Log.d("groupName",sharedPref.getString("groupName", "N/A"));
             EditText groupName = findViewById(R.id.edit_group_name);
-            groupName.setText(intent.getStringExtra("groupName"));
+            groupName.setText(sharedPref.getString("groupName", "N/A"));
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -59,7 +62,7 @@ public class GroupSettings extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        //SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("users");
@@ -83,8 +86,7 @@ public class GroupSettings extends AppCompatActivity {
                     String id = Integer.toString(tag);
                     makeNewGroup(id, groupName, userID);
                 } else if (editVal == 1) { //if editing group
-                    Intent intent = getIntent();
-                    String id = intent.getStringExtra("groupID");
+                    String id = sharedPref.getString("groupID","0000");
                     Log.d("EDITGROUP",id);
                     Log.d("EDITGROUP",Boolean.toString(userID.isEmpty()));
                     editGroup(id, groupName, userID);
@@ -99,8 +101,7 @@ public class GroupSettings extends AppCompatActivity {
             leave.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    Intent intent = getIntent();
-                    String GID = intent.getStringExtra("groupID");
+                    String GID = sharedPref.getString("groupID","0000");
                     leaveGroup(MainActivity.userId, GID);
                     //SystemClock.sleep(500); //Force wait for firebase update
                 }

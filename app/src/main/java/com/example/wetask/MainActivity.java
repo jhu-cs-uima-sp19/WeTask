@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     static String userId;
     static String groupId = "0"; // need to figure out how to get group id
     static int groupPos;
+    static String groupName;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         groupId = sharedPref.getString("groupID", "N/A");
+        groupPos = sharedPref.getInt("groupPos", 0);
         Log.d("from shared pref", groupId);
 
         /*enable hamburger icon nav drawer ability*/
@@ -132,12 +134,21 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask",MODE_PRIVATE);
+        SharedPreferences.Editor  edit = sharedPref.edit();
         switch (item.getItemId()) {
             case R.id.group_settings:
+                /*
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
                 //put extra with current group name (editing not creating)
                 intent.putExtra("groupID", groupId);
                 intent.putExtra("groupName",current_groupName_list.get(groupPos));
+                intent.putExtra("edit?", 1);
+                startActivity(intent);
+                return true; */
+                Intent intent = new Intent(MainActivity.this, GroupSettings.class);
+                //put extra with current group name (editing not creating)
+                edit.apply();
                 intent.putExtra("edit?", 1);
                 startActivity(intent);
                 return true;
@@ -185,6 +196,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if(current_groupID_list.keySet().contains(id)){
             // Update groupID and fragments
             groupId = current_groupID_list.get(id);
+            groupName = current_groupName_list.get(id);
+            edit.putString("groupName",groupName);
             edit.putString("groupID",groupId);
             edit.apply();
             Log.d("from shared pref", groupId);
