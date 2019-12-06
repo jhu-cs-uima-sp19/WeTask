@@ -77,7 +77,9 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor edit = sharedPref.edit();
                         edit.putString("userID", username);
                         edit.commit();
-                        get_first_group(username);
+                        //get_first_group(username);
+                        Intent main = new Intent(Login.this, MainActivity.class);
+                        startActivity(main);
                     }else{
                         Toast.makeText(Login.this, "Wrong username/password combination", Toast.LENGTH_LONG).show();
                     }
@@ -117,7 +119,9 @@ public class Login extends AppCompatActivity {
                     edit.putString("userID", username);
                     edit.putString("groupID", newGroupID);
                     edit.commit();
-                    get_first_group(username);
+                    //get_first_group(username);
+                    Intent main = new Intent(Login.this, MainActivity.class);
+                    startActivity(main);
                 } else {
                     Toast.makeText(Login.this, "This username already exists", Toast.LENGTH_LONG).show();
                 }
@@ -130,17 +134,25 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    //This isn't used for accessing group on login, as we want to land on last group accessed
+    //But i'm leaving it because it might be useful for signup, or could be altered to act as a
+    //failsafe for if the group in sharedPref no longer exists.
     private void get_first_group(final String userId){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserObject temp = dataSnapshot.child(userId).getValue(UserObject.class);
                 ArrayList<String> groups = temp.getGroupList();
-                String firstGroup = groups.get(0);
-                Log.d("LAUNCH_GETGROUP", firstGroup);
+                String firstGroup = "";
+                if (groups.size() != 0) {
+                    firstGroup = groups.get(0);
+                }
+//                Log.d("LAUNCH_GETGROUP", firstGroup);
                 SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
                 SharedPreferences.Editor edit = sharedPref.edit();
-                edit.putString("groupID", firstGroup);
+                if (groups.size() != 0) {
+                    edit.putString("groupID", firstGroup);
+                }
                 edit.commit();
                 Intent main = new Intent(Login.this, MainActivity.class);
                 startActivity(main);

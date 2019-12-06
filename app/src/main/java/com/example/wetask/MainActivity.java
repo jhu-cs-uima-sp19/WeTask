@@ -68,11 +68,14 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
         groupId = sharedPref.getString("groupID", "N/A");
+        Log.d("from shared pref", groupId);
 
         /*enable hamburger icon nav drawer ability*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        if (!groupId.equals("N/A")) {
+            toolbar.setTitle(current_groupName_list.get(groupId));
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -160,6 +163,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPref.edit();
         groupPos = id;
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
@@ -180,6 +185,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         if(current_groupID_list.keySet().contains(id)){
             // Update groupID and fragments
             groupId = current_groupID_list.get(id);
+            edit.putString("groupID",groupId);
+            edit.apply();
+            Log.d("from shared pref", groupId);
             Log.d("SWITCHGROUP", Integer.toString(id));
             Log.d("SWITCHGROUP", "GROUP SWITCHED");
             Log.d("SWITCHGROUP", groupId);
