@@ -53,4 +53,14 @@ public class GroupObject {
     public void addUser(String userID) {
         this.groupUserList.add(userID);
     }
+
+    public void removeUser(String userID) {
+        for(String u:this.groupUserList){
+            if(u.equals(userID)){
+                this.groupUserList.remove(u);
+                break;
+            }
+        }
+    }
+
 }

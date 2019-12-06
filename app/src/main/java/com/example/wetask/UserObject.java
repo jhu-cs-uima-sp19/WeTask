@@ -23,4 +23,12 @@ public class UserObject {
     public ArrayList<String> getGroupList() {return groupList;}
     public String getPassword(){return password;}
     public void addGroup(String groupID){groupList.add(groupID);}
+    public void removeGroup(String groupID){
+        for(String g:this.groupList){
+            if(g.equals(groupID)){
+                groupList.remove(g);
+                break;
+            }
+        }
+    }
 }

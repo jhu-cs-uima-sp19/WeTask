@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     public void onResume() {
+        Log.d("Resume", "Resume MainActivity");
         super.onResume();
         addMenuItemInNavMenuDrawer();
         update_toolbar();
@@ -218,6 +219,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }*/
 
     private void addMenuItemInNavMenuDrawer() {
+        Log.d("MENU", "UPDATE MENU");
         current_groupID_list = new HashMap<Integer, String>();
         current_groupName_list = new HashMap<Integer, String>();
 

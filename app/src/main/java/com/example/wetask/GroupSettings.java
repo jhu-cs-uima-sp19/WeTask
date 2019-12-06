@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +32,8 @@ import static android.view.Menu.NONE;
 
 public class GroupSettings extends AppCompatActivity {
     FirebaseDatabase database;
-    DatabaseReference groups, users;
-    Button complete;
+    DatabaseReference groups, users, tasks;
+    Button complete, leave;
     EditText edit;
     //1 if we are editing, 0 if creating new group
     int editVal;
@@ -62,11 +63,14 @@ public class GroupSettings extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         users = database.getReference("users");
         groups = database.getReference("groups");
+        tasks = database.getReference("tasks");
 
         complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("EDITGROUP","Complete Clicked");
+                Log.d("EDITGROUP",Integer.toString(editVal));
                 edit = (EditText) findViewById(R.id.edit_group_name);
                 EditText user = (EditText) findViewById(R.id.add_user);
                 String groupName = edit.getText().toString();
@@ -80,12 +84,93 @@ public class GroupSettings extends AppCompatActivity {
                 } else if (editVal == 1) { //if editing group
                     Intent intent = getIntent();
                     String id = intent.getStringExtra("groupID");
+                    Log.d("EDITGROUP",id);
+                    Log.d("EDITGROUP",Boolean.toString(userID.isEmpty()));
                     editGroup(id, groupName, userID);
                 }
             }
         });
 
+        leave = findViewById(R.id.leave_group);
+        if(editVal == 0){
+            leave.setVisibility(View.GONE);
+        }else {
+            leave.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v){
+                    Intent intent = getIntent();
+                    String GID = intent.getStringExtra("groupID");
+                    leaveGroup(MainActivity.userId, GID);
+                    finish();
+                }
+            });
+        }
 
+    }
+
+    private void leaveGroup(final String userID, final String groupID){
+        //Remove this user from the group's user list
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
+                tempGroup.removeUser(userID);
+                groups.child(groupID).setValue(tempGroup);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //Remove this group from the user's group list
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject tempUser = dataSnapshot.child(userID).getValue(UserObject.class);
+                tempUser.removeGroup(groupID);
+                users.child(userID).setValue(tempUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //Mark related tasks as unassigned
+        groups.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
+                for(String task: tempGroup.getGroupTaskList()){
+                    unassignTask(task, userID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void unassignTask(final String taskID, final String userID){
+        tasks.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                TaskItem tempTask = dataSnapshot.child(taskID).getValue(TaskItem.class);
+                if(tempTask.getAssignedTo().equals(userID)){
+                    tempTask.unassign();
+                    tasks.child(taskID).setValue(tempTask);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void makeNewGroup(final String id, final String name, final String userID) {
@@ -122,11 +207,13 @@ public class GroupSettings extends AppCompatActivity {
     }
 
     private void editGroup(final String id, final String newName, final String newUserID) {
+        Log.d("EDITGROUP",newUserID);
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 GroupObject temp = dataSnapshot.child(id).getValue(GroupObject.class);
                 if(!newUserID.isEmpty()){
+                    Log.d("EDITGROUP",newUserID);
                     temp.addUser(newUserID);
                     addGroupToUser(id, newUserID);
                 }

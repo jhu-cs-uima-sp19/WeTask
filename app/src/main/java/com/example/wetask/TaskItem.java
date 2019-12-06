@@ -60,5 +60,6 @@ public class TaskItem {
 
     public void complete(){this.finished = true;}
     public boolean ifFinished(){return this.finished;}
+    public void unassign(){this.assignedTo = "UNASSIGNED";}
 
 }
