@@ -20,14 +20,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.example.wetask.MainActivity.groupId;
 
 public class Login extends AppCompatActivity {
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference users, groups;
     EditText edtUsername, edtPassword;
     Button login, signup;
 
@@ -38,6 +40,7 @@ public class Login extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("users");
+        groups = database.getReference("groups");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -97,11 +100,22 @@ public class Login extends AppCompatActivity {
                 if(!dataSnapshot.child(username).exists()) {
                     ArrayList<String> test_list = new ArrayList<String>();
                     UserObject test_user = new UserObject(username, test_list, password);
+
+                    Random r = new Random();
+                    String newGroupID = Integer.toString(r.nextInt());
+                    String newGroupName = username+"_private";
+                    GroupObject newGroup = new GroupObject(newGroupID, newGroupName);
+                    newGroup.addUser(username);
+                    test_user.addGroup(newGroupID);
+
                     users.child(username).setValue(test_user);
+                    groups.child(newGroupID).setValue(newGroup);
+
                     Toast.makeText(Login.this, "Registered", Toast.LENGTH_LONG).show();
                     SharedPreferences sharedPref = getSharedPreferences("weTask", MODE_PRIVATE);
                     SharedPreferences.Editor edit = sharedPref.edit();
                     edit.putString("userID", username);
+                    edit.putString("groupID", newGroupID);
                     edit.commit();
                     get_first_group(username);
                 } else {
