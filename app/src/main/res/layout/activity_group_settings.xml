@@ -54,13 +54,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/add_user"
         android:inputType="textPersonName"
+        android:completionThreshold="1"
         app:layout_constraintBottom_toTopOf="@+id/confirm_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.196"

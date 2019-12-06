@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,8 +46,21 @@ public class GroupSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_settings);
 
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference("users");
+        groups = database.getReference("groups");
+        tasks = database.getReference("tasks");
+
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
+        ArrayList<String> userList = new ArrayList<>();
+        loadUsers(userList);
+
+        final AutoCompleteTextView user =  findViewById(R.id.add_user);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
+                userList);
+        user.setAdapter(adapter);
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
 
@@ -64,10 +79,10 @@ public class GroupSettings extends AppCompatActivity {
 
         //SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
 
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference("users");
-        groups = database.getReference("groups");
-        tasks = database.getReference("tasks");
+//        database = FirebaseDatabase.getInstance();
+//        users = database.getReference("users");
+//        groups = database.getReference("groups");
+//        tasks = database.getReference("tasks");
 
         complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
@@ -76,7 +91,7 @@ public class GroupSettings extends AppCompatActivity {
                 Log.d("EDITGROUP","Complete Clicked");
                 Log.d("EDITGROUP",Integer.toString(editVal));
                 edit = (EditText) findViewById(R.id.edit_group_name);
-                EditText user = (EditText) findViewById(R.id.add_user);
+                //AutoCompleteTextView user =  findViewById(R.id.add_user);
                 String groupName = edit.getText().toString();
                 String userID = user.getText().toString();
 
@@ -167,6 +182,24 @@ public class GroupSettings extends AppCompatActivity {
                 if(tempTask.getAssignedTo().equals(userID)){
                     tempTask.unassign();
                     tasks.child(taskID).setValue(tempTask);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void loadUsers(final ArrayList<String> userList){
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    UserObject user = snapshot.getValue(UserObject.class);
+                    String userId = user.getUserID();
+                    userList.add(userId);
                 }
             }
 
