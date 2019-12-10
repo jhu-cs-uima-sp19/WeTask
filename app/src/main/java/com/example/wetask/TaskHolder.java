@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.wetask.R;
 import com.example.wetask.TaskItem;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -23,11 +24,13 @@ public class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickL
 
     private TaskItem task;
     private Context context;
+    private View card;
 
     public TaskHolder(View itemView) {
 
         super(itemView);
 
+        this.card = itemView;
         // 1. Set the context
         this.context = itemView.getContext();
 
@@ -47,6 +50,11 @@ public class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickL
         this.title.setText(task.getName());
         this.assignee.setText(task.getAssignedTo());
         this.deadline.setText(task.getDeadline());
+
+        if(task.ifFinished()) {
+            CardView card_view = this.card.findViewById(R.id.card_view);
+            card_view.setCardBackgroundColor(context.getResources().getColor(R.color.colorArchive));
+        }
     }
 
     @Override

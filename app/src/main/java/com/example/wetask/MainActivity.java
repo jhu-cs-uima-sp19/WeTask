@@ -433,6 +433,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 TaskItem task = dataSnapshot.child(taskId).getValue(TaskItem.class);
+                task.complete();
                 if(task != null){
                     archiveTasks.add(task);
                     archiveTaskAdapter.notifyDataSetChanged();
