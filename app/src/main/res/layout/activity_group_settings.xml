@@ -32,7 +32,7 @@
         android:layout_width="300dp"
         android:layout_height="46dp"
         android:layout_marginBottom="16dp"
-        android:background="#C9F44336"
+        android:background="@color/colorDanger"
         android:contentDescription="@string/confirm"
         android:text="@string/leave"
         app:layout_constraintBottom_toTopOf="@+id/confirm_group"

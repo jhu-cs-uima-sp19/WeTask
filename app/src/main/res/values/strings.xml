@@ -21,6 +21,7 @@
     <string name="submit">SUBMIT</string>
     <string name="complete">COMPLETE</string>
     <string name="not_complete">NOT COMPLETE YET</string>
+    <string name="delete">DELETE</string>
 
     <string name="comments">Comments:</string>
     <string name="assigned_to">Assigned To:</string>

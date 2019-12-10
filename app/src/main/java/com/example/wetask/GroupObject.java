@@ -48,6 +48,11 @@ public class GroupObject {
                 groupTaskList.remove(i);
             }
         }
+        for (int i = 0; i < archivedTaskList.size(); i++) {
+            if(archivedTaskList.get(i).equals(taskID)){
+                archivedTaskList.remove(i);
+            }
+        }
     }
 
     public void addUser(String userID) {

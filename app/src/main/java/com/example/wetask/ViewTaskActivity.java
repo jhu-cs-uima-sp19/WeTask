@@ -48,6 +48,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         task_id = sharedPref.getString("taskId", "");
 
         Button complete = findViewById(R.id.complete);
+        Boolean archived = sharedPref.getBoolean("finished", false);
         complete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
@@ -55,6 +56,19 @@ public class ViewTaskActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "confirm");
              }
         });
+        if (archived) {
+            //TODO: take out toast
+            Toast.makeText(ViewTaskActivity.this, "finished", Toast.LENGTH_SHORT).show();
+            complete.setText(R.string.delete);
+            complete.setBackgroundColor(getResources().getColor(R.color.colorDanger));
+            complete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v)
+                {
+                    DialogFragment newFragment = new ConfirmDialog("delete");
+                    newFragment.show(getSupportFragmentManager(), "confirm");
+                }
+            });
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,6 +171,12 @@ public class ViewTaskActivity extends AppCompatActivity {
                 MainActivity.myTaskAdapter.notifyItemRemoved(i);
             }
         }
+        for(int i = 0; i < MainActivity.archiveTasks.size(); i++){
+            if (MainActivity.archiveTasks.get(i).getTaskId().equals(task_id)){
+                MainActivity.archiveTasks.remove(i);
+                MainActivity.archiveTaskAdapter.notifyItemRemoved(i);
+            }
+        }
         //MainActivity.notify_changes();
         finish();
     }
@@ -165,7 +185,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         // Mark the task in database as finished, remove it from the group's task list, add it to the group's archived list
         // Update all three task lists in MainActivity, then notify on item level as appropriate
         DatabaseReference tasks = FirebaseDatabase.getInstance().getReference("tasks");
-        tasks.child(task_id).child("finished").setValue(true);
+        tasks.child(task_id).child("finished").setValue(true); //does this do what I want?
         final DatabaseReference groups = FirebaseDatabase.getInstance().getReference("groups");
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -177,12 +197,15 @@ public class ViewTaskActivity extends AppCompatActivity {
                 for(int i = 0; i < MainActivity.myTasks.size(); i++){
                     if(MainActivity.myTasks.get(i).getTaskId().equals(task_id)){
                         archived_item = MainActivity.myTasks.get(i);
+                        archived_item.complete(); //new
                         MainActivity.myTasks.remove(i);
                         MainActivity.myTaskAdapter.notifyItemRemoved(i);
                     }
                 }
                 for(int i = 0; i < MainActivity.allTasks.size(); i++){
                     if(MainActivity.allTasks.get(i).getTaskId().equals(task_id)){
+                        archived_item = MainActivity.allTasks.get(i);
+                        archived_item.complete();
                         MainActivity.allTasks.remove(i);
                         MainActivity.allTaskAdapter.notifyItemRemoved(i);
                     }

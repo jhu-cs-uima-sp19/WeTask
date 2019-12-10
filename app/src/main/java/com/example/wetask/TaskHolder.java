@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wetask.R;
 import com.example.wetask.TaskItem;
@@ -60,6 +61,9 @@ public class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickL
         edit.putString("assignee", task.getAssignedTo());
         edit.putString("comments", task.getComments());
         edit.putString("taskId", task.getTaskId());
+        edit.putBoolean("finished", task.ifFinished());
+        //TODO: take out this toast
+        Toast.makeText(this.context, "finished="+task.ifFinished(), Toast.LENGTH_SHORT).show();
         edit.commit();
 
         Intent intent = new Intent(context, ViewTaskActivity.class);
