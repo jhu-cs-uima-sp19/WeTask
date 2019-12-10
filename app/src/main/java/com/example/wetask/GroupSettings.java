@@ -77,14 +77,14 @@ public class GroupSettings extends AppCompatActivity {
 
         // THIS IS WHERE I INITIATE THE ADAPTER FOR LIST VIEW
         // THE LIST ITSELF IS FILLED IN LOADUSERS()
-        userListView = findViewById(R.id.userList);
+        userListView = findViewById(R.id.user_list);
         ArrayAdapter<String> userAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, userList);
         userListView.setAdapter(userAdapter);
 
 
-        if (editVal == 1) {
+        if (editVal == 1) { //editing
             Log.d("groupName",sharedPref.getString("groupName", "N/A"));
             EditText groupName = findViewById(R.id.edit_group_name);
             groupName.setText(sharedPref.getString("groupName", "N/A"));
@@ -111,8 +111,11 @@ public class GroupSettings extends AppCompatActivity {
                 Log.d("EDITGROUP","Complete Clicked");
                 Log.d("EDITGROUP",Integer.toString(editVal));
                 edit = (EditText) findViewById(R.id.edit_group_name);
-                //AutoCompleteTextView user =  findViewById(R.id.add_user);
                 String groupName = edit.getText().toString();
+                if (groupName.isEmpty()){ //data validation
+                    Toast.makeText(GroupSettings.this, "Error: Empty Group Name", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String userID = user.getText().toString();
 
                 if (editVal == 0) { //if creating group

@@ -70,7 +70,7 @@
         app:layout_constraintVertical_bias="0.324" />
 
     <ListView
-        android:id="@+id/userList"
+        android:id="@+id/user_list"
         android:background="#d9d9d9"
         android:layout_width="0dp"
         android:layout_height="0dp"
