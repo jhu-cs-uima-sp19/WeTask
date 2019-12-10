@@ -57,8 +57,6 @@ public class ViewTaskActivity extends AppCompatActivity {
              }
         });
         if (archived) {
-            //TODO: take out toast
-            Toast.makeText(ViewTaskActivity.this, "finished", Toast.LENGTH_SHORT).show();
             complete.setText(R.string.delete);
             complete.setBackgroundColor(getResources().getColor(R.color.colorDanger));
             complete.setOnClickListener(new View.OnClickListener() {
