@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -36,14 +39,15 @@ import java.util.Random;
 import static android.view.Menu.NONE;
 
 public class GroupSettings extends AppCompatActivity {
-    FirebaseDatabase database;
-    DatabaseReference groups, users, tasks;
-    Button complete, leave;
-    EditText edit;
-    String groupId;
-    ListView userListView;
+    private FirebaseDatabase database;
+    private DatabaseReference groups, users, tasks;
+    private Button complete, leave;
+    private EditText edit;
+    private String groupId;
+    private ListView userListView;
+    private ArrayAdapter<String> userListAdapter;
     //1 if we are editing, 0 if creating new group
-    int editVal;
+    private int editVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,6 @@ public class GroupSettings extends AppCompatActivity {
         ArrayList<String> userList = new ArrayList<>();
         loadUsers(userList);
 
-
         final AutoCompleteTextView user =  findViewById(R.id.add_user);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
@@ -78,10 +81,17 @@ public class GroupSettings extends AppCompatActivity {
         // THIS IS WHERE I INITIATE THE ADAPTER FOR LIST VIEW
         // THE LIST ITSELF IS FILLED IN LOADUSERS()
         userListView = findViewById(R.id.user_list);
-        ArrayAdapter<String> userAdapter = new ArrayAdapter<>(this,
+        TextView textView = new TextView(this);
+        textView.setText("  Current Members:");
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+        textView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        textView.setTextColor(getResources().getColor(R.color.colorBlack));
+
+        userListView.addHeaderView(textView);
+        userListAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, userList);
-        userListView.setAdapter(userAdapter);
+        userListView.setAdapter(userListAdapter);
 
 
         if (editVal == 1) { //editing
@@ -96,13 +106,6 @@ public class GroupSettings extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-        //SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-
-//        database = FirebaseDatabase.getInstance();
-//        users = database.getReference("users");
-//        groups = database.getReference("groups");
-//        tasks = database.getReference("tasks");
 
         complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
@@ -134,7 +137,14 @@ public class GroupSettings extends AppCompatActivity {
 
         leave = findViewById(R.id.leave_group);
         if(editVal == 0){
-            leave.setVisibility(View.GONE);
+            //leave.setVisibility(View.GONE);
+            leave.setText("CANCEL");
+            leave.setOnClickListener(new Button.OnClickListener() {
+                @Override
+                public void onClick(View v){
+                    finish();
+                }
+            });
         }else {
             leave.setOnClickListener(new Button.OnClickListener() {
                 @Override
@@ -148,23 +158,7 @@ public class GroupSettings extends AppCompatActivity {
 
     }
 
-
-
     private void leaveGroup(final String userID, final String groupID){
-        //Remove this group from the user's group list
-        users.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserObject tempUser = dataSnapshot.child(userID).getValue(UserObject.class);
-                tempUser.removeGroup(groupID);
-                users.child(userID).setValue(tempUser);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
         //Mark related tasks as unassigned
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -180,7 +174,6 @@ public class GroupSettings extends AppCompatActivity {
 
             }
         });
-
         //Remove this user from the group's user list
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -188,6 +181,22 @@ public class GroupSettings extends AppCompatActivity {
                 GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
                 tempGroup.removeUser(userID);
                 groups.child(groupID).setValue(tempGroup);
+                //finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //Remove this group from the user's group list
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserObject tempUser = dataSnapshot.child(userID).getValue(UserObject.class);
+                tempUser.removeGroup(groupID);
+                users.child(userID).setValue(tempUser);
+                //TODO: set the last group accessed and last group to not this group
                 finish();
             }
 
@@ -196,7 +205,6 @@ public class GroupSettings extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void unassignTask(final String taskID, final String userID){
@@ -243,6 +251,7 @@ public class GroupSettings extends AppCompatActivity {
                 ArrayList<String> users = group.getGroupUserList();
                 userList.clear();
                 userList.addAll(users);
+                userListAdapter.notifyDataSetChanged();
             }
 
             @Override

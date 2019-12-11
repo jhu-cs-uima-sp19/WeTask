@@ -7,4 +7,5 @@
     <color name="cardBackgroundColor">#c168b5</color>
     <color name="colorDanger">#C9F44336</color>
     <color name="colorArchive">#b39aaf</color>
+    <color name="colorBlack">#000000</color>
 </resources>
