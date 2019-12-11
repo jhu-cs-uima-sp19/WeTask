@@ -43,8 +43,7 @@ public class ViewTaskActivity extends AppCompatActivity {
         }
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-        String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
-        toolbar.setTitle(currGroupStr);
+        toolbar.setTitle(MainActivity.groupName);
         task_id = sharedPref.getString("taskId", "");
 
         Button complete = findViewById(R.id.complete);

@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.acl.Group;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 import static android.view.Menu.NONE;
@@ -61,8 +62,7 @@ public class GroupSettings extends AppCompatActivity {
         groups = database.getReference("groups");
         tasks = database.getReference("tasks");
 
-        final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-        groupId = sharedPref.getString("groupID", "n/a");
+        groupId = MainActivity.groupId;
         Intent intent = getIntent();
         editVal = intent.getIntExtra("edit?", -1);
 
@@ -103,9 +103,8 @@ public class GroupSettings extends AppCompatActivity {
         userListView.setAdapter(userListAdapter);
 
         if (editVal == 1) { //editing
-            Log.d("groupName",sharedPref.getString("groupName", "N/A"));
             EditText groupName = findViewById(R.id.edit_group_name);
-            groupName.setText(sharedPref.getString("groupName", "N/A"));
+            groupName.setText(MainActivity.groupName);
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -117,15 +116,13 @@ public class GroupSettings extends AppCompatActivity {
         if (editVal == 0) {
             actionBar.setTitle("Add Group");
         } else {
-            actionBar.setTitle(sharedPref.getString("groupName", "Edit Group"));
+            actionBar.setTitle(MainActivity.groupName);
         }
 
         complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("EDITGROUP","Complete Clicked");
-                Log.d("EDITGROUP",Integer.toString(editVal));
                 edit = (EditText) findViewById(R.id.edit_group_name);
                 String groupName = edit.getText().toString();
                 if (groupName.isEmpty()){ //data validation
@@ -133,17 +130,13 @@ public class GroupSettings extends AppCompatActivity {
                     return;
                 }
                 String userID = user.getText().toString();
-
                 if (editVal == 0) { //if creating group
                     Random r = new Random();
                     int tag = r.nextInt();
                     String id = Integer.toString(tag);
                     makeNewGroup(id, groupName, userID);
                 } else if (editVal == 1) { //if editing group
-                    String id = sharedPref.getString("groupID","0000");
-                    Log.d("EDITGROUP",id);
-                    Log.d("EDITGROUP",Boolean.toString(userID.isEmpty()));
-                    editGroup(id, groupName, userID);
+                    editGroup(MainActivity.groupId, groupName, userID);
                 }
             }
         });
@@ -161,14 +154,17 @@ public class GroupSettings extends AppCompatActivity {
             leave.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v){
-                    String GID = sharedPref.getString("groupID","0000");
-                    leaveGroup(MainActivity.userId, GID);
+                    leaveGroup(MainActivity.userId, MainActivity.groupId);
                 }
             });
         }
     }
 
     private void leaveGroup(final String userID, final String groupID){
+        if (MainActivity.groupNameList.size() <= 1) {
+            Toast.makeText(GroupSettings.this, "Error: Can't Leave Only Group", Toast.LENGTH_LONG).show();
+            return;
+        }
         //Mark related tasks as unassigned
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -191,7 +187,6 @@ public class GroupSettings extends AppCompatActivity {
                 GroupObject tempGroup = dataSnapshot.child(groupID).getValue(GroupObject.class);
                 tempGroup.removeUser(userID);
                 groups.child(groupID).setValue(tempGroup);
-                //finish();
             }
 
             @Override
@@ -206,7 +201,28 @@ public class GroupSettings extends AppCompatActivity {
                 UserObject tempUser = dataSnapshot.child(userID).getValue(UserObject.class);
                 tempUser.removeGroup(groupID);
                 users.child(userID).setValue(tempUser);
-                //TODO: set the last group accessed and last group to not this group
+
+                ArrayList<String> groupIDs = MainActivity.groupIdList;
+                ArrayList<String> groupNames = MainActivity.groupNameList;
+
+                String groupId = "";
+                String groupName = "";
+                if (groupIDs.size() > 1 && groupIDs.indexOf(MainActivity.groupId) + 1 < groupIDs.size()) {
+                    groupId = groupIDs.get(groupIDs.indexOf(MainActivity.groupId) + 1);
+                    groupName = groupNames.get(groupNames.indexOf(MainActivity.groupName) + 1);
+                } else if (groupNames.size() > 1 && groupNames.indexOf(MainActivity.groupName) - 1 >= 0 ) {
+                    groupId = groupIDs.get(groupIDs.indexOf(MainActivity.groupId) - 1);
+                    groupName = groupNames.get(groupNames.indexOf(MainActivity.groupName) - 1);
+                }
+
+                MainActivity.groupName = groupName;
+                MainActivity.groupId = groupId;
+
+                SharedPreferences sharedPref = GroupSettings.this.getSharedPreferences("weTask", MODE_PRIVATE);
+                String userName = sharedPref.getString("userId", "userName");
+                users.child(userName).child("lastGroupAccessed").setValue(groupId);
+                users.child(userName).child("lastGroupName").setValue(groupName);
+
                 finish();
             }
 
@@ -291,6 +307,8 @@ public class GroupSettings extends AppCompatActivity {
                     addGroupToUser(test_group.getGroupID(), u);
                 }
                 groups.child(finalId).setValue(test_group);
+                MainActivity.groupName = name;
+                MainActivity.groupId = id;
                 finish();
             }
 
@@ -302,7 +320,6 @@ public class GroupSettings extends AppCompatActivity {
     }
 
     private void editGroup(final String id, final String newName, final String newUserID) {
-        Log.d("EDITGROUP",newUserID);
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -317,6 +334,7 @@ public class GroupSettings extends AppCompatActivity {
                 groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
                 groupRef.child("groupName").setValue(newName);
+                MainActivity.groupName = newName;
                 finish();
             }
 

@@ -1,11 +1,7 @@
 package com.example.wetask;
 
-import android.content.SharedPreferences;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Holds data for one Task

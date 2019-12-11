@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -42,36 +43,29 @@ import static android.view.Menu.NONE;
 public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseReference groups, tasks, users;
-    private HashMap<Integer, String> current_groupID_list = new HashMap<Integer, String>();
-    private HashMap<Integer, String> current_groupName_list = new HashMap<Integer, String>();
+    static ArrayList<String> groupNameList;
+    static ArrayList <String> groupIdList;
     static String userId;
     static String groupId = "0"; // need to figure out how to get group id
-    static int groupPos;
     static String groupName = "0";
-    static String userName;
     static ArrayList<TaskItem> myTasks;
     static ArrayList<TaskItem> allTasks;
     static ArrayList<TaskItem> archiveTasks;
     static TaskItemAdapter myTaskAdapter;
     static TaskItemAdapter allTaskAdapter;
     static TaskItemAdapter archiveTaskAdapter;
-    //static ArrayList<String> groupNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("LAUNCH", "MAIN ACTIVITY LAUNCH");
         setContentView(R.layout.activity_main);
 
         /*initialize database instances and get group to start in*/
-
-
         users = FirebaseDatabase.getInstance().getReference("users");
         groups = FirebaseDatabase.getInstance().getReference("groups");
         tasks = FirebaseDatabase.getInstance().getReference("tasks");
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-        final SharedPreferences.Editor edit = sharedPref.edit();
         userId = sharedPref.getString("userID", "N/A");
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -80,11 +74,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 try {
                     groupId = user.getLastGroupAccessed();
                     groupName = user.getLastGroupName();
-                    edit.putString("groupName", groupName);
-                    Log.d("Name", groupName);
-                    edit.apply();
                 } catch (NullPointerException e) {
-                    groupId = sharedPref.getString("groupID", "n/a");
+                    //nothing needs to be here
                 }
             }
             @Override
@@ -92,19 +83,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
 
-
-
-
-        groupPos = sharedPref.getInt("groupPos", 0);
-        userName = sharedPref.getString("userID", "N/A");
-        Log.d("from shared pref", groupId);
-
         /*enable hamburger icon nav drawer ability*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (!groupId.equals("N/A")) {
-            toolbar.setTitle(current_groupName_list.get(groupId));
-        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -147,10 +128,8 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     }
 
     public void onResume() {
-        Log.d("Resume", "Resume MainActivity");
         super.onResume();
-        addMenuItemInNavMenuDrawer();
-        update_toolbar();
+        initializeGroupLists(); //and nav menu drawer
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,21 +140,9 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences sharedPref = this.getSharedPreferences("weTask",MODE_PRIVATE);
-        SharedPreferences.Editor  edit = sharedPref.edit();
         switch (item.getItemId()) {
             case R.id.group_settings:
-                /*
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
-                //put extra with current group name (editing not creating)
-                intent.putExtra("groupID", groupId);
-                intent.putExtra("groupName",current_groupName_list.get(groupPos));
-                intent.putExtra("edit?", 1);
-                startActivity(intent);
-                return true; */
-                Intent intent = new Intent(MainActivity.this, GroupSettings.class);
-                //put extra with current group name (editing not creating)
-                edit.apply();
                 intent.putExtra("edit?", 1);
                 startActivity(intent);
                 return true;
@@ -197,118 +164,78 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         }
     }
 
-    //@Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String title = item.getTitle().toString();
+
         SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPref.edit();
-        groupPos = id;
-        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        Menu groupMenu = navView.getMenu().findItem(R.id.groupSubmenuHolder).getSubMenu();
 
-//        for (int i = 0; i < groupNames.size(); i++) {
-//            if (item == groupMenu.getItem(i)) {
-//                //set correct masterList based on new group
-//                SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-//                SharedPreferences.Editor edit = sharedPref.edit();
-//                edit.putInt("group", i);
-//                edit.commit();
-//
-//                Toolbar toolbar = findViewById(R.id.toolbar);
-//                toolbar.setTitle(groupNames.get(i));
-//            }
-//        }
+        if (groupNameList.contains(title)) {
+            //set locally
+            groupName = title;
+            groupId = groupIdList.get(groupNameList.indexOf(groupName));
 
-        if(current_groupID_list.keySet().contains(id)){
-            // Update groupID and fragments
-            groupId = current_groupID_list.get(id);
-            groupName = current_groupName_list.get(id);
+            //set in sharedprefs to pass to other activities (which is frankly unnecessary, but whatever)
             edit.putString("groupName",groupName);
             edit.putString("groupID",groupId);
-            users.child(userName).child("lastGroupAccessed").setValue(groupId);
-            users.child(userName).child("lastGroupName").setValue(groupName);
             edit.apply();
-            Log.d("from shared pref", groupId);
-            Log.d("SWITCHGROUP", Integer.toString(id));
-            Log.d("SWITCHGROUP", "GROUP SWITCHED");
-            Log.d("SWITCHGROUP", groupId);
+
+            //add to user
+            users.child(userId).child("lastGroupAccessed").setValue(groupId);
+            users.child(userId).child("lastGroupName").setValue(groupName);
             update_task_lists(); //updating task lists for new group**************
+
+            //updating toolbar
             Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle(current_groupName_list.get(id));
-
-
-        }
-
-        if (id == R.id.nav_add_group) {
+            toolbar.setTitle(groupName);
+        } else if (id == R.id.nav_add_group) {
             Intent intent = new Intent(MainActivity.this, GroupSettings.class);
-            //put extra with group name empty (populating new group)
             intent.putExtra("edit?", 0);
             startActivity(intent);
-        }
-
-        if (id == R.id.logout) {
+        } else if (id == R.id.logout) {
             finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void addMenuItemInNavMenuDrawer() {
-        Log.d("MENU", "UPDATE MENU");
-        current_groupID_list = new HashMap<Integer, String>();
-        current_groupName_list = new HashMap<Integer, String>();
+    private void addGroupsToNavMenuDrawer() {
 
-        groups.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-                Menu menu = navView.getMenu();
-                Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
-                submenu.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    GroupObject group = snapshot.getValue(GroupObject.class);
-                    String groupName = group.getGroupName();
-                    //check if current user has this group
-                    if(!group.getGroupUserList().contains(userId)){
-                        continue;
-                    }
-
-                    Log.d("MENU", groupName);
-
-                    Random r = new Random();
-                    MenuItem temp = submenu.add(NONE, r.nextInt(), 0, groupName);
-                    current_groupID_list.put(temp.getItemId(), group.getGroupID()); //store list of groupID for switching between groups
-                    current_groupName_list.put(temp.getItemId(), groupName);
-                    Log.d("GROUPID", Integer.toString(temp.getItemId()));
-                    Log.d("GROUPID", group.getGroupID());
-                }
-                navView.invalidate();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navView.getMenu();
+        Menu submenu = menu.findItem(R.id.groupSubmenuHolder).getSubMenu();
+        submenu.clear();
+        for (String group : groupNameList) {
+            submenu.add(group);
+        }
+        navView.invalidate();
     }
 
-    private void update_toolbar(){
+    private void initializeGroupLists() {
         groups.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
-                String name = group.getGroupName();
+                groupNameList = new ArrayList<String>();
+                groupIdList = new ArrayList<String>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    GroupObject group = snapshot.getValue(GroupObject.class);
+                    if(group.getGroupUserList().contains(userId)){ //check if current user has this group
+                        groupNameList.add(group.getGroupName());
+                        groupIdList.add(group.getGroupID());
+                        if (group.getGroupID() == groupId) { //fixes bug with another group member editing
+                            groupName = group.getGroupName(); //last group user was in
+                            //TODO: take out if can fix another way
+                        }
+                    }
+                }
+                addGroupsToNavMenuDrawer();
                 Toolbar toolbar = findViewById(R.id.toolbar);
-                toolbar.setTitle(name);
+                toolbar.setTitle(groupName);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
@@ -445,41 +372,5 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             }
         });
 
-    }
-
-    /**NEEDS UPDATE BEFORE USING AGAIN--currently too slow & unwieldy, need to sort, figure out where
-     * single item went, and then use adapter.notifyItemMoved() method for fast & reliable behavior
-     */
-/*    public static void notify_changes(){
-        Collections.sort(myTasks, new TaskComparator());
-        Collections.sort(allTasks, new TaskComparator());
-        Collections.sort(archiveTasks, new TaskComparator());
-        myTaskAdapter.notifyDataSetChanged();
-        allTaskAdapter.notifyDataSetChanged();
-        archiveTaskAdapter.notifyDataSetChanged();
-    }*/
-
-    public static class TaskComparator implements Comparator<TaskItem> {
-        @Override
-        public int compare(TaskItem task_1, TaskItem task_2){
-            if(task_1.getAssignedTo().equals(" ")){
-                if(!task_2.getAssignedTo().equals(" ")) {  // if task1 is not assigned but task2 is assigned
-                    return 1;
-                }
-            }else{
-                if(task_2.getAssignedTo().equals(" ")){  //if task1 is assigned but task2 is not assigned
-                    return -1;
-                }
-            }
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/YY");
-            String date1 = task_1.getDeadline();
-            String date2 = task_2.getDeadline();
-            try {
-                return formatter.parse(date1).compareTo(formatter.parse(date2));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return 0;
-            }
-        }
     }
 }

@@ -63,8 +63,7 @@ public class EditTaskActivity extends AppCompatActivity{
         }
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-        String currGroupStr = sharedPref.getString("groupStr", "Group Not Found");
-        toolbar.setTitle(currGroupStr);
+        toolbar.setTitle(MainActivity.groupName);
 
         final EditText taskTitle = findViewById(R.id.new_task_name);
         deadline_view = findViewById(R.id.deadline_date);
