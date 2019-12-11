@@ -114,6 +114,11 @@ public class GroupSettings extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        if (editVal == 0) {
+            actionBar.setTitle("Add Group");
+        } else {
+            actionBar.setTitle(sharedPref.getString("groupName", "Edit Group"));
+        }
 
         complete = findViewById(R.id.confirm_group);
         complete.setOnClickListener(new Button.OnClickListener() {
