@@ -75,4 +75,12 @@
         app:layout_constraintStart_toStartOf="@+id/leave_group"
         app:layout_constraintTop_toBottomOf="@+id/add_user" />
 
+    <Button
+        android:id="@+id/add_user_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        app:layout_constraintBaseline_toBaselineOf="@+id/add_user"
+        app:layout_constraintEnd_toEndOf="@+id/user_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

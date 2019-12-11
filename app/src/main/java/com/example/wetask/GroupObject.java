@@ -38,6 +38,7 @@ public class GroupObject {
     }
 
     public ArrayList<String> getGroupUserList() {return groupUserList;}
+    public void setGroupUserList(ArrayList<String> list) {groupUserList = list;}
 
     public void addGroupTask(String taskID) {
         this.groupTaskList.add(taskID);

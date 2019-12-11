@@ -44,6 +44,8 @@ public class GroupSettings extends AppCompatActivity {
     private Button complete, leave;
     private EditText edit;
     private String groupId;
+    private ArrayList<String> userList;
+    private ArrayList<String> globalUserList;
     private ListView userListView;
     private ArrayAdapter<String> userListAdapter;
     //1 if we are editing, 0 if creating new group
@@ -60,23 +62,30 @@ public class GroupSettings extends AppCompatActivity {
         tasks = database.getReference("tasks");
 
         final SharedPreferences sharedPref = this.getSharedPreferences("weTask", MODE_PRIVATE);
-
         groupId = sharedPref.getString("groupID", "n/a");
+        Intent intent = getIntent();
+        editVal = intent.getIntExtra("edit?", -1);
 
-        ArrayList<String> globalUserList = new ArrayList<>();
-        loadGlobalUsers(globalUserList);
+        globalUserList = new ArrayList<>();
+        loadGlobalUsers();
 
-        ArrayList<String> userList = new ArrayList<>();
-        loadUsers(userList);
+        userList = new ArrayList<>();
+        loadUsers();
 
         final AutoCompleteTextView user =  findViewById(R.id.add_user);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 globalUserList);
         user.setAdapter(adapter);
-        Intent intent = getIntent();
-        editVal = intent.getIntExtra("edit?", -1);
 
+        Button add_button = findViewById(R.id.add_user_button);
+        add_button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addUser(user.getText().toString());
+                user.setText("");
+            }
+        });
 
         // THIS IS WHERE I INITIATE THE ADAPTER FOR LIST VIEW
         // THE LIST ITSELF IS FILLED IN LOADUSERS()
@@ -92,7 +101,6 @@ public class GroupSettings extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1, userList);
         userListView.setAdapter(userListAdapter);
-
 
         if (editVal == 1) { //editing
             Log.d("groupName",sharedPref.getString("groupName", "N/A"));
@@ -136,8 +144,7 @@ public class GroupSettings extends AppCompatActivity {
         });
 
         leave = findViewById(R.id.leave_group);
-        if(editVal == 0){
-            //leave.setVisibility(View.GONE);
+        if(editVal == 0){ //creating group
             leave.setText("CANCEL");
             leave.setOnClickListener(new Button.OnClickListener() {
                 @Override
@@ -145,17 +152,15 @@ public class GroupSettings extends AppCompatActivity {
                     finish();
                 }
             });
-        }else {
+        } else { //editing group
             leave.setOnClickListener(new Button.OnClickListener() {
                 @Override
                 public void onClick(View v){
                     String GID = sharedPref.getString("groupID","0000");
                     leaveGroup(MainActivity.userId, GID);
-                    //SystemClock.sleep(500); //Force wait for firebase update
                 }
             });
         }
-
     }
 
     private void leaveGroup(final String userID, final String groupID){
@@ -225,7 +230,7 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void loadGlobalUsers(final ArrayList<String> globalUserList){
+    private void loadGlobalUsers(){
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -243,22 +248,26 @@ public class GroupSettings extends AppCompatActivity {
         });
     }
 
-    private void loadUsers(final ArrayList<String> userList){
-        groups.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
-                ArrayList<String> users = group.getGroupUserList();
-                userList.clear();
-                userList.addAll(users);
-                userListAdapter.notifyDataSetChanged();
-            }
+    private void loadUsers(){
+        if (editVal == 0) { //creating group
+            userList.add(MainActivity.userId);
+        } else { //editing
+            groups.addListenerForSingleValueEvent( new ValueEventListener( ) {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    GroupObject group = dataSnapshot.child( groupId ).getValue( GroupObject.class );
+                    ArrayList<String> users = group.getGroupUserList( );
+                    userList.clear( );
+                    userList.addAll( users );
+                    userListAdapter.notifyDataSetChanged( );
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            } );
+        }
     }
 
     private void makeNewGroup(final String id, final String name, final String userID) {
@@ -271,16 +280,11 @@ public class GroupSettings extends AppCompatActivity {
                     int tag = r.nextInt();
                     finalId = Integer.toString(tag);
                 }
-
                 GroupObject test_group = new GroupObject(finalId, name);
-                test_group.addUser(MainActivity.userId);
-                addGroupToUser(test_group.getGroupID(), MainActivity.userId);
-
-                if (!userID.isEmpty()) {
-                    test_group.addUser(userID);
-                    addGroupToUser(test_group.getGroupID(), userID);
+                for (String u:userList) {
+                    test_group.addUser(u);
+                    addGroupToUser(test_group.getGroupID(), u);
                 }
-
                 groups.child(finalId).setValue(test_group);
                 finish();
             }
@@ -289,8 +293,6 @@ public class GroupSettings extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-
-
         });
     }
 
@@ -300,10 +302,12 @@ public class GroupSettings extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 GroupObject temp = dataSnapshot.child(id).getValue(GroupObject.class);
-                if(!newUserID.isEmpty()){
-                    Log.d("EDITGROUP",newUserID);
-                    temp.addUser(newUserID);
-                    addGroupToUser(id, newUserID);
+                ArrayList<String> currentList = temp.getGroupUserList();
+                for (String u:userList) {
+                    if(!currentList.contains(u)) { //not adding duplicates of users
+                        temp.addUser(u);
+                        addGroupToUser(id, u);
+                    }
                 }
                 groups.child(id).setValue(temp);
                 DatabaseReference groupRef = groups.child(id);
@@ -313,10 +317,7 @@ public class GroupSettings extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
-
-
         });
     }
 
@@ -332,10 +333,8 @@ public class GroupSettings extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -343,4 +342,17 @@ public class GroupSettings extends AppCompatActivity {
         return true;
     }
 
+    public void addUser(final String userID) {
+        if (!globalUserList.contains(userID)) {
+            Toast.makeText(GroupSettings.this, "Error: Invalid Username", Toast.LENGTH_LONG).show();
+            return;
+        } else if (userList.contains(userID)) {
+            Toast.makeText(GroupSettings.this, "Error: Already in Group", Toast.LENGTH_LONG).show();
+            return;
+        } else { //valid user
+            userList.add(userID);
+            userListAdapter.notifyDataSetChanged();
+            //adds to group when hitting confirm to save changes
+        }
+    }
 }
