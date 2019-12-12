@@ -218,6 +218,9 @@ public class GroupSettings extends AppCompatActivity {
                 MainActivity.groupName = groupName;
                 MainActivity.groupId = groupId;
 
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK,returnIntent);
+
                 SharedPreferences sharedPref = GroupSettings.this.getSharedPreferences("weTask", MODE_PRIVATE);
                 String userName = sharedPref.getString("userId", "userName");
                 users.child(userName).child("lastGroupAccessed").setValue(groupId);
@@ -309,6 +312,10 @@ public class GroupSettings extends AppCompatActivity {
                 groups.child(finalId).setValue(test_group);
                 MainActivity.groupName = name;
                 MainActivity.groupId = id;
+
+                Intent returnIntent = new Intent();
+                setResult(RESULT_OK,returnIntent);
+
                 finish();
             }
 
@@ -365,7 +372,7 @@ public class GroupSettings extends AppCompatActivity {
         return true;
     }
 
-    public void addUser(final String userID) {
+    private void addUser(final String userID) {
         if (!globalUserList.contains(userID)) {
             Toast.makeText(GroupSettings.this, "Error: Invalid Username", Toast.LENGTH_LONG).show();
             return;

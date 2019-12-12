@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -156,7 +157,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             case R.id.group_settings:
                 Intent intent = new Intent(MainActivity.this, GroupSettings.class);
                 intent.putExtra("edit?", 1);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
 
             default:
@@ -204,7 +205,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         } else if (id == R.id.nav_add_group) {
             Intent intent = new Intent(MainActivity.this, GroupSettings.class);
             intent.putExtra("edit?", 0);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         } else if (id == R.id.logout) {
             finish();
         }
@@ -238,7 +239,6 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                         groupIdList.add(group.getGroupID());
                         if (group.getGroupID() == groupId) { //fixes bug with another group member editing
                             groupName = group.getGroupName(); //last group user was in
-                            //TODO: take out if can fix another way
                         }
                     }
                 }
@@ -252,11 +252,22 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // used for updating tasks after groupsettings if necessary
+        if (requestCode == 1) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                update_task_lists();
+            }
+        }
+    }
+
     /**Below are methods to initialize lists and handle data changes.*/
 
     /*Called when need to fill in task lists from scratch: on group switch or when app starts.*/
     public void update_task_lists() {
-        Log.d( "CALL", "UPDATING TASK LISTS" );
         myTasks.clear( );
         allTasks.clear( );
         archiveTasks.clear( );
