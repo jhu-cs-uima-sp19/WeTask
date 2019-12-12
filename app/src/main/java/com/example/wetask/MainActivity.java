@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,6 +83,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+        groups.addListenerForSingleValueEvent( new ValueEventListener( ) {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GroupObject group = dataSnapshot.child(groupId).getValue(GroupObject.class);
+                groupName = group.getGroupName();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        } );
 
         /*enable hamburger icon nav drawer ability*/
         Toolbar toolbar = findViewById(R.id.toolbar);
